@@ -1,4 +1,4 @@
-# Python Contacts APp
+# Python Contacts App
 > Es una aplicacion simple de contactos, la uso para poner en practica lo que aprendo sobre Python, Tkinter y Base de datos.
 
 > Aun no esta terminado, lo actualizare cuando se me ocurra algun cambio o quiera probar algo de nuevo.
