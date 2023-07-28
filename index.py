@@ -4,22 +4,28 @@ from tkinter import *
 class Product:
 
     def __init__(self, window):
-        
-        #+++++++++++++++++++
+    
         # Windows Attributes
-        #+++++++++++++++++++
 
         self.wind = window
         self.wind.title('Contacts')
         self.wind.geometry('800x600')
         self.wind.resizable(False, False)
-        self.wind.configure(bg='gray')
+        self.wind.configure(bg='#1F1F1F')
 
-        self.slctxt = Canvas(self.wind, width=780, height=100, bg='gray', relief='groove')
-        self.slctxt.create_text(390, 50, text='Select one method to save the contacts', fill="black", font=('Arial 20 bold'))
-        self.slctxt.pack(side=TOP)
-        self.localctc = Button(self.wind, text='Save Contacts Locally', width=25, height=2, bg='gray', font=('Arial 20 bold'))
+        #Primary Window
+
+        #Canvas
+        self.slctxt = Canvas(self.wind, width=780, height=75, bg='#1F1F1F', relief='groove',highlightthickness='0')
+        self.slctxt.create_text(390, 25, text='Select one method to save the contacts', fill='white', font=('Arial 15 bold'))
+        self.slctxt.place(relx=0.5, rely=0.1, anchor=CENTER)
+
+        #Buttons
+        self.localctc = Button(self.wind, text='Save Contacts Locally')
+        self.localctc.configure(width=25, height=2, bg='#1F1F1F', fg='white', highlightthickness='0', font=('Arial 15 bold'))
         self.localctc.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+        #Secondary Window
 
 
 
