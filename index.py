@@ -16,9 +16,9 @@ class Product:
         #Primary Window
 
         #Canvas
-        self.slctxt = Canvas(self.windOne, width=780, height=75, bg='#1F1F1F', relief='groove',highlightthickness='0')
-        self.slctxt.create_text(390, 25, text='Select one method to save the contacts', fill='white', font=('Arial 15 bold'))
-        self.slctxt.place(relx=0.5, rely=0.1, anchor=CENTER)
+        self.seltxt = Canvas(self.windOne, width=780, height=75, bg='#1F1F1F', relief='groove',highlightthickness='0')
+        self.seltxt.create_text(390, 25, text='Select one method to save the contacts', fill='white', font=('Arial 15 bold'))
+        self.seltxt.place(relx=0.5, rely=0.1, anchor=CENTER)
 
         #Buttons
         self.localctc = Button(self.windOne, text='Save Contacts Locally', command=self.SryWfunc)
@@ -41,6 +41,31 @@ class Product:
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
+
+        #Labels
+        self.lblbtn = Label(self.windTwo, height=1, width=27)
+        self.lblbtn.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.lblbtn.place(x=151, y=34, anchor=S)
+
+
+        #Buttons
+
+        # Buttons Navigation
+
+        #Add Contacts
+        self.addctc = Button(self.lblbtn, text='+')
+        self.addctc.config(height=1, width=1, font='Arial 5')
+        self.addctc.place(x=50, y=14, anchor=E)
+
+        #Select Contacts
+        self.selctc = Button(self.lblbtn, text='+')
+        self.selctc.config(height=1, width=1, font='Arial 5')
+        self.selctc.place(x=250, y=14, anchor=E)
+
+        #Settings
+        self.stings = Button(self.lblbtn, text='+')
+        self.stings.config(height=1, width=1, font='Arial 5')
+        self.stings.place(x=150, y=14, anchor=E)
 
 
 if __name__ == '__main__':
