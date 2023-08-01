@@ -37,7 +37,7 @@ class Product:
         SryWind = Tk()
         self.windTwo = SryWind
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry('800x600')
+        self.windTwo.geometry("800x600+300+300")
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
@@ -60,12 +60,12 @@ class Product:
         #Select Contacts
         self.selctc = Button(self.lblbtn, text='+')
         self.selctc.config(height=1, width=1, font='Arial 5')
-        self.selctc.place(x=250, y=14, anchor=E)
+        self.selctc.place(x=280, y=14, anchor=E)
 
         #Settings
         self.stings = Button(self.lblbtn, text='+')
         self.stings.config(height=1, width=1, font='Arial 5')
-        self.stings.place(x=150, y=14, anchor=E)
+        self.stings.place(x=230, y=14, anchor=E)
 
 
 if __name__ == '__main__':
