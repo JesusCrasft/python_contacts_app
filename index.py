@@ -42,15 +42,13 @@ class Product:
         self.windTwo.configure(bg='#1F1F1F')
 
         #Labels
-        self.lblbtn = Label(self.windTwo, height=2, width=28)
+        self.lblbtn = Label(self.windTwo, height=2, width=29)
         self.lblbtn.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.lblbtn.place(x=139, y=52, anchor=S)
+        self.lblbtn.place(x=149, y=52, anchor=S)
 
-        self.lblsrc = Label(self.windTwo, height=23, width=28)
+        self.lblsrc = Label(self.windTwo, height=23, width=29)
         self.lblsrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.lblsrc.place(x=139, y=52, anchor=N)
-
-
+        self.lblsrc.place(x=149, y=52, anchor=N)
 
 
         #Buttons
