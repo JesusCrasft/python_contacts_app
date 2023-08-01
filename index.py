@@ -37,15 +37,20 @@ class Product:
         SryWind = Tk()
         self.windTwo = SryWind
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry("800x600+300+300")
+        self.windTwo.geometry("800x588+300+300")
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
-
         #Labels
-        self.lblbtn = Label(self.windTwo, height=1, width=27)
+        self.lblbtn = Label(self.windTwo, height=2, width=28)
         self.lblbtn.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.lblbtn.place(x=151, y=34, anchor=S)
+        self.lblbtn.place(x=139, y=52, anchor=S)
+
+        self.lblsrc = Label(self.windTwo, height=23, width=28)
+        self.lblsrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.lblsrc.place(x=139, y=52, anchor=N)
+
+
 
 
         #Buttons
@@ -55,17 +60,21 @@ class Product:
         #Add Contacts
         self.addctc = Button(self.lblbtn, text='+')
         self.addctc.config(height=1, width=1, font='Arial 5')
-        self.addctc.place(x=50, y=14, anchor=E)
+        self.addctc.place(x=50, y=22, anchor=E)
 
         #Select Contacts
         self.selctc = Button(self.lblbtn, text='+')
         self.selctc.config(height=1, width=1, font='Arial 5')
-        self.selctc.place(x=280, y=14, anchor=E)
+        self.selctc.place(x=260, y=22, anchor=E)
 
         #Settings
-        self.stings = Button(self.lblbtn, text='+')
-        self.stings.config(height=1, width=1, font='Arial 5')
-        self.stings.place(x=230, y=14, anchor=E)
+        self.sngs = Button(self.lblbtn, text='+')
+        self.sngs.config(height=1, width=1, font='Arial 5')
+        self.sngs.place(x=210, y=22, anchor=E)
+
+        #Search Bar
+
+
 
 
 if __name__ == '__main__':
