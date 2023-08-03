@@ -1,4 +1,5 @@
 from tkinter import ttk
+from tkinter import colorchooser
 from tkinter import * 
 
 class Product:
@@ -57,23 +58,23 @@ class Product:
 
         #Add Contacts
         self.AddCtc = Button(self.LblBtn, text='+')
-        self.AddCtc.config(height=1, width=1, font='Arial 5')
+        self.AddCtc.config(height=1, width=1, font=('Arial',5))
         self.AddCtc.place(x=50, y=22, anchor=E)
 
         #Select Contacts
         self.SelCtc = Button(self.LblBtn, text='+')
-        self.SelCtc.config(height=1, width=1, font='Arial 5')
+        self.SelCtc.config(height=1, width=1, font=('Arial',5))
         self.SelCtc.place(x=260, y=22, anchor=E)
 
         #Settings
         self.Sngs = Button(self.LblBtn, text='+')
-        self.Sngs.config(height=1, width=1, font='Arial 5')
+        self.Sngs.config(height=1, width=1, font=('Arial',5))
         self.Sngs.place(x=210, y=22, anchor=E)
 
 
         #Search Bar
         self.SrcCtc = Text(self.LblSrc)
-        self.SrcCtc.configure(height=1, width=28, font='Arial 7')
+        self.SrcCtc.configure(height=1, width=15, font=('Arial',20), bg='#323232', fg='white')
         self.SrcCtc.place(x=145, y=52, anchor=S)
 
 
