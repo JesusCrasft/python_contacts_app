@@ -54,30 +54,30 @@ class Product:
         # Buttons Navigation
 
         #Add Contacts
-        self.AddCtc = Button(self.LblBtn, text='+')
-        self.AddCtc.config(height=1, width=1, font=('Arial',5))
-        self.AddCtc.place(x=50, y=22, anchor=E)
+        self.AddCW = Button(self.LblBtn, text='+')
+        self.AddCW.config(height=1, width=1, font=('Arial',5))
+        self.AddCW.place(x=50, y=22, anchor=E)
 
         #Select Contacts
-        self.SelCtc = Button(self.LblBtn, text='+')
-        self.SelCtc.config(height=1, width=1, font=('Arial',5))
-        self.SelCtc.place(x=260, y=22, anchor=E)
+        self.SelCW = Button(self.LblBtn, text='+')
+        self.SelCW.config(height=1, width=1, font=('Arial',5))
+        self.SelCW.place(x=260, y=22, anchor=E)
 
         #Settings
-        self.Sngs = Button(self.LblBtn, text='+')
-        self.Sngs.config(height=1, width=1, font=('Arial',5))
-        self.Sngs.place(x=210, y=22, anchor=E)
+        self.SngsW = Button(self.LblBtn, text='+')
+        self.SngsW.config(height=1, width=1, font=('Arial',5))
+        self.SngsW.place(x=210, y=22, anchor=E)
 
 
         #Search Bar
-        self.SrcCtc = Entry(self.LblSrc)
-        self.SrcCtc.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
-        self.SrcCtc.place(x=145, y=47, anchor=S)
+        self.SrcCW = Entry(self.LblSrc)
+        self.SrcCW.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
+        self.SrcCW.place(x=145, y=47, anchor=S)
 
         #List of Contacts
-        self.LstCtc = Listbox(self.LblSrc)
-        self.LstCtc.configure(height=20, width=29, bg='#1F1F1F')
-        self.LstCtc.place(x=145, y=50, anchor=N)
+        self.LstCW = Listbox(self.LblSrc)
+        self.LstCW.configure(height=20, width=29, bg='#1F1F1F')
+        self.LstCW.place(x=145, y=50, anchor=N)
 
 
 
