@@ -34,7 +34,7 @@ class Product:
         SryWind = Tk()
         self.windTwo = SryWind
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry("800x588+300+300")
+        self.windTwo.geometry("804x605+300+300")
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
@@ -46,17 +46,19 @@ class Product:
         self.LblBtn.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.LblBtn.place(x=149, y=52, anchor=S)
 
-        self.LblSrc = Label(self.windTwo, height=23, width=29)
+        self.LblSrc = Label(self.windTwo, height=24, width=29)
         self.LblSrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.LblSrc.place(x=149, y=52, anchor=N)
 
+        self.LblCtc = Label(self.windTwo, height=26, width=50)
+        self.LblCtc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.LblCtc.place(x=550, y=0, anchor=N)
 
-        #Buttons
 
-        # Buttons Navigation
+        #Label Buttons
 
         #Add Contacts
-        self.AddCW = Button(self.LblBtn, text='+')
+        self.AddCW = Button(self.LblBtn, text='+', command=self.AddCF)
         self.AddCW.config(height=1, width=1, font=('Arial',5))
         self.AddCW.place(x=50, y=22, anchor=E)
 
@@ -71,6 +73,8 @@ class Product:
         self.SngsW.place(x=210, y=22, anchor=E)
 
 
+        #Label Search
+
         #Search Bar
         self.SrcCW = Entry(self.LblSrc)
         self.SrcCW.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
@@ -78,12 +82,22 @@ class Product:
 
         #List of Contacts
         self.LstCW = Listbox(self.LblSrc)
-        self.LstCW.configure(height=20, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
+        self.LstCW.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.LstCW.place(x=145, y=50, anchor=N)
 
         self.EvnTk()
 
+
     #Functions 
+
+    #Function to call the events
+    def EvnTk(self):
+        #Entry event
+        self.SrcCW.bind('<KeyRelease>', self.CheckF)
+
+        #Listbox event
+        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF)
+
 
     #Function to update the listbox
     def UpdateF(self, data):
@@ -108,12 +122,15 @@ class Product:
 
         self.UpdateF(data)
 
-    
-    #Function to call the events
-    def EvnTk(self):
-        self.SrcCW.bind('<KeyRelease>', self.CheckF)
+    #Function to create a new contact
+    def AddCF(self):
+        pass
 
-        
+
+    #Function to show the information of the selected contact
+
+    def ShowICF(self, key):
+        pass
 
 
 if __name__ == '__main__':
