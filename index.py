@@ -22,9 +22,8 @@ class Product:
         self.LocalCtc = Button(self.windOne, text='Save Contacts Locally', command=self.SryWfunc)
         self.LocalCtc.configure(width=25, height=2, bg='#1F1F1F', fg='white', highlightthickness='0', font=('Arial 15 bold'))
         self.LocalCtc.place(relx=0.5, rely=0.5, anchor=CENTER)
-
-
-        #Secondary Window
+    
+    #Secondary Window
 
     #Function: Secondary window creation
     def SryWfunc(self):
@@ -38,6 +37,9 @@ class Product:
         self.windTwo.geometry("800x588+300+300")
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
+
+        #Variables
+        self.my_ctclist = ['Aimel', 'Pablo', 'Jaimar', 'Shawnee', 'Jesus']
 
         #Labels
         self.LblBtn = Label(self.windTwo, height=2, width=29)
@@ -76,14 +78,38 @@ class Product:
 
         #List of Contacts
         self.LstCW = Listbox(self.LblSrc)
-        self.LstCW.configure(height=20, width=29, bg='#1F1F1F')
+        self.LstCW.configure(height=20, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.LstCW.place(x=145, y=50, anchor=N)
 
-
-
+       
+        self.SrcCW.bind('<KeyRelease>', self.CheckF)
 
     #Functions 
 
+    #Function to update the listbox
+    def UpdateF(self, data):
+        self.LstCW.delete(0, END)
+
+        for item in data:
+            self.LstCW.insert(0, item)
+
+
+    #Function to check the Entry
+    def CheckF(self, key):
+        typed = self.SrcCW.get()
+
+        if typed == '':
+            data = self.my_ctclist
+
+        else:
+            data = []
+            for item in self.my_ctclist:
+                if typed.lower() in item.lower():
+                    data.append(item)
+
+        self.UpdateF(data)
+
+        
 
 
 if __name__ == '__main__':
