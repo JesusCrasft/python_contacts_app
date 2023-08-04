@@ -72,13 +72,19 @@ class Product:
         #Search Bar
         self.SrcCtc = Entry(self.LblSrc)
         self.SrcCtc.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
-        self.SrcCtc.place(x=145, y=52, anchor=S)
+        self.SrcCtc.place(x=145, y=47, anchor=S)
 
         #List of Contacts
-        self.LstCtc = ttk.Treeview(self.LblSrc)
-        self.LstCtc.heading('#0', text='List of Contacts')
-        self.LstCtc.column('#0', width=30)
-        self.LstCtc.place(x=145, y=68, anchor=N)
+        self.LstCtc = Listbox(self.LblSrc)
+        self.LstCtc.configure(height=20, width=29, bg='#1F1F1F')
+        self.LstCtc.place(x=145, y=50, anchor=N)
+
+
+
+
+    #Functions 
+
+
 
 if __name__ == '__main__':
     PryWind = Tk()
