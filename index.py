@@ -81,8 +81,7 @@ class Product:
         self.LstCW.configure(height=20, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.LstCW.place(x=145, y=50, anchor=N)
 
-       
-        self.SrcCW.bind('<KeyRelease>', self.CheckF)
+        self.EvnTk()
 
     #Functions 
 
@@ -108,6 +107,11 @@ class Product:
                     data.append(item)
 
         self.UpdateF(data)
+
+    
+    #Function to call the events
+    def EvnTk(self):
+        self.SrcCW.bind('<KeyRelease>', self.CheckF)
 
         
 
