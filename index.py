@@ -1,5 +1,4 @@
 from tkinter import ttk
-from tkinter import colorchooser
 from tkinter import * 
 
 class Product:
@@ -13,8 +12,6 @@ class Product:
         self.windOne.geometry('800x600')
         self.windOne.resizable(False, False)
         self.windOne.configure(bg='#1F1F1F')
-
-        #Primary Window
 
         #Canvas
         self.SelTxt = Canvas(self.windOne, width=780, height=75, bg='#1F1F1F', relief='groove',highlightthickness='0')
@@ -33,7 +30,7 @@ class Product:
     def SryWfunc(self):
         self.windOne.destroy()
 
-        # Secondary Window Attributes
+        #Secondary Window Attributes
         
         SryWind = Tk()
         self.windTwo = SryWind
@@ -73,10 +70,15 @@ class Product:
 
 
         #Search Bar
-        self.SrcCtc = Text(self.LblSrc)
-        self.SrcCtc.configure(height=1, width=15, font=('Arial',20), bg='#323232', fg='white')
+        self.SrcCtc = Entry(self.LblSrc)
+        self.SrcCtc.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
         self.SrcCtc.place(x=145, y=52, anchor=S)
 
+        #List of Contacts
+        self.LstCtc = ttk.Treeview(self.LblSrc)
+        self.LstCtc.heading('#0', text='List of Contacts')
+        self.LstCtc.column('#0', width=30)
+        self.LstCtc.place(x=145, y=68, anchor=N)
 
 if __name__ == '__main__':
     PryWind = Tk()
