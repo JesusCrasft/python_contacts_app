@@ -34,46 +34,48 @@ class Product:
         SryWind = Tk()
         self.windTwo = SryWind
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry("804x605+300+300")
+        self.windTwo.geometry("804x588+300+300")
         self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
         self.my_ctclist = ['Aimel', 'Pablo', 'Jaimar', 'Shawnee', 'Jesus']
 
-        #Labels
-        self.LblBtn = Label(self.windTwo, height=2, width=29)
-        self.LblBtn.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblBtn.place(x=149, y=52, anchor=S)
-
-        self.LblSrc = Label(self.windTwo, height=24, width=29)
-        self.LblSrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblSrc.place(x=149, y=52, anchor=N)
-
-        self.LblCtc = Label(self.windTwo, height=26, width=50)
+        #Label Add Contact
+        self.LblCtc = Label(self.windTwo, height=23, width=50)
         self.LblCtc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblCtc.place(x=550, y=0, anchor=N)
+        self.LblCtc.place(x=550, y=52, anchor=N)
 
+        #Labels Buttons Navigation
+        self.LblBtnF = Label(self.windTwo, height=2, width=29)
+        self.LblBtnF.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.LblBtnF.place(x=149, y=52, anchor=S)
 
-        #Label Buttons
+        self.LblBtnS = Label(self.windTwo, height=2, width=50)
+        self.LblBtnS.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.LblBtnS.place(x=550, y=52, anchor=S)
 
         #Add Contacts
-        self.AddCW = Button(self.LblBtn, text='+', command=self.AddCF)
+        self.AddCW = Button(self.LblBtnF, text='+', command=self.AddCF)
         self.AddCW.config(height=1, width=1, font=('Arial',5))
         self.AddCW.place(x=50, y=22, anchor=E)
 
         #Select Contacts
-        self.SelCW = Button(self.LblBtn, text='+')
+        self.SelCW = Button(self.LblBtnF, text='+')
         self.SelCW.config(height=1, width=1, font=('Arial',5))
         self.SelCW.place(x=260, y=22, anchor=E)
 
         #Settings
-        self.SngsW = Button(self.LblBtn, text='+')
+        self.SngsW = Button(self.LblBtnF, text='+')
         self.SngsW.config(height=1, width=1, font=('Arial',5))
         self.SngsW.place(x=210, y=22, anchor=E)
 
 
-        #Label Search
+
+        #Label Search Widgets
+        self.LblSrc = Label(self.windTwo, height=23, width=29)
+        self.LblSrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.LblSrc.place(x=149, y=52, anchor=N)
 
         #Search Bar
         self.SrcCW = Entry(self.LblSrc)
@@ -128,7 +130,6 @@ class Product:
 
 
     #Function to show the information of the selected contact
-
     def ShowICF(self, key):
         pass
 
