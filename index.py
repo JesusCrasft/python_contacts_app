@@ -46,6 +46,13 @@ class Product:
         self.LblCtc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.LblCtc.place(x=550, y=52, anchor=N)
 
+        self.CName = Entry(self.LblCtc)
+        self.CName.insert(0, 'Full Name')
+        self.CEmail = Entry(self.LblCtc)
+        self.CEmail.insert(0, 'Email')
+        self.CPhone = Entry(self.LblCtc)
+        self.CPhone.insert(0, 'Number Phone')
+
         #Labels Buttons Navigation
         self.LblBtnF = Label(self.windTwo, height=2, width=29)
         self.LblBtnF.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
@@ -57,19 +64,26 @@ class Product:
 
         #Add Contacts
         self.AddCW = Button(self.LblBtnF, text='+', command=self.AddCF)
-        self.AddCW.config(height=1, width=1, font=('Arial',5))
+        self.AddCW.configure(height=1, width=1, font=('Arial',5))
         self.AddCW.place(x=50, y=22, anchor=E)
 
         #Select Contacts
         self.SelCW = Button(self.LblBtnF, text='+')
-        self.SelCW.config(height=1, width=1, font=('Arial',5))
+        self.SelCW.configure(height=1, width=1, font=('Arial',5))
         self.SelCW.place(x=260, y=22, anchor=E)
 
         #Settings
         self.SngsW = Button(self.LblBtnF, text='+')
-        self.SngsW.config(height=1, width=1, font=('Arial',5))
+        self.SngsW.configure(height=1, width=1, font=('Arial',5))
         self.SngsW.place(x=210, y=22, anchor=E)
 
+        #Cancel Button
+        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.ClF)
+        self.ClB.configure(height=1, width=5, font=('Arial',10))
+
+        #Done Button
+        self.DoB = Button(self.LblBtnS, text='Done')
+        self.DoB.configure(height=1, width=5, font=('Arial',10))
 
 
         #Label Search Widgets
@@ -128,47 +142,66 @@ class Product:
     #Function to create a new contact
     def AddCF(self):
         #Remove the buttons and replace
-        self.AddCW.destroy()
-        self.SelCW.destroy()
-        self.SngsW.destroy()
+        self.AddCW.place_forget()
+        self.SelCW.place_forget()
+        self.SngsW.place_forget()
 
         #Add the buttons "Cancel" and "Done"
-        #Cancel Button
-        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.ClF)
-        self.ClB.config(height=1, width=5, font=('Arial',10))
         self.ClB.place(x=100, y=22, anchor=E)
-
-        #Done Button
-        self.DoB = Button(self.LblBtnS, text='Done')
-        self.DoB.config(height=1, width=5, font=('Arial',10))
         self.DoB.place(x=480, y=22, anchor=E)
 
-    #Function to Cancel
+        #Add the entrys to add the information
+        self.CName.configure(state='normal', )
+        self.CName.bind("<Button-1>", self.PlaceHCF)
+        self.LblCtc.bind("<Leave>", self.PlaceHLF)
+        self.CName.place(x=480, y=22, anchor=E)
+
+        self.CEmail.configure(state='normal', )
+        self.CEmail.bind("<Button-1>", self.PlaceHCF)
+        self.CEmail.bind("<Leave>", self.PlaceHLF)
+
+        self.CPhone.configure(state='normal', )
+        self.CPhone.bind("<Button-1>", self.PlaceHCF)
+        self.CPhone.bind("<Leave>", self.PlaceHLF)
+
+    #Function to Cancel Button
     def ClF(self):
         #Remove the buttons and replace
-        self.ClB.destroy()
-        self.DoB.destroy()
+        self.ClB.place_forget()
+        self.DoB.place_forget()
 
         #Add the buttons "Add", "Settings" and "Select"
-        self.AddCW = Button(self.LblBtnF, text='+', command=self.AddCF)
-        self.AddCW.config(height=1, width=1, font=('Arial',5))
         self.AddCW.place(x=50, y=22, anchor=E)
-
-        #Select Contacts
-        self.SelCW = Button(self.LblBtnF, text='+')
-        self.SelCW.config(height=1, width=1, font=('Arial',5))
         self.SelCW.place(x=260, y=22, anchor=E)
-
-        #Settings
-        self.SngsW = Button(self.LblBtnF, text='+')
-        self.SngsW.config(height=1, width=1, font=('Arial',5))
         self.SngsW.place(x=210, y=22, anchor=E)
 
 
     #Function to show the information of the selected contact
     def ShowICF(self, key):
         pass
+    
 
+    #Function to clear the placerholder when click
+    def PlaceHCF(self, key):
+        #Cleaning the entrys
+        self.CName.delete(0, 'end')
+        self.CEmail.delete(0, 'end')
+        self.CPhone.delete(0, 'end')
+
+
+    #Funtion to add the placeholder when leave
+    def PlaceHLF(self, key):
+        #Cleaning the entrys
+        self.CName.delete(0, 'end')
+        self.CEmail.delete(0, 'end')
+        self.CPhone.delete(0, 'end')
+
+        #Adding the placeholder
+        self.CName.insert(0, 'Full Name')
+        self.CEmail.insert(0, 'Email')
+        self.CPhone.insert(0, 'Number Phone')
+
+        self.LblCtc.focus()
 
 if __name__ == '__main__':
     PryWind = Tk()
