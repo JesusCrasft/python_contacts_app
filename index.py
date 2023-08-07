@@ -124,9 +124,45 @@ class Product:
 
         self.UpdateF(data)
 
+
     #Function to create a new contact
     def AddCF(self):
-        pass
+        #Remove the buttons and replace
+        self.AddCW.destroy()
+        self.SelCW.destroy()
+        self.SngsW.destroy()
+
+        #Add the buttons "Cancel" and "Done"
+        #Cancel Button
+        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.ClF)
+        self.ClB.config(height=1, width=5, font=('Arial',10))
+        self.ClB.place(x=100, y=22, anchor=E)
+
+        #Done Button
+        self.DoB = Button(self.LblBtnS, text='Done')
+        self.DoB.config(height=1, width=5, font=('Arial',10))
+        self.DoB.place(x=480, y=22, anchor=E)
+
+    #Function to Cancel
+    def ClF(self):
+        #Remove the buttons and replace
+        self.ClB.destroy()
+        self.DoB.destroy()
+
+        #Add the buttons "Add", "Settings" and "Select"
+        self.AddCW = Button(self.LblBtnF, text='+', command=self.AddCF)
+        self.AddCW.config(height=1, width=1, font=('Arial',5))
+        self.AddCW.place(x=50, y=22, anchor=E)
+
+        #Select Contacts
+        self.SelCW = Button(self.LblBtnF, text='+')
+        self.SelCW.config(height=1, width=1, font=('Arial',5))
+        self.SelCW.place(x=260, y=22, anchor=E)
+
+        #Settings
+        self.SngsW = Button(self.LblBtnF, text='+')
+        self.SngsW.config(height=1, width=1, font=('Arial',5))
+        self.SngsW.place(x=210, y=22, anchor=E)
 
 
     #Function to show the information of the selected contact
