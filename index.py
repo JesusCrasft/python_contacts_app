@@ -40,7 +40,9 @@ class Product:
 
         #Variables
         self.my_ctclist = []
-        self.ValVr = False
+        self.name = ''
+        self.email = ''
+        self.phone = 0
 
         #Label Add Contact
         self.LblCtc = Label(self.windTwo, height=23, width=50)
@@ -84,6 +86,9 @@ class Product:
         self.DoB = Button(self.LblBtnS, text='Done', state='disabled', command=self.DoF)
         self.DoB.configure(height=1, width=5, font=('Arial',10))
 
+        self.EdB = Button(self.LblBtnS, text='Edit')
+        self.EdB.configure(height=1, width=5, font=('Arial',10))
+
 
         #Label Search Widgets
         self.LblSrc = Label(self.windTwo, height=23, width=29)
@@ -100,17 +105,17 @@ class Product:
         self.LstCW.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.LstCW.place(x=145, y=50, anchor=N)
 
-
+        self.EvnTk()
 
     #Functions 
 
     #Function to call the events
-    def EvnTk(self, name, email, phone):
+    def EvnTk(self):
         #Entry event
         self.SrcCW.bind('<KeyRelease>', self.CheckF)
 
         #Listbox event
-        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF(0, name, email, phone))
+        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF)
 
 
     #Function to update the listbox
@@ -147,27 +152,36 @@ class Product:
         self.AddCW.place_forget()
         self.SelCW.place_forget()
         self.SngsW.place_forget()
+        self.EdB.place_forget()
 
         #Add the buttons "Cancel" and "Done"
+        self.DoB.configure(state='disabled')
         self.ClB.place(x=100, y=22, anchor=E)
         self.DoB.place(x=480, y=22, anchor=E)
 
+        
         #Adding the entrys to add the information
-        self.CName.insert(0, 'Full Name')
         self.CName.configure(state='normal', width=25, font=('Arial', 15))
+        self.CName.delete(0, END)
+        self.CName.insert(0, 'Full Name')
         self.CName.bind("<FocusIn>", self.PlaceHCF)
         self.CName.bind("<KeyRelease>", self.ValF)
         self.CName.place(x=250, y=150, anchor=CENTER)
-
-        self.CEmail.insert(0, 'Email')
+        
         self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+        self.CEmail.delete(0, END)
+        self.CEmail.insert(0, 'Email')
         self.CEmail.bind("<FocusIn>", self.PlaceHCF)
         self.CEmail.place(x=250, y=270, anchor=CENTER)
-
-        self.CPhone.insert(0, 'Number Phone')
+        
         self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+        self.CPhone.delete(0, END)
+        self.CPhone.insert(0, 'Number Phone')
         self.CPhone.bind("<FocusIn>", self.PlaceHCF)
         self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+        #Change the focus
+        self.windTwo.focus()
 
 
 
@@ -197,6 +211,7 @@ class Product:
         #Reseting the Done Button
         self.DoB.configure(state='disabled')
 
+        #Change the focus
         self.windTwo.focus()
 
 
@@ -205,18 +220,15 @@ class Product:
         #Active the search
         self.SrcCW.configure(state='normal')
         self.LstCW.configure(state='normal')
-        
+
         #Extracting the data from the entrys
-        name = self.CName.get()
-        email = self.CEmail.get()
-        phone = self.CPhone.get()
+        self.name = self.CName.get()
+        self.email = self.CEmail.get()
+        self.phone = self.CPhone.get()
 
         #Removing the "Add Stage"
         self.ClB.place_forget()
         self.DoB.place_forget()
-        self.CName.place_forget()
-        self.CEmail.place_forget()
-        self.CPhone.place_forget()
 
         #Delete the text in the entrys
         self.CName.delete(0, END)
@@ -229,29 +241,59 @@ class Product:
         self.SngsW.place(x=210, y=22, anchor=E)
         
         #Inserting the name in the contact list
-        self.my_ctclist.insert(0, name)
+        self.my_ctclist.insert(0, self.name)
         data = self.my_ctclist
 
         #Sending the data to show the contact
-        
-        self.ShowICF(0, name, email, phone)
         self.UpdateF(data)
-        self.EvnTk(name, email, phone)
+        self.ShowICF(0, self.name)
 
+        #Change the focus
+        self.windTwo.focus()
+            
 
 
     #Function to show the information of the selected contact
-    def ShowICF(self, key, name, email, phone):
-        print(name, email, phone)
-        pass
-    
+    def ShowICF(self, key, na=None):
+        #Verifiy method
+        if na != None:
+            #Remove the buttons, entrys and replace
+            self.ClB.place_forget()
+            self.DoB.place_forget()
+            
+            #Delete the text in the entrys
+            self.CName.delete(0, END)
+            self.CEmail.delete(0, END)
+            self.CPhone.delete(0, END)
+
+            #Adding the information
+            self.CName.insert(0, na)
+            self.CEmail.insert(0, self.email)
+            self.CPhone.insert(0, self.phone)
+
+            #Disabled entrys
+            self.CName.configure(state='readonly')
+            self.CEmail.configure(state='readonly')
+            self.CPhone.configure(state='readonly')
+
+            #Adding the button to edit
+            self.EdB.place(x=480, y=22, anchor=E)
+
+            #Change the focus
+            self.windTwo.focus()
+        
+        else:
+            print('i love aitsuki nakuru')
+
+
+        
+
 
     #Function to clear the placerholder when click
     def PlaceHCF(self, key):
         name = self.CName.get()
         email = self.CEmail.get()
         phone = self.CPhone.get()
-        self.ValVr = True
 
         #Cleaning the entrys
         if name == 'Full Name':
