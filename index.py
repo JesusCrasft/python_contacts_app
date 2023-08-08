@@ -39,7 +39,7 @@ class Product:
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
-        self.my_ctclist = ['Aimel', 'Pablo', 'Jaimar', 'Shawnee', 'Jesus']
+        self.my_ctclist = []
         self.ValVr = False
 
         #Label Add Contact
@@ -81,7 +81,7 @@ class Product:
         self.ClB.configure(height=1, width=5, font=('Arial',10))
 
         #Done Button
-        self.DoB = Button(self.LblBtnS, text='Done', state='disabled')
+        self.DoB = Button(self.LblBtnS, text='Done', state='disabled', command=self.DoF)
         self.DoB.configure(height=1, width=5, font=('Arial',10))
 
 
@@ -101,17 +101,18 @@ class Product:
         self.LstCW.place(x=145, y=50, anchor=N)
 
         self.EvnTk()
+        self.UpdateF()
 
 
     #Functions 
 
     #Function to call the events
-    def EvnTk(self):
+    def EvnTk(self, name, email, phone):
         #Entry event
         self.SrcCW.bind('<KeyRelease>', self.CheckF)
 
         #Listbox event
-        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF)
+        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF(0, name, email, phone))
 
 
     #Function to update the listbox
@@ -191,12 +192,45 @@ class Product:
         #Reseting the Done Button
         self.DoB.configure(state='disabled')
 
-        print('a')
         self.windTwo.focus()
 
 
+    #Function to Done Button
+    def DoF(self):
+        #Extracting the data from the entrys
+        name = self.CName.get()
+        email = self.CEmail.get()
+        phone = self.CPhone.get()
+
+        #Removing the "Add Stage"
+        self.ClB.place_forget()
+        self.DoB.place_forget()
+        self.CName.place_forget()
+        self.CEmail.place_forget()
+        self.CPhone.place_forget()
+
+        #Delete the text in the entrys
+        self.CName.delete(0, END)
+        self.CEmail.delete(0, END)
+        self.CPhone.delete(0, END)
+
+        #Add the buttons "Add", "Settings" and "Select"
+        self.AddCW.place(x=50, y=22, anchor=E)
+        self.SelCW.place(x=260, y=22, anchor=E)
+        self.SngsW.place(x=210, y=22, anchor=E)
+        
+        #Inserting the name in the contact list
+        self.my_ctclist.insert(0, name)
+
+        #Sending the data to show the contact
+        
+        self.EvnTk(name, email, phone)
+
+
+
     #Function to show the information of the selected contact
-    def ShowICF(self, key):
+    def ShowICF(self, key, name, email, phone):
+        print(name, email, phone)
         pass
     
 
