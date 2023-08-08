@@ -100,8 +100,6 @@ class Product:
         self.LstCW.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.LstCW.place(x=145, y=50, anchor=N)
 
-        self.EvnTk()
-        self.UpdateF()
 
 
     #Functions 
@@ -141,6 +139,10 @@ class Product:
 
     #Function to create a new contact
     def AddCF(self):
+        #Disabled the search
+        self.SrcCW.configure(state='readonly')
+        self.LstCW.configure(state='disabled')
+
         #Remove the buttons and replace
         self.AddCW.place_forget()
         self.SelCW.place_forget()
@@ -150,8 +152,7 @@ class Product:
         self.ClB.place(x=100, y=22, anchor=E)
         self.DoB.place(x=480, y=22, anchor=E)
 
-        #Add the entrys to add the information
-
+        #Adding the entrys to add the information
         self.CName.insert(0, 'Full Name')
         self.CName.configure(state='normal', width=25, font=('Arial', 15))
         self.CName.bind("<FocusIn>", self.PlaceHCF)
@@ -172,6 +173,10 @@ class Product:
 
     #Function to Cancel Button
     def ClF(self):
+        #Active the search
+        self.SrcCW.configure(state='normal')
+        self.LstCW.configure(state='normal')
+
         #Delete the text in the entrys
         self.CName.delete(0, END)
         self.CEmail.delete(0, END)
@@ -197,6 +202,10 @@ class Product:
 
     #Function to Done Button
     def DoF(self):
+        #Active the search
+        self.SrcCW.configure(state='normal')
+        self.LstCW.configure(state='normal')
+        
         #Extracting the data from the entrys
         name = self.CName.get()
         email = self.CEmail.get()
@@ -221,9 +230,12 @@ class Product:
         
         #Inserting the name in the contact list
         self.my_ctclist.insert(0, name)
+        data = self.my_ctclist
 
         #Sending the data to show the contact
         
+        self.ShowICF(0, name, email, phone)
+        self.UpdateF(data)
         self.EvnTk(name, email, phone)
 
 
