@@ -40,6 +40,7 @@ class Product:
 
         #Variables
         self.my_ctclist = ['Aimel', 'Pablo', 'Jaimar', 'Shawnee', 'Jesus']
+        self.ValVr = False
 
         #Label Add Contact
         self.LblCtc = Label(self.windTwo, height=23, width=50)
@@ -47,11 +48,9 @@ class Product:
         self.LblCtc.place(x=550, y=52, anchor=N)
 
         self.CName = Entry(self.LblCtc)
-        self.CName.insert(0, 'Full Name')
-        self.CEmail = Entry(self.LblCtc)
-        self.CEmail.insert(0, 'Email')
+        self.CEmail = Entry(self.LblCtc)        
         self.CPhone = Entry(self.LblCtc)
-        self.CPhone.insert(0, 'Number Phone')
+
 
         #Labels Buttons Navigation
         self.LblBtnF = Label(self.windTwo, height=2, width=29)
@@ -82,7 +81,7 @@ class Product:
         self.ClB.configure(height=1, width=5, font=('Arial',10))
 
         #Done Button
-        self.DoB = Button(self.LblBtnS, text='Done')
+        self.DoB = Button(self.LblBtnS, text='Done', state='disabled')
         self.DoB.configure(height=1, width=5, font=('Arial',10))
 
 
@@ -151,29 +150,49 @@ class Product:
         self.DoB.place(x=480, y=22, anchor=E)
 
         #Add the entrys to add the information
-        self.CName.configure(state='normal', )
-        self.CName.bind("<Button-1>", self.PlaceHCF)
-        self.LblCtc.bind("<Leave>", self.PlaceHLF)
-        self.CName.place(x=480, y=22, anchor=E)
 
-        self.CEmail.configure(state='normal', )
-        self.CEmail.bind("<Button-1>", self.PlaceHCF)
-        self.CEmail.bind("<Leave>", self.PlaceHLF)
+        self.CName.insert(0, 'Full Name')
+        self.CName.configure(state='normal', width=25, font=('Arial', 15))
+        self.CName.bind("<FocusIn>", self.PlaceHCF)
+        self.CName.bind("<KeyRelease>", self.ValF)
+        self.CName.place(x=250, y=150, anchor=CENTER)
 
-        self.CPhone.configure(state='normal', )
-        self.CPhone.bind("<Button-1>", self.PlaceHCF)
-        self.CPhone.bind("<Leave>", self.PlaceHLF)
+        self.CEmail.insert(0, 'Email')
+        self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+        self.CEmail.bind("<FocusIn>", self.PlaceHCF)
+        self.CEmail.place(x=250, y=270, anchor=CENTER)
+
+        self.CPhone.insert(0, 'Number Phone')
+        self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+        self.CPhone.bind("<FocusIn>", self.PlaceHCF)
+        self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+
 
     #Function to Cancel Button
     def ClF(self):
-        #Remove the buttons and replace
+        #Delete the text in the entrys
+        self.CName.delete(0, END)
+        self.CEmail.delete(0, END)
+        self.CPhone.delete(0, END)
+
+        #Remove the buttons, entrys and replace
         self.ClB.place_forget()
         self.DoB.place_forget()
+        self.CName.place_forget()
+        self.CEmail.place_forget()
+        self.CPhone.place_forget()
 
         #Add the buttons "Add", "Settings" and "Select"
         self.AddCW.place(x=50, y=22, anchor=E)
         self.SelCW.place(x=260, y=22, anchor=E)
         self.SngsW.place(x=210, y=22, anchor=E)
+
+        #Reseting the Done Button
+        self.DoB.configure(state='disabled')
+
+        print('a')
+        self.windTwo.focus()
 
 
     #Function to show the information of the selected contact
@@ -183,25 +202,33 @@ class Product:
 
     #Function to clear the placerholder when click
     def PlaceHCF(self, key):
+        name = self.CName.get()
+        email = self.CEmail.get()
+        phone = self.CPhone.get()
+        self.ValVr = True
+
         #Cleaning the entrys
-        self.CName.delete(0, 'end')
-        self.CEmail.delete(0, 'end')
-        self.CPhone.delete(0, 'end')
+        if name == 'Full Name':
+            self.CName.delete(0, END)
 
+        elif email == 'Email':
+            self.CEmail.delete(0, END)
 
-    #Funtion to add the placeholder when leave
-    def PlaceHLF(self, key):
-        #Cleaning the entrys
-        self.CName.delete(0, 'end')
-        self.CEmail.delete(0, 'end')
-        self.CPhone.delete(0, 'end')
+        elif phone == 'Number Phone':
+            self.CPhone.delete(0, END)
 
-        #Adding the placeholder
-        self.CName.insert(0, 'Full Name')
-        self.CEmail.insert(0, 'Email')
-        self.CPhone.insert(0, 'Number Phone')
+    
+    #Function to validate the state of the button and the entry "Name"
+    def ValF(self, key):
+        name = self.CName.get()
+        while name != '':
+            self.DoB.configure(state='active')
+            break
+        else:
+            self.DoB.configure(state='disabled')
 
-        self.LblCtc.focus()
+        
+
 
 if __name__ == '__main__':
     PryWind = Tk()
