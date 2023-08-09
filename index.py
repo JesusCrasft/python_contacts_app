@@ -42,11 +42,7 @@ class Product:
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
-        self.my_ctclist = {
-            'name' : '',
-            'email' : '',
-            'phone' : 0
-        }
+        self.my_ctclist = []
         self.name = ''
         self.email = ''
         self.phone = 0
@@ -112,7 +108,9 @@ class Product:
         self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.listctc_widget.place(x=145, y=50, anchor=N)
 
+        #Calling the functions
         self.EvnTk()
+        self.get_contacts()
 
     #Functions 
 
@@ -171,20 +169,20 @@ class Product:
         self.CName.configure(state='normal', width=25, font=('Arial', 15))
         self.CName.delete(0, END)
         self.CName.insert(0, 'Full Name')
-        self.CName.bind("<FocusIn>", self.placeholder)
-        self.CName.bind("<KeyRelease>", self.validate_name)
+        self.CName.bind("<FocusIn>", self.placeholderF)
+        self.CName.bind("<KeyRelease>", self.validate_blankF)
         self.CName.place(x=250, y=150, anchor=CENTER)
         
         self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
         self.CEmail.delete(0, END)
         self.CEmail.insert(0, 'Email')
-        self.CEmail.bind("<FocusIn>", self.placeholder)
+        self.CEmail.bind("<FocusIn>", self.placeholderF)
         self.CEmail.place(x=250, y=270, anchor=CENTER)
         
         self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
         self.CPhone.delete(0, END)
         self.CPhone.insert(0, 'Number Phone')
-        self.CPhone.bind("<FocusIn>", self.placeholder)
+        self.CPhone.bind("<FocusIn>", self.placeholderF)
         self.CPhone.place(x=250, y=390, anchor=CENTER)
 
         #Change the focus
@@ -230,6 +228,9 @@ class Product:
         self.searchbar_widget.delete(0, END)
 
         #Extracting the data from the entrys
+        self.name = self.CName.get()
+        self.email = self.CEmail.get()
+        self.phone = self.CPhone.get()
 
         #Removing the "Add Stage"
         self.cancel_btn.place_forget()
@@ -246,15 +247,18 @@ class Product:
         self.settings_btn.place(x=210, y=22, anchor=E)
         
         #Inserting the name in the contact list
-        data = self.my_ctclist
+        self.my_ctclist.insert(0, self.name)
+        self.update_listboxF(self.my_ctclist)
 
         #Sending the data to show the contact
-        self.update_listboxF(data)
         self.show_infoF(0, self.name)
+
+        #Inserting the contact in the database
+        self.add_contactF()
 
         #Change the focus
         self.windTwo.focus()
-            
+    
 
 
     #Function to show the information of the selected contact
@@ -287,6 +291,7 @@ class Product:
             self.windTwo.focus()
         
         else:
+            print(self.name, self.email, self.phone)
             lst = self.listctc_widget.get(ACTIVE)
             
             if lst == '':
@@ -315,14 +320,14 @@ class Product:
 
     
     #Function to validate the state of the button and the entry "Name"
-    def validate_nameF(self, key):
+    def validate_blankF(self, key):
         name = self.CName.get()
         while name != '':
             self.done_btn.configure(state='active')
             break
         else:
             self.done_btn.configure(state='disabled')
-
+        
 
     #Function to connect the basedata
     def run_query(self, query, parameters = ()):
@@ -334,7 +339,24 @@ class Product:
     
 
     #Function to get the contactos from database
-    #def get_contacts
+    def get_contacts(self):
+        #Quering the data
+        query = 'SELECT name FROM contacts ORDER BY name DESC'
+        db_rows = self.run_query(query)
+        print(db_rows)
+        
+        #Filling the list
+        for rows in db_rows:
+            self.my_ctclist.insert(0, rows)
+            self.update_listboxF(self.my_ctclist)
+
+    
+    #Function to insert the data in the database
+    def add_contactF(self):
+        query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
+        print(self.email)
+        parameters = (self.name, self.email, self.phone)
+        self.run_query(query, parameters)
 
 if __name__ == '__main__':
     PryWind = Tk()
