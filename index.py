@@ -42,8 +42,8 @@ class Product:
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
+        self.my_ctclist_old = []
         self.my_ctclist = []
-        self.id = []
         self.name = ''
         self.email = ''
         self.phone = 0
@@ -139,12 +139,13 @@ class Product:
     def check_entryF(self, key):
         typed = self.searchbar_widget.get()
         print(typed)
+
         if typed == '':
             data = self.my_ctclist
 
         else:
             data = []
-            for item in self.my_ctclist[0]:
+            for item in self.my_ctclist:
                 if typed.lower() in item.lower():
                     data.append(item)
 
@@ -367,8 +368,6 @@ class Product:
                 print('iloveaitsukinakuru')
             
 
-
-
     #Function to clear the placerholder when click
     def placeholderF(self, key):
         name = self.CName.get()
@@ -413,10 +412,10 @@ class Product:
         
         #Filling the list
         for rows in db_rows:
-            self.my_ctclist.insert(0, rows)
+            self.my_ctclist_old = ''.join(rows)
+            self.my_ctclist.insert(0, self.my_ctclist_old)
             self.update_listboxF(self.my_ctclist)
-            print(self.my_ctclist[0])
-
+            
     
     #Function to insert the data in the database
     def add_contactF(self):
