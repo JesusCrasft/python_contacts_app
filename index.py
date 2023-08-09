@@ -43,6 +43,7 @@ class Product:
 
         #Variables
         self.my_ctclist = []
+        self.id = []
         self.name = ''
         self.email = ''
         self.phone = 0
@@ -110,7 +111,7 @@ class Product:
 
         #Calling the functions
         self.EvnTk()
-        self.get_contacts()
+        self.getctc_list()
 
     #Functions 
 
@@ -291,14 +292,24 @@ class Product:
             self.windTwo.focus()
         
         else:
-            print(self.name, self.email, self.phone)
+            #Convert the lst into a string with aitsuki help
             lst = self.listctc_widget.get(ACTIVE)
+            lst_join = "".join(lst)
+            nakuru = "'"
+            aitsuki = "'"
+            request_name = aitsuki + lst_join + nakuru
             
-            if lst == '':
-                print('iloveaitsukinakuru')
+            #Quering the data
+            if lst != '':
+                self.id.clear()
+                query = f"SELECT name, email, phone FROM contacts WHERE name LIKE {request_name}"
+                db_rows = self.run_query(query)
+                for rows in db_rows:
+                    self.id.insert(0, rows)
+                    print(self.id)
             else:
-                print(lst)
-            #Delete the text in the entrys
+                print('iloveaitsukinakuru')
+            
 
 
 
@@ -339,11 +350,10 @@ class Product:
     
 
     #Function to get the contactos from database
-    def get_contacts(self):
+    def getctc_list(self):
         #Quering the data
         query = 'SELECT name FROM contacts ORDER BY name DESC'
         db_rows = self.run_query(query)
-        print(db_rows)
         
         #Filling the list
         for rows in db_rows:
@@ -354,7 +364,6 @@ class Product:
     #Function to insert the data in the database
     def add_contactF(self):
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
-        print(self.email)
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
