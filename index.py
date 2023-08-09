@@ -52,65 +52,65 @@ class Product:
         self.phone = 0
 
         #Label Add Contact
-        self.LblCtc = Label(self.windTwo, height=23, width=50)
-        self.LblCtc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblCtc.place(x=550, y=52, anchor=N)
+        self.label_addctc = Label(self.windTwo, height=23, width=50)
+        self.label_addctc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_addctc.place(x=550, y=52, anchor=N)
 
-        self.CName = Entry(self.LblCtc)
-        self.CEmail = Entry(self.LblCtc)        
-        self.CPhone = Entry(self.LblCtc)
+        self.CName = Entry(self.label_addctc)
+        self.CEmail = Entry(self.label_addctc)        
+        self.CPhone = Entry(self.label_addctc)
 
 
         #Labels Buttons Navigation
-        self.LblBtnF = Label(self.windTwo, height=2, width=29)
-        self.LblBtnF.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblBtnF.place(x=149, y=52, anchor=S)
+        self.label_btnf = Label(self.windTwo, height=2, width=29)
+        self.label_btnf.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_btnf.place(x=149, y=52, anchor=S)
 
-        self.LblBtnS = Label(self.windTwo, height=2, width=50)
-        self.LblBtnS.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblBtnS.place(x=550, y=52, anchor=S)
+        self.label_btns = Label(self.windTwo, height=2, width=50)
+        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_btns.place(x=550, y=52, anchor=S)
 
         #Add Contacts
-        self.AddCW = Button(self.LblBtnF, text='+', command=self.add_button)
-        self.AddCW.configure(height=1, width=1, font=('Arial',5))
-        self.AddCW.place(x=50, y=22, anchor=E)
+        self.add_btn = Button(self.label_btnf, text='+', command=self.add_buttonF)
+        self.add_btn.configure(height=1, width=1, font=('Arial',5))
+        self.add_btn.place(x=50, y=22, anchor=E)
 
         #Select Contacts
-        self.SelCW = Button(self.LblBtnF, text='+')
-        self.SelCW.configure(height=1, width=1, font=('Arial',5))
-        self.SelCW.place(x=260, y=22, anchor=E)
+        self.sel_btn = Button(self.label_btnf, text='+')
+        self.sel_btn.configure(height=1, width=1, font=('Arial',5))
+        self.sel_btn.place(x=260, y=22, anchor=E)
 
         #Settings
-        self.SngsW = Button(self.LblBtnF, text='+')
-        self.SngsW.configure(height=1, width=1, font=('Arial',5))
-        self.SngsW.place(x=210, y=22, anchor=E)
+        self.settings_btn = Button(self.label_btnf, text='+')
+        self.settings_btn.configure(height=1, width=1, font=('Arial',5))
+        self.settings_btn.place(x=210, y=22, anchor=E)
 
         #Cancel Button
-        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.cancel_button)
-        self.ClB.configure(height=1, width=5, font=('Arial',10))
+        self.cancel_btn = Button(self.label_btns, text='Cancel', command=self.cancel_buttonF)
+        self.cancel_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Done Button
-        self.DoB = Button(self.LblBtnS, text='Done', state='disabled', command=self.done_button)
-        self.DoB.configure(height=1, width=5, font=('Arial',10))
+        self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_buttonF)
+        self.done_btn.configure(height=1, width=5, font=('Arial',10))
 
-        self.EdB = Button(self.LblBtnS, text='Edit')
-        self.EdB.configure(height=1, width=5, font=('Arial',10))
+        self.edit_btn = Button(self.label_btns, text='Edit')
+        self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
 
         #Label Search Widgets
-        self.LblSrc = Label(self.windTwo, height=23, width=29)
-        self.LblSrc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.LblSrc.place(x=149, y=52, anchor=N)
+        self.label_search = Label(self.windTwo, height=23, width=29)
+        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_search.place(x=149, y=52, anchor=N)
 
         #Search Bar
-        self.SrcCW = Entry(self.LblSrc)
-        self.SrcCW.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
-        self.SrcCW.place(x=145, y=47, anchor=S)
+        self.searchbar_widget = Entry(self.label_search)
+        self.searchbar_widget.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
+        self.searchbar_widget.place(x=145, y=47, anchor=S)
 
         #List of Contacts
-        self.LstCW = Listbox(self.LblSrc)
-        self.LstCW.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
-        self.LstCW.place(x=145, y=50, anchor=N)
+        self.listctc_widget = Listbox(self.label_search)
+        self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
+        self.listctc_widget.place(x=145, y=50, anchor=N)
 
         self.EvnTk()
 
@@ -119,23 +119,23 @@ class Product:
     #Function to call the events
     def EvnTk(self):
         #Entry event
-        self.SrcCW.bind('<KeyRelease>', self.check_entry)
+        self.searchbar_widget.bind('<KeyRelease>', self.check_entryF)
 
         #Listbox event
-        self.LstCW.bind('<<ListboxSelect>>', self.show_info)
+        self.listctc_widget.bind('<<ListboxSelect>>', self.show_infoF)
 
 
     #Function to update the listbox
-    def update_listbox(self, data):
-        self.LstCW.delete(0, END)
+    def update_listboxF(self, data):
+        self.listctc_widget.delete(0, END)
 
         for item in data:
-            self.LstCW.insert(0, item)
+            self.listctc_widget.insert(0, item)
 
 
     #Function to check the Entry
-    def check_entry(self, key):
-        typed = self.SrcCW.get()
+    def check_entryF(self, key):
+        typed = self.searchbar_widget.get()
 
         if typed == '':
             data = self.my_ctclist
@@ -146,25 +146,25 @@ class Product:
                 if typed.lower() in item.lower():
                     data.append(item)
 
-        self.update_listbox(data)
+        self.update_listboxF(data)
 
 
     #Function to create a new contact
-    def add_button(self):
+    def add_buttonF(self):
         #Disabled the search
-        self.SrcCW.configure(state='readonly')
-        self.LstCW.configure(state='disabled')
+        self.searchbar_widget.configure(state='readonly')
+        self.listctc_widget.configure(state='disabled')
 
         #Remove the buttons and replace
-        self.AddCW.place_forget()
-        self.SelCW.place_forget()
-        self.SngsW.place_forget()
-        self.EdB.place_forget()
+        self.add_btn.place_forget()
+        self.sel_btn.place_forget()
+        self.settings_btn.place_forget()
+        self.edit_btn.place_forget()
 
         #Add the buttons "Cancel" and "Done"
-        self.DoB.configure(state='disabled')
-        self.ClB.place(x=100, y=22, anchor=E)
-        self.DoB.place(x=480, y=22, anchor=E)
+        self.done_btn.configure(state='disabled')
+        self.cancel_btn.place(x=100, y=22, anchor=E)
+        self.done_btn.place(x=480, y=22, anchor=E)
 
         
         #Adding the entrys to add the information
@@ -193,10 +193,10 @@ class Product:
 
 
     #Function to Cancel Button
-    def cancel_button(self):
+    def cancel_buttonF(self):
         #Active the search
-        self.SrcCW.configure(state='normal')
-        self.LstCW.configure(state='normal')
+        self.searchbar_widget.configure(state='normal')
+        self.listctc_widget.configure(state='normal')
 
         #Delete the text in the entrys
         self.CName.delete(0, END)
@@ -204,36 +204,36 @@ class Product:
         self.CPhone.delete(0, END)
 
         #Remove the buttons, entrys and replace
-        self.ClB.place_forget()
-        self.DoB.place_forget()
+        self.cancel_btn.place_forget()
+        self.done_btn.place_forget()
         self.CName.place_forget()
         self.CEmail.place_forget()
         self.CPhone.place_forget()
 
         #Add the buttons "Add", "Settings" and "Select"
-        self.AddCW.place(x=50, y=22, anchor=E)
-        self.SelCW.place(x=260, y=22, anchor=E)
-        self.SngsW.place(x=210, y=22, anchor=E)
+        self.add_btn.place(x=50, y=22, anchor=E)
+        self.sel_btn.place(x=260, y=22, anchor=E)
+        self.settings_btn.place(x=210, y=22, anchor=E)
 
         #Reseting the Done Button
-        self.DoB.configure(state='disabled')
+        self.done_btn.configure(state='disabled')
 
         #Change the focus
         self.windTwo.focus()
 
 
     #Function to Done Button
-    def done_button(self):
+    def done_buttonF(self):
         #Active the search
-        self.SrcCW.configure(state='normal')
-        self.LstCW.configure(state='normal')
-        self.SrcCW.delete(0, END)
+        self.searchbar_widget.configure(state='normal')
+        self.listctc_widget.configure(state='normal')
+        self.searchbar_widget.delete(0, END)
 
         #Extracting the data from the entrys
 
         #Removing the "Add Stage"
-        self.ClB.place_forget()
-        self.DoB.place_forget()
+        self.cancel_btn.place_forget()
+        self.done_btn.place_forget()
 
         #Delete the text in the entrys
         self.CName.delete(0, END)
@@ -241,16 +241,16 @@ class Product:
         self.CPhone.delete(0, END)
 
         #Add the buttons "Add", "Settings" and "Select"
-        self.AddCW.place(x=50, y=22, anchor=E)
-        self.SelCW.place(x=260, y=22, anchor=E)
-        self.SngsW.place(x=210, y=22, anchor=E)
+        self.add_btn.place(x=50, y=22, anchor=E)
+        self.sel_btn.place(x=260, y=22, anchor=E)
+        self.settings_btn.place(x=210, y=22, anchor=E)
         
         #Inserting the name in the contact list
         data = self.my_ctclist
 
         #Sending the data to show the contact
-        self.update_listbox(data)
-        self.show_info(0, self.name)
+        self.update_listboxF(data)
+        self.show_infoF(0, self.name)
 
         #Change the focus
         self.windTwo.focus()
@@ -258,12 +258,12 @@ class Product:
 
 
     #Function to show the information of the selected contact
-    def show_info(self, key, na=None):
+    def show_infoF(self, key, na=None):
         #Verifiy method
         if na != None:
             #Remove the buttons, entrys and replace
-            self.ClB.place_forget()
-            self.DoB.place_forget()
+            self.cancel_btn.place_forget()
+            self.done_btn.place_forget()
             
             #Delete the text in the entrys
             self.CName.delete(0, END)
@@ -281,13 +281,13 @@ class Product:
             self.CPhone.configure(state='readonly')
 
             #Adding the button to edit
-            self.EdB.place(x=480, y=22, anchor=E)
+            self.edit_btn.place(x=480, y=22, anchor=E)
 
             #Change the focus
             self.windTwo.focus()
         
         else:
-            lst = self.LstCW.get(ACTIVE)
+            lst = self.listctc_widget.get(ACTIVE)
             
             if lst == '':
                 print('iloveaitsukinakuru')
@@ -298,7 +298,7 @@ class Product:
 
 
     #Function to clear the placerholder when click
-    def placeholder(self, key):
+    def placeholderF(self, key):
         name = self.CName.get()
         email = self.CEmail.get()
         phone = self.CPhone.get()
@@ -315,13 +315,13 @@ class Product:
 
     
     #Function to validate the state of the button and the entry "Name"
-    def validate_name(self, key):
+    def validate_nameF(self, key):
         name = self.CName.get()
         while name != '':
-            self.DoB.configure(state='active')
+            self.done_btn.configure(state='active')
             break
         else:
-            self.DoB.configure(state='disabled')
+            self.done_btn.configure(state='disabled')
 
 
     #Function to connect the basedata
