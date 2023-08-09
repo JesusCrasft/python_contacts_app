@@ -10,7 +10,6 @@ class Product:
     def __init__(self, PryWind):
     
         # Primary Window Attributes
-
         self.windOne = PryWind
         self.windOne.title('Contacts')
         self.windOne.geometry('800x600')
@@ -23,14 +22,14 @@ class Product:
         self.SelTxt.place(relx=0.5, rely=0.1, anchor=CENTER)
 
         #Buttons
-        self.LocalCtc = Button(self.windOne, text='Save Contacts Locally', command=self.SryWfunc)
+        self.LocalCtc = Button(self.windOne, text='Save Contacts Locally', command=self.secondary_window)
         self.LocalCtc.configure(width=25, height=2, bg='#1F1F1F', fg='white', highlightthickness='0', font=('Arial 15 bold'))
         self.LocalCtc.place(relx=0.5, rely=0.5, anchor=CENTER)
     
     #Secondary Window
 
     #Function: Secondary window creation
-    def SryWfunc(self):
+    def secondary_window(self):
         self.windOne.destroy()
 
         #Secondary Window Attributes
@@ -72,7 +71,7 @@ class Product:
         self.LblBtnS.place(x=550, y=52, anchor=S)
 
         #Add Contacts
-        self.AddCW = Button(self.LblBtnF, text='+', command=self.AddCF)
+        self.AddCW = Button(self.LblBtnF, text='+', command=self.add_button)
         self.AddCW.configure(height=1, width=1, font=('Arial',5))
         self.AddCW.place(x=50, y=22, anchor=E)
 
@@ -87,11 +86,11 @@ class Product:
         self.SngsW.place(x=210, y=22, anchor=E)
 
         #Cancel Button
-        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.ClF)
+        self.ClB = Button(self.LblBtnS, text='Cancel', command=self.cancel_button)
         self.ClB.configure(height=1, width=5, font=('Arial',10))
 
         #Done Button
-        self.DoB = Button(self.LblBtnS, text='Done', state='disabled', command=self.DoF)
+        self.DoB = Button(self.LblBtnS, text='Done', state='disabled', command=self.done_button)
         self.DoB.configure(height=1, width=5, font=('Arial',10))
 
         self.EdB = Button(self.LblBtnS, text='Edit')
@@ -120,14 +119,14 @@ class Product:
     #Function to call the events
     def EvnTk(self):
         #Entry event
-        self.SrcCW.bind('<KeyRelease>', self.CheckF)
+        self.SrcCW.bind('<KeyRelease>', self.check_entry)
 
         #Listbox event
-        self.LstCW.bind('<<ListboxSelect>>', self.ShowICF)
+        self.LstCW.bind('<<ListboxSelect>>', self.show_info)
 
 
     #Function to update the listbox
-    def UpdateF(self, data):
+    def update_listbox(self, data):
         self.LstCW.delete(0, END)
 
         for item in data:
@@ -135,7 +134,7 @@ class Product:
 
 
     #Function to check the Entry
-    def CheckF(self, key):
+    def check_entry(self, key):
         typed = self.SrcCW.get()
 
         if typed == '':
@@ -147,11 +146,11 @@ class Product:
                 if typed.lower() in item.lower():
                     data.append(item)
 
-        self.UpdateF(data)
+        self.update_listbox(data)
 
 
     #Function to create a new contact
-    def AddCF(self):
+    def add_button(self):
         #Disabled the search
         self.SrcCW.configure(state='readonly')
         self.LstCW.configure(state='disabled')
@@ -172,20 +171,20 @@ class Product:
         self.CName.configure(state='normal', width=25, font=('Arial', 15))
         self.CName.delete(0, END)
         self.CName.insert(0, 'Full Name')
-        self.CName.bind("<FocusIn>", self.PlaceHCF)
-        self.CName.bind("<KeyRelease>", self.ValF)
+        self.CName.bind("<FocusIn>", self.placeholder)
+        self.CName.bind("<KeyRelease>", self.validate_name)
         self.CName.place(x=250, y=150, anchor=CENTER)
         
         self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
         self.CEmail.delete(0, END)
         self.CEmail.insert(0, 'Email')
-        self.CEmail.bind("<FocusIn>", self.PlaceHCF)
+        self.CEmail.bind("<FocusIn>", self.placeholder)
         self.CEmail.place(x=250, y=270, anchor=CENTER)
         
         self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
         self.CPhone.delete(0, END)
         self.CPhone.insert(0, 'Number Phone')
-        self.CPhone.bind("<FocusIn>", self.PlaceHCF)
+        self.CPhone.bind("<FocusIn>", self.placeholder)
         self.CPhone.place(x=250, y=390, anchor=CENTER)
 
         #Change the focus
@@ -194,7 +193,7 @@ class Product:
 
 
     #Function to Cancel Button
-    def ClF(self):
+    def cancel_button(self):
         #Active the search
         self.SrcCW.configure(state='normal')
         self.LstCW.configure(state='normal')
@@ -224,7 +223,7 @@ class Product:
 
 
     #Function to Done Button
-    def DoF(self):
+    def done_button(self):
         #Active the search
         self.SrcCW.configure(state='normal')
         self.LstCW.configure(state='normal')
@@ -250,8 +249,8 @@ class Product:
         data = self.my_ctclist
 
         #Sending the data to show the contact
-        self.UpdateF(data)
-        self.ShowICF(0, self.name)
+        self.update_listbox(data)
+        self.show_info(0, self.name)
 
         #Change the focus
         self.windTwo.focus()
@@ -259,7 +258,7 @@ class Product:
 
 
     #Function to show the information of the selected contact
-    def ShowICF(self, key, na=None):
+    def show_info(self, key, na=None):
         #Verifiy method
         if na != None:
             #Remove the buttons, entrys and replace
@@ -297,11 +296,9 @@ class Product:
             #Delete the text in the entrys
 
 
-        
-
 
     #Function to clear the placerholder when click
-    def PlaceHCF(self, key):
+    def placeholder(self, key):
         name = self.CName.get()
         email = self.CEmail.get()
         phone = self.CPhone.get()
@@ -318,7 +315,7 @@ class Product:
 
     
     #Function to validate the state of the button and the entry "Name"
-    def ValF(self, key):
+    def validate_name(self, key):
         name = self.CName.get()
         while name != '':
             self.DoB.configure(state='active')
@@ -326,8 +323,18 @@ class Product:
         else:
             self.DoB.configure(state='disabled')
 
-        
 
+    #Function to connect the basedata
+    def run_query(self, query, parameters = ()):
+        with sqlite3.connect(self.db_name) as conn:
+            cursor = conn.cursor()
+            result = cursor.execute(query, parameters)
+            conn.commit()
+        return result
+    
+
+    #Function to get the contactos from database
+    #def get_contacts
 
 if __name__ == '__main__':
     PryWind = Tk()
