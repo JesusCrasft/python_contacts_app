@@ -123,6 +123,9 @@ class Product:
         #Listbox event
         self.listctc_widget.bind('<<ListboxSelect>>', self.show_infoF)
 
+        #Blocking the tab key 
+        self.windTwo.unbind_all("<<NextWindow>>")
+
 
     #Function to update the listbox
     def update_listboxF(self, data):
@@ -135,13 +138,13 @@ class Product:
     #Function to check the Entry
     def check_entryF(self, key):
         typed = self.searchbar_widget.get()
-
+        print(typed)
         if typed == '':
             data = self.my_ctclist
 
         else:
             data = []
-            for item in self.my_ctclist:
+            for item in self.my_ctclist[0]:
                 if typed.lower() in item.lower():
                     data.append(item)
 
@@ -293,21 +296,74 @@ class Product:
         
         else:
             #Convert the lst into a string with aitsuki help
-            lst = self.listctc_widget.get(ACTIVE)
+            lst = self.listctc_widget.get(ANCHOR)
             lst_join = "".join(lst)
             nakuru = "'"
             aitsuki = "'"
             request_name = aitsuki + lst_join + nakuru
-            
-            #Quering the data
+
+            #Change the focus
+            self.windTwo.focus()
+
+            #Blank validation
             if lst != '':
-                self.id.clear()
+                
+                #Reseting all the data
+                self.CName.configure(state='normal')
+                self.CEmail.configure(state='normal')
+                self.CPhone.configure(state='normal')
+
+                self.CName.delete(0, END)
+                self.CEmail.delete(0, END)
+                self.CPhone.delete(0, END)
+
+                name = ''
+                email = ''
+                phone = ''
+
+                #Quering the data
                 query = f"SELECT name, email, phone FROM contacts WHERE name LIKE {request_name}"
                 db_rows = self.run_query(query)
                 for rows in db_rows:
-                    self.id.insert(0, rows)
-                    print(self.id)
+                    name = rows[0]
+                    email = rows[1]
+                    phone = rows[2]
+            
+            #Inserting the data into the entrys
+    
+                #Add the entrys
+                self.CName.place(x=250, y=150, anchor=CENTER)
+                self.CEmail.place(x=250, y=270, anchor=CENTER)
+                self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+                #Configure entrys
+                self.CName.configure(state='normal', width=25, font=('Arial', 15))
+                self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+                self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+
+                #Delete the text in the entrys
+                self.CName.delete(0, END)
+                self.CEmail.delete(0, END)
+                self.CPhone.delete(0, END)
+                
+                #Adding the information
+                self.CName.insert(0, name)
+                self.CEmail.insert(0, email)
+                self.CPhone.insert(0, phone)
+
+                #Disabled entrys
+                self.CName.configure(state='readonly')
+                self.CEmail.configure(state='readonly')
+                self.CPhone.configure(state='readonly')
+
+                #Adding the button to edit
+                self.edit_btn.place(x=480, y=22, anchor=E)
+
+                #Change the focus
+                self.windTwo.focus()
+            
             else:
+            
                 print('iloveaitsukinakuru')
             
 
@@ -359,6 +415,7 @@ class Product:
         for rows in db_rows:
             self.my_ctclist.insert(0, rows)
             self.update_listboxF(self.my_ctclist)
+            print(self.my_ctclist[0])
 
     
     #Function to insert the data in the database
@@ -366,6 +423,9 @@ class Product:
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
+
+
+ 
 
 if __name__ == '__main__':
     PryWind = Tk()
