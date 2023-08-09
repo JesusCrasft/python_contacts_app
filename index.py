@@ -1,7 +1,11 @@
 from tkinter import ttk
 from tkinter import * 
 
+import sqlite3
+
 class Product:
+
+    db_name = 'database.db'
 
     def __init__(self, PryWind):
     
@@ -39,7 +43,11 @@ class Product:
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
-        self.my_ctclist = []
+        self.my_ctclist = {
+            'name' : '',
+            'email' : '',
+            'phone' : 0
+        }
         self.name = ''
         self.email = ''
         self.phone = 0
@@ -220,11 +228,9 @@ class Product:
         #Active the search
         self.SrcCW.configure(state='normal')
         self.LstCW.configure(state='normal')
+        self.SrcCW.delete(0, END)
 
         #Extracting the data from the entrys
-        self.name = self.CName.get()
-        self.email = self.CEmail.get()
-        self.phone = self.CPhone.get()
 
         #Removing the "Add Stage"
         self.ClB.place_forget()
@@ -241,7 +247,6 @@ class Product:
         self.SngsW.place(x=210, y=22, anchor=E)
         
         #Inserting the name in the contact list
-        self.my_ctclist.insert(0, self.name)
         data = self.my_ctclist
 
         #Sending the data to show the contact
@@ -283,7 +288,13 @@ class Product:
             self.windTwo.focus()
         
         else:
-            print('i love aitsuki nakuru')
+            lst = self.LstCW.get(ACTIVE)
+            
+            if lst == '':
+                print('iloveaitsukinakuru')
+            else:
+                print(lst)
+            #Delete the text in the entrys
 
 
         
