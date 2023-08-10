@@ -90,7 +90,7 @@ class Product:
         self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_buttonF)
         self.done_btn.configure(height=1, width=5, font=('Arial',10))
 
-        self.edit_btn = Button(self.label_btns, text='Edit')
+        self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_contactF)
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
 
@@ -192,7 +192,7 @@ class Product:
 
         #Change the focus
         self.windTwo.focus()
-
+        self.windTwo.title('Adding a new contact')
 
 
     #Function to Cancel Button
@@ -209,6 +209,7 @@ class Product:
         #Remove the buttons, entrys and replace
         self.cancel_btn.place_forget()
         self.done_btn.place_forget()
+        self.edit_btn.place_forget()
         self.CName.place_forget()
         self.CEmail.place_forget()
         self.CPhone.place_forget()
@@ -223,6 +224,7 @@ class Product:
 
         #Change the focus
         self.windTwo.focus()
+        self.windTwo.title('Local Contacts')
 
 
     #Function to Done Button
@@ -265,7 +267,6 @@ class Product:
         self.windTwo.focus()
     
 
-
     #Function to show the information of the selected contact
     def show_infoF(self, key, na=None):
         #Verifiy method
@@ -292,8 +293,9 @@ class Product:
             #Adding the button to edit
             self.edit_btn.place(x=480, y=22, anchor=E)
 
-            #Change the focus
+            #Change the focus and the name
             self.windTwo.focus()
+            self.windTwo.title('Contact Information')
         
         else:
             #Convert the lst into a string with aitsuki help
@@ -302,70 +304,55 @@ class Product:
             nakuru = "'"
             aitsuki = "'"
             request_name = aitsuki + lst_join + nakuru
+  
+            #Reseting all the data
+            self.CName.configure(state='normal')
+            self.CEmail.configure(state='normal')
+            self.CPhone.configure(state='normal')
+
+            self.CName.delete(0, END)
+            self.CEmail.delete(0, END)
+            self.CPhone.delete(0, END)
+
+            name = ''
+            email = ''
+            phone = ''
+
+            self.getctc_info(request_name)
+            #Inserting the data into the entrys
+    
+            #Add the entrys
+            self.CName.place(x=250, y=150, anchor=CENTER)
+            self.CEmail.place(x=250, y=270, anchor=CENTER)
+            self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+            #Configure entrys
+            self.CName.configure(state='normal', width=25, font=('Arial', 15))
+            self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+            self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+
+            #Delete the text in the entrys
+            self.CName.delete(0, END)
+            self.CEmail.delete(0, END)
+            self.CPhone.delete(0, END)
+                
+        #Adding the information
+            self.CName.insert(0, name)
+            self.CEmail.insert(0, email)
+            self.CPhone.insert(0, phone)
+
+            #Disabled entrys
+            self.CName.configure(state='readonly')
+            self.CEmail.configure(state='readonly')
+            self.CPhone.configure(state='readonly')
+
+            #Adding the button to edit
+            self.edit_btn.place(x=480, y=22, anchor=E)
 
             #Change the focus
             self.windTwo.focus()
-
-            #Blank validation
-            if lst != '':
-                
-                #Reseting all the data
-                self.CName.configure(state='normal')
-                self.CEmail.configure(state='normal')
-                self.CPhone.configure(state='normal')
-
-                self.CName.delete(0, END)
-                self.CEmail.delete(0, END)
-                self.CPhone.delete(0, END)
-
-                name = ''
-                email = ''
-                phone = ''
-
-                #Quering the data
-                query = f"SELECT name, email, phone FROM contacts WHERE name LIKE {request_name}"
-                db_rows = self.run_query(query)
-                for rows in db_rows:
-                    name = rows[0]
-                    email = rows[1]
-                    phone = rows[2]
+            self.windTwo.title('Contact Information')
             
-            #Inserting the data into the entrys
-    
-                #Add the entrys
-                self.CName.place(x=250, y=150, anchor=CENTER)
-                self.CEmail.place(x=250, y=270, anchor=CENTER)
-                self.CPhone.place(x=250, y=390, anchor=CENTER)
-
-                #Configure entrys
-                self.CName.configure(state='normal', width=25, font=('Arial', 15))
-                self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
-                self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
-
-                #Delete the text in the entrys
-                self.CName.delete(0, END)
-                self.CEmail.delete(0, END)
-                self.CPhone.delete(0, END)
-                
-                #Adding the information
-                self.CName.insert(0, name)
-                self.CEmail.insert(0, email)
-                self.CPhone.insert(0, phone)
-
-                #Disabled entrys
-                self.CName.configure(state='readonly')
-                self.CEmail.configure(state='readonly')
-                self.CPhone.configure(state='readonly')
-
-                #Adding the button to edit
-                self.edit_btn.place(x=480, y=22, anchor=E)
-
-                #Change the focus
-                self.windTwo.focus()
-            
-            else:
-            
-                print('iloveaitsukinakuru')
             
 
     #Function to clear the placerholder when click
@@ -416,7 +403,18 @@ class Product:
             self.my_ctclist.insert(0, self.my_ctclist_old)
             self.update_listboxF(self.my_ctclist)
             
-    
+    #Function to get the data from database with name
+    def getctc_info(self, request):
+        #Quering the data
+        query = f"SELECT name, email, phone FROM contacts WHERE name LIKE {request_name}"
+        db_rows = self.run_query(query)
+        for rows in db_rows:
+            name = rows[0]
+            email = rows[1]
+            phone = rows[2]
+
+
+        
     #Function to insert the data in the database
     def add_contactF(self):
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
@@ -424,8 +422,41 @@ class Product:
         self.run_query(query, parameters)
 
 
- 
+    #Function to edit the data in the database
+    def edit_contactF(self):
+        #Disabled the search
+        self.searchbar_widget.configure(state='readonly')
+        self.listctc_widget.configure(state='disabled')
 
+        #Remove the buttons and replace
+        self.add_btn.place_forget()
+        self.sel_btn.place_forget()
+        self.edit_btn.place_forget()
+        self.settings_btn.place_forget()
+
+        #Add the buttons "Cancel" and "Done"
+        self.done_btn.configure(state='disabled')
+        self.cancel_btn.place(x=100, y=22, anchor=E)
+        self.done_btn.place(x=480, y=22, anchor=E)
+
+        #Adding the entrys to add the information
+        self.CName.configure(state='normal', width=25, font=('Arial', 15))
+        self.CName.delete(0, END)
+        self.CName.bind("<KeyRelease>", self.validate_blankF)
+        self.CName.place(x=250, y=150, anchor=CENTER)
+        
+        self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+        self.CEmail.delete(0, END)
+        self.CEmail.place(x=250, y=270, anchor=CENTER)
+        
+        self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+        self.CPhone.delete(0, END)
+        self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+        #Change the focus
+        self.windTwo.focus()
+        self.windTwo.title('Editing a contact')
+    
 if __name__ == '__main__':
     PryWind = Tk()
     application = Product(PryWind)
