@@ -47,20 +47,17 @@ class Product:
         self.list_info = []
         self.name = ''
         self.email = ''
-        self.phone = 0
+        self.phone = ''
         self.request_name = ''
-        CName_val = False
-        CEmail_val = False
-        CPhone_val = False
 
         #Label Add Contact
         self.label_addctc = Label(self.windTwo, height=23, width=50)
         self.label_addctc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_addctc.place(x=550, y=52, anchor=N)
 
-        self.CName = Entry(self.label_addctc)
-        self.CEmail = Entry(self.label_addctc)        
-        self.CPhone = Entry(self.label_addctc)
+        self.CName = Entry(self.label_addctc, exportselection=False)
+        self.CEmail = Entry(self.label_addctc, exportselection=False)        
+        self.CPhone = Entry(self.label_addctc, exportselection=False)
 
 
         #Labels Buttons Navigation
@@ -95,8 +92,13 @@ class Product:
         self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_buttonF)
         self.done_btn.configure(height=1, width=5, font=('Arial',10))
 
+        #Edit Button
         self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_contactF)
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
+
+        #Delete Button
+        self.remove_btn = Button(self.label_btns, text='Delete')
+        self.remove_btn.configure(height=1, width=5, font=('Arial',10))
 
 
         #Label Search Widgets
@@ -122,14 +124,14 @@ class Product:
 
     #Function to call the events
     def EvnTk(self):
+        #Blocking the tab key 
+        self.windTwo.unbind_all("<<NextWindow>>")
+
         #Entry event
         self.searchbar_widget.bind('<KeyRelease>', self.check_entryF)
 
         #Listbox event
-        self.listctc_widget.bind('<<ListboxSelect>>', self.show_infoF)
-
-        #Blocking the tab key 
-        self.windTwo.unbind_all("<<NextWindow>>")
+        self.listctc_widget.bind('<<ListboxSelect>>', lambda m="I love aitsuki nakuru": self.show_infoF(0, val_list=True))
 
 
     #Function to update the listbox
@@ -143,7 +145,6 @@ class Product:
     #Function to check the Entry
     def check_entryF(self, key):
         typed = self.searchbar_widget.get()
-        print(typed)
 
         if typed == '':
             data = self.my_ctclist
@@ -165,6 +166,7 @@ class Product:
         self.control_widgets(place_done=True, place_entrys=True, configure_entrys=True,
         insert_placeholder=True, placeholder=True, validate_blank=True)
         
+
         #Change the focus
         self.windTwo.focus()
         self.windTwo.title('Adding a new contact')
@@ -186,7 +188,7 @@ class Product:
     def done_buttonF(self):
         #Control widgets
         self.control_widgets(active_search=True, del_search=True, forget_done=True,
-        del_entry=True, place_add=True, edit_active=True)
+        place_add=True, edit_active=True)
 
         #Extracting the data from the entrys
         self.name = self.CName.get()
@@ -198,8 +200,8 @@ class Product:
         self.update_listboxF(self.my_ctclist)
 
         #Sending the data to show the contact
-        self.show_infoF(0, self.name)
-
+        self.show_infoF(0, val_button=self.name)
+        
         #Inserting the contact in the database
         self.add_contactF()
 
@@ -208,26 +210,24 @@ class Product:
     
 
     #Function to show the information of the selected contact
-    def show_infoF(self, key, val=None):
-        self.windTwo.focus()
+    def show_infoF(self, key, val_button=None, val_list=None):
         #Verifiy method
-        if val != None:
+        if val_button != None:
             #Control widgets
             self.control_widgets(forget_done=True, del_entry=True, edit_active=True) 
-
             #Adding the information
-            self.control_widgets(insert_data_entrys=True,
-            na=val,
+            self.control_widgets(
+            na=val_button,
             em=self.email,
-            ph=self.phone)
+            ph=self.phone, insert_data_entrys=True)
 
             self.control_widgets(disable_entrys=True)
 
             #Change the focus and the name
             self.windTwo.focus()
-            self.windTwo.title('Contact Information')
+            self.windTwo.title('Contact Information 1')
         
-        else:
+        elif val_list == True:
             #Request the data
             self.list_info = self.getctc_info(self.get_anchor())
 
@@ -236,16 +236,16 @@ class Product:
             edit_active=True, del_entry=True)
 
             #Adding the data
-            self.control_widgets(insert_data_entrys=True,
+            self.control_widgets(
             na=self.list_info[0],
             em=self.list_info[1],
-            ph=self.list_info[2])
+            ph=self.list_info[2], insert_data_entrys=True)
             
             self.control_widgets(disable_entrys=True)
 
             #Change the focus
             self.windTwo.focus()
-            self.windTwo.title('Contact Information')
+            self.windTwo.title('Contact Information 2')
             
             
     #Function to clear the placerholder when click
@@ -261,7 +261,7 @@ class Product:
         if email == True and email_second == 'Email':
             self.CEmail.delete(0, END)
 
-        if phone == True and phone_second == 'Phone Number':
+        if phone == True and phone_second == 'Number Phone':
             self.CPhone.delete(0, END)
 
     
@@ -366,11 +366,13 @@ class Product:
 
         if edit_active == True:
             #Adding the button to edit
-            self.edit_btn.place(x=480, y=22, anchor=E)
+            self.remove_btn.place(x=480, y=22, anchor=E)
+            self.edit_btn.place(x=100, y=22, anchor=E)
 
         if edit_disable == True:
             #Removing the edit button
             self.edit_btn.place_forget()
+            self.remove_btn.place_forget()
 
         if insert_data_entrys == True:
             #Delete the entrys
@@ -392,6 +394,8 @@ class Product:
         if validate_blank == True:
             #Validating blank
             self.CName.bind("<KeyRelease>", self.validate_blankF)
+
+
     #SQLITE FUNCTIONS
 
     #Function to connect the basedata
@@ -447,16 +451,7 @@ class Product:
         self.run_query(query, parameters)
 
 
-#Function to edit the data in the database
-    def edit_contactF(self):
-        self.control_widgets(disable_search=True, forget_add=True, edit_disable=True, 
-        place_done=True, reset_done=True, place_entrys=True, configure_entrys=True, 
-        del_entry=True, placeholder=True, validate_blank=True)
 
-
-        #Change the focus
-        self.windTwo.focus()
-        self.windTwo.title('Editing a contact')
 
 
 if __name__ == '__main__':
