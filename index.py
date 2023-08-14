@@ -208,8 +208,6 @@ class Product:
         #Inserting the name in the contact list
         self.my_ctclist_old = []
         self.my_ctclist = []
-        self.update_listboxF(self.my_ctclist)
-        self.getctc_list()
 
         #Sending the data to show the contact
         self.show_infoF(0, val_button=self.name)
@@ -234,7 +232,7 @@ class Product:
         #Inserting the name in the contact list
         self.my_ctclist_old = []
         self.my_ctclist = []
-        
+
         #Sending the data to show the contact
         self.show_infoF(0, val_button=self.name)
         
@@ -518,17 +516,22 @@ class Product:
 
     #Function to insert data in the database
     def add_contactF(self):
+        #Queriny the data
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
+        #Update the contact list
+        self.getctc_list()
     
     #Function to edit the database
     def edit_contactF(self):
-        print(self.old_name)
+        #Quering the data
         query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.old_name}'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
+
+        #Update the contact list
         self.getctc_list()
 
 
