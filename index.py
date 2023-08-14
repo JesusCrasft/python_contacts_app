@@ -48,7 +48,7 @@ class Product:
         self.name = ''
         self.email = ''
         self.phone = ''
-        self.name_old = ''
+        self.old_name = ''
         self.request_name = ''
 
         #Label Add Contact
@@ -189,11 +189,11 @@ class Product:
         self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
         forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True)
 
-        self.name_old = self.CName.get()
+        self.save_old_nameF(self.CName.get())
 
         #Change the focus
         self.windTwo.focus()
-        self.windTwo.title('Adding a new contact')
+        self.windTwo.title('Editing a contact')
 
 
     #Function to Add Done Button
@@ -265,7 +265,7 @@ class Product:
         
         elif val_list == True:
             #Request the data
-            self.list_info = self.getctc_info(self.get_anchor())
+            self.list_info = self.getctc_info(self.get_anchorF())
 
             #Control widget
             self.control_widgets(place_entrys=True, configure_entrys=True,
@@ -497,7 +497,7 @@ class Product:
 
     
     #Function to get the ANCHOR from the listbox
-    def get_anchor(self):
+    def get_anchorF(self):
         #Convert the lst into a string with aitsuki help
         lst = self.listctc_widget.get(ANCHOR)
         lst_join = "".join(lst)
@@ -508,6 +508,14 @@ class Product:
         return self.request_name
 
 
+    #Function to save the old name of the current contact
+    def save_old_nameF(self, name):
+        #Inserting the old name between 'name' with aitsuki help
+        nakuru = "'"
+        aitsuki = "'"
+        self.old_name = aitsuki + name + nakuru
+        return self.old_name
+
     #Function to insert data in the database
     def add_contactF(self):
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
@@ -517,7 +525,8 @@ class Product:
     
     #Function to edit the database
     def edit_contactF(self):
-        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name LIKE = {self.name_old}'
+        print(self.old_name)
+        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.old_name}'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
