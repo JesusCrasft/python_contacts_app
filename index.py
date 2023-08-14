@@ -48,16 +48,17 @@ class Product:
         self.name = ''
         self.email = ''
         self.phone = ''
+        self.name_old = ''
         self.request_name = ''
 
         #Label Add Contact
-        self.label_addctc = Label(self.windTwo, height=23, width=50)
-        self.label_addctc.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.label_addctc.place(x=550, y=52, anchor=N)
+        self.label_stage = Label(self.windTwo, height=23, width=50)
+        self.label_stage.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_stage.place(x=550, y=52, anchor=N)
 
-        self.CName = Entry(self.label_addctc, exportselection=False)
-        self.CEmail = Entry(self.label_addctc, exportselection=False)        
-        self.CPhone = Entry(self.label_addctc, exportselection=False)
+        self.CName = Entry(self.label_stage, exportselection=False)
+        self.CEmail = Entry(self.label_stage, exportselection=False)        
+        self.CPhone = Entry(self.label_stage, exportselection=False)
 
 
         #Labels Buttons Navigation
@@ -89,11 +90,11 @@ class Product:
         self.cancel_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Done Button
-        self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_buttonF)
+        self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_addF)
         self.done_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Edit Button
-        self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_contactF)
+        self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_buttonF)
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Delete Button
@@ -158,34 +159,45 @@ class Product:
         self.update_listboxF(data)
 
 
-    #Function to create a new contact
+    #Function to mount the stage create a new contact
     def add_buttonF(self):
         #Control widgets
         self.control_widgets(del_entry=True, forget_entrys=True, forget_add=True,
         disable_search=True, edit_disable=True)
         self.control_widgets(place_done=True, place_entrys=True, configure_entrys=True,
-        insert_placeholder=True, placeholder=True, validate_blank=True)
+        insert_placeholder=True, placeholder=True, validate_blank=True, done_add=True)
         
-
         #Change the focus
         self.windTwo.focus()
         self.windTwo.title('Adding a new contact')
 
-    #Function to Cancel Button
+
+    #Function to mount the stage Cancel Button
     def cancel_buttonF(self):
         #Control widgets
         self.control_widgets(active_search=True, del_entry=True, forget_done=True,
-        forget_entrys=True, place_add=True)
-
-        self.done_btn.configure(state='disabled')
+        forget_entrys=True, place_add=True, reset_done=True)
 
         #Change the focus
         self.windTwo.focus()
         self.windTwo.title('Local Contacts')
 
 
-    #Function to Done Button
-    def done_buttonF(self):
+#Function to mount the stage to edit a new contact
+    def edit_buttonF(self):
+        #Control widgets
+        self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
+        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True)
+
+        self.name_old = self.CName.get()
+
+        #Change the focus
+        self.windTwo.focus()
+        self.windTwo.title('Adding a new contact')
+
+
+    #Function to Add Done Button
+    def done_addF(self):
         #Control widgets
         self.control_widgets(active_search=True, del_search=True, forget_done=True,
         place_add=True, edit_active=True)
@@ -207,7 +219,31 @@ class Product:
 
         #Change the focus
         self.windTwo.focus()
-    
+        
+
+    #Function to Edit Done Button
+    def done_editF(self):
+        #Control widgets
+        self.control_widgets(active_search=True, del_search=True, forget_done=True, place_add=True, edit_active=True)
+
+        #Extracting the data from the entrys
+        self.name = self.CName.get()
+        self.email = self.CEmail.get()
+        self.phone = self.CPhone.get()
+        
+        #Inserting the name in the contact list
+        self.my_ctclist.insert(0, self.name)
+        self.update_listboxF(self.my_ctclist)
+
+        #Sending the data to show the contact
+        self.show_infoF(0, val_button=self.name)
+        
+        #Inserting the contact in the database
+        self.edit_contactF()
+
+        #Change the focus
+        self.windTwo.focus()
+
 
     #Function to show the information of the selected contact
     def show_infoF(self, key, val_button=None, val_list=None):
@@ -266,15 +302,26 @@ class Product:
 
     
     #Function to validate the state of the button and the entry "Name"
-    def validate_blankF(self, key):
-        name = self.CName.get()
-        while name != '':
-            self.done_btn.configure(state='active')
-            break
-        else:
-            self.done_btn.configure(state='disabled')
-    
+    def validate_stageF(self, key, add=None, edit=None):
+        #Validate the blank in add stage
+        if add == True:            
+            name = self.CName.get()
+            while name != '':
+                self.done_btn.configure(state='active')
+                break
+            else:
+                self.done_btn.configure(state='disabled')
 
+        if edit == True:
+            name = self.CName.get()
+            while name != '':
+                self.done_btn.configure(state='active')
+                break
+            else:
+                self.done_btn.configure(state='disabled')
+                
+
+            
     #Function to remove widgets
     def control_widgets(self, na=None, em=None, ph=None, 
     place_add=None, place_entrys=None, place_done=None, 
@@ -282,7 +329,8 @@ class Product:
     del_entry=None, disable_search=None, active_search=None,
     configure_entrys=None, placeholder=None, insert_placeholder=None, reset_done=None,
     del_search=None, disable_entrys=None, edit_active=None, edit_disable=None,
-    insert_data_entrys=None, validate_blank=None):
+    insert_data_entrys=None, validate_blank=None, validate_edit=None,
+    done_edit=None, done_add=None):
         
         if place_add == True:
             #Add the buttons "Add", "Settings" and "Select"
@@ -305,6 +353,17 @@ class Product:
             #Remove the buttons in the add stage or edit
             self.cancel_btn.place_forget()
             self.done_btn.place_forget()
+
+        if reset_done == True:
+            self.done_btn.configure(state='disabled')
+
+        if done_add == True:
+            #Configure the button to call the function button done in add stage
+            self.done_btn.configure(command=self.done_addF)
+
+        if done_edit == True:
+            #Configure the button to call the function button edit in edit stage
+            self.done_btn.configure(command=self.done_editF)
 
         if disable_search == True:
             #Disabled the search
@@ -393,8 +452,13 @@ class Product:
         
         if validate_blank == True:
             #Validating blank
-            self.CName.bind("<KeyRelease>", self.validate_blankF)
-
+            self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, add=True))
+        
+        if validate_edit == True:
+            #Validating edit stage
+            self.validate_stageF(0, edit=True)
+            #self.label_stage.bind("<Motion>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+            
 
     #SQLITE FUNCTIONS
 
@@ -444,13 +508,18 @@ class Product:
         return self.request_name
 
 
-    #Function to insert the data in the database
+    #Function to insert data in the database
     def add_contactF(self):
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
-
+    
+    #Function to edit the database
+    def edit_contactF(self):
+        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name LIKE = {self.name_old}'
+        parameters = (self.name, self.email, self.phone)
+        self.run_query(query, parameters)
 
 
 
