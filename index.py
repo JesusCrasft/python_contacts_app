@@ -183,13 +183,11 @@ class Product:
         self.windTwo.title('Local Contacts')
 
 
-#Function to mount the stage to edit a new contact
+    #Function to mount the stage to edit a new contact
     def edit_buttonF(self):
         #Control widgets
         self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
-        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True)
-
-        self.save_old_nameF(self.CName.get())
+        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True, save_old=True)
 
         #Change the focus
         self.windTwo.focus()
@@ -208,8 +206,10 @@ class Product:
         self.phone = self.CPhone.get()
         
         #Inserting the name in the contact list
-        self.my_ctclist.insert(0, self.name)
+        self.my_ctclist_old = []
+        self.my_ctclist = []
         self.update_listboxF(self.my_ctclist)
+        self.getctc_list()
 
         #Sending the data to show the contact
         self.show_infoF(0, val_button=self.name)
@@ -232,9 +232,9 @@ class Product:
         self.phone = self.CPhone.get()
         
         #Inserting the name in the contact list
-        self.my_ctclist.insert(0, self.name)
-        self.update_listboxF(self.my_ctclist)
-
+        self.my_ctclist_old = []
+        self.my_ctclist = []
+        
         #Sending the data to show the contact
         self.show_infoF(0, val_button=self.name)
         
@@ -321,7 +321,6 @@ class Product:
                 self.done_btn.configure(state='disabled')
                 
 
-            
     #Function to remove widgets
     def control_widgets(self, na=None, em=None, ph=None, 
     place_add=None, place_entrys=None, place_done=None, 
@@ -330,7 +329,7 @@ class Product:
     configure_entrys=None, placeholder=None, insert_placeholder=None, reset_done=None,
     del_search=None, disable_entrys=None, edit_active=None, edit_disable=None,
     insert_data_entrys=None, validate_blank=None, validate_edit=None,
-    done_edit=None, done_add=None):
+    done_edit=None, done_add=None, save_old=None):
         
         if place_add == True:
             #Add the buttons "Add", "Settings" and "Select"
@@ -459,7 +458,8 @@ class Product:
             self.validate_stageF(0, edit=True)
             #self.label_stage.bind("<Motion>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
             
-
+        if save_old == True:
+            self.save_old_nameF(self.CName.get())
     #SQLITE FUNCTIONS
 
     #Function to connect the basedata
@@ -529,6 +529,7 @@ class Product:
         query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.old_name}'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
+        self.getctc_list()
 
 
 
