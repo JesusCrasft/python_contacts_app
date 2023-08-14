@@ -48,7 +48,6 @@ class Product:
         self.name = ''
         self.email = ''
         self.phone = ''
-        self.old_name = ''
         self.request_name = ''
 
         #Label Add Contact
@@ -98,7 +97,7 @@ class Product:
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Delete Button
-        self.remove_btn = Button(self.label_btns, text='Delete')
+        self.remove_btn = Button(self.label_btns, text='Delete', command=self.delete_contactF)
         self.remove_btn.configure(height=1, width=5, font=('Arial',10))
 
 
@@ -187,7 +186,10 @@ class Product:
     def edit_buttonF(self):
         #Control widgets
         self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
-        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True, save_old=True)
+        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True)
+
+        #Between string
+        self.between_stringF(self.CName.get())
 
         #Change the focus
         self.windTwo.focus()
@@ -263,7 +265,7 @@ class Product:
         
         elif val_list == True:
             #Request the data
-            self.list_info = self.getctc_info(self.get_anchorF())
+            self.list_info = self.getctc_info(self.between_stringF())
 
             #Control widget
             self.control_widgets(place_entrys=True, configure_entrys=True,
@@ -312,7 +314,9 @@ class Product:
 
         if edit == True:
             name = self.CName.get()
-            while name != '':
+            email = self.CEmail.get()
+            phone = self.CPhone.get()
+            while name or phone or email != '':
                 self.done_btn.configure(state='active')
                 break
             else:
@@ -327,7 +331,7 @@ class Product:
     configure_entrys=None, placeholder=None, insert_placeholder=None, reset_done=None,
     del_search=None, disable_entrys=None, edit_active=None, edit_disable=None,
     insert_data_entrys=None, validate_blank=None, validate_edit=None,
-    done_edit=None, done_add=None, save_old=None):
+    done_edit=None, done_add=None):
         
         if place_add == True:
             #Add the buttons "Add", "Settings" and "Select"
@@ -453,11 +457,10 @@ class Product:
         
         if validate_edit == True:
             #Validating edit stage
-            self.validate_stageF(0, edit=True)
-            #self.label_stage.bind("<Motion>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+            self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+            self.CEmail.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+            self.CPhone.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
             
-        if save_old == True:
-            self.save_old_nameF(self.CName.get())
     #SQLITE FUNCTIONS
 
     #Function to connect the basedata
@@ -495,26 +498,27 @@ class Product:
 
     
     #Function to get the ANCHOR from the listbox
-    def get_anchorF(self):
-        #Convert the lst into a string with aitsuki help
-        lst = self.listctc_widget.get(ANCHOR)
-        lst_join = "".join(lst)
-        nakuru = "'"
-        aitsuki = "'"
-        self.request_name = aitsuki + lst_join + nakuru
-        self.windTwo.focus()
-        return self.request_name
+    def between_stringF(self, name=None):
+
+        if name != None:
+            #Inserting the old name between 'name' with aitsuki help 
+            aitsuki = "'"
+            nakuru = "'"
+            self.request_name = aitsuki + name + nakuru
+            return self.request_name
+           
+        else:
+            #Convert the lst into a string with aitsuki help
+            lst = self.listctc_widget.get(ANCHOR)
+            lst_join = "".join(lst)
+            nakuru = "'"
+            aitsuki = "'"
+            self.request_name = aitsuki + lst_join + nakuru
+            self.windTwo.focus()
+            return self.request_name
 
 
-    #Function to save the old name of the current contact
-    def save_old_nameF(self, name):
-        #Inserting the old name between 'name' with aitsuki help
-        nakuru = "'"
-        aitsuki = "'"
-        self.old_name = aitsuki + name + nakuru
-        return self.old_name
-
-    #Function to insert data in the database
+    #Function to insert contact in the database
     def add_contactF(self):
         #Queriny the data
         query = 'INSERT INTO contacts VALUES(NULL, ?, ?, ?)'
@@ -524,10 +528,11 @@ class Product:
         #Update the contact list
         self.getctc_list()
     
-    #Function to edit the database
+
+    #Function to edit the contact in database
     def edit_contactF(self):
         #Quering the data
-        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.old_name}'
+        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.request_name}'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
@@ -535,6 +540,16 @@ class Product:
         self.getctc_list()
 
 
+    #Function to delete the contact in the database
+    def delete_contactF(self):
+        query = f'DELETE FROM contacts WHERE name = {self.between_stringF(name=self.CName.get())}'
+        self.run_query(query)
+        self.my_ctclist_old = []
+        self.my_ctclist = []
+        self.getctc_list()
+
+        #Control widget
+        self.control_widgets(forget_entrys=True, place_add=True, forget_done=True, edit_disable=True)
 
 if __name__ == '__main__':
     PryWind = Tk()
