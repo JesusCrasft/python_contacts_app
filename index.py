@@ -161,10 +161,10 @@ class Product:
     #Function to mount the stage create a new contact
     def add_buttonF(self):
         #Control widgets
-        self.control_widgets(del_entry=True, forget_entrys=True, forget_add=True,
-        disable_search=True, edit_disable=True)
-        self.control_widgets(place_done=True, place_entrys=True, configure_entrys=True,
-        insert_placeholder=True, placeholder=True, validate_blank=True, done_add=True)
+        self.control_widgets('del_entry', 'forget_entrys', 'forget_add',
+        'disable_search', 'edit_disable')
+        self.control_widgets('place_done', 'place_entrys', 'configure_entrys',
+        'insert_placeholder', 'placeholder', 'validate_blank', 'done_add')
         
         #Change the focus
         self.windTwo.focus()
@@ -174,8 +174,8 @@ class Product:
     #Function to mount the stage Cancel Button
     def cancel_buttonF(self):
         #Control widgets
-        self.control_widgets(active_search=True, del_entry=True, forget_done=True,
-        forget_entrys=True, place_add=True, reset_done=True)
+        self.control_widgets('active_search', 'del_entry', 'forget_done',
+        'forget_entrys', 'place_add', 'reset_done')
 
 
         #Change the focus
@@ -186,9 +186,9 @@ class Product:
     #Function to mount the stage to edit a new contact
     def edit_buttonF(self):
         #Control widgets
-        self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
-        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True,
-        done_edit=True, reset_done=True)
+        self.control_widgets('disable_search', 'del_search', 'edit_disable',
+        'forget_add', 'place_done', 'configure_entrys', 'validate_edit',
+        'done_edit', 'reset_done')
 
         #Between string
         self.between_stringF(self.CName.get())
@@ -230,8 +230,8 @@ class Product:
     #Function to Add Done Button
     def done_addF(self):
         #Control widgets
-        self.control_widgets(active_search=True, del_search=True, forget_done=True,
-        place_add=True, edit_active=True)
+        self.control_widgets('active_search', 'del_search', 'forget_done',
+        'place_add', 'edit_active')
 
         #Extracting the data from the entrys
         self.name = self.CName.get()
@@ -255,7 +255,7 @@ class Product:
     #Function to Edit Done Button
     def done_editF(self):
         #Control widgets
-        self.control_widgets(active_search=True, del_search=True, forget_done=True, place_add=True, edit_active=True)
+        self.control_widgets('active_search', 'del_search', 'forget_done', 'place_add', 'edit_active')
 
         #Extracting the data from the entrys
         self.name = self.CName.get()
@@ -281,14 +281,15 @@ class Product:
         #Verifiy method
         if val_button != None:
             #Control widgets
-            self.control_widgets(forget_done=True, del_entry=True, edit_active=True) 
+            self.control_widgets('forget_done', 'del_entry', 'edit_active') 
+
             #Adding the information
-            self.control_widgets(
+            self.control_widgets('insert_data_entrys',
             na=val_button,
             em=self.email,
-            ph=self.phone, insert_data_entrys=True)
+            ph=self.phone)
 
-            self.control_widgets(disable_entrys=True)
+            self.control_widgets('disable_entrys')
 
             #Change the focus and the name
             self.windTwo.focus()
@@ -299,16 +300,16 @@ class Product:
             self.list_info = self.getctc_info(self.between_stringF())
 
             #Control widget
-            self.control_widgets(place_entrys=True, configure_entrys=True,
-            edit_active=True, del_entry=True)
+            self.control_widgets('place_entrys', 'configure_entrys',
+            'edit_active', 'del_entry')
 
             #Adding the data
-            self.control_widgets(
+            self.control_widgets('insert_data_entrys',
             na=self.list_info[0],
             em=self.list_info[1],
-            ph=self.list_info[2], insert_data_entrys=True)
+            ph=self.list_info[2])
             
-            self.control_widgets(disable_entrys=True)
+            self.control_widgets('disable_entrys')
 
             #Change the focus
             self.windTwo.focus()
@@ -355,142 +356,137 @@ class Product:
                 
 
     #Function to remove widgets
-    def control_widgets(self, na=None, em=None, ph=None, 
-    place_add=None, place_entrys=None, place_done=None, 
-    forget_done=None, forget_entrys=None, forget_add=None,
-    del_entry=None, disable_search=None, active_search=None,
-    configure_entrys=None, placeholder=None, insert_placeholder=None, reset_done=None,
-    del_search=None, disable_entrys=None, edit_active=None, edit_disable=None,
-    insert_data_entrys=None, validate_blank=None, validate_edit=None,
-    done_edit=None, done_add=None):
+    def control_widgets(self, *args, na=None, em=None, ph=None):
         
-        if place_add == True:
-            #Add the buttons "Add", "Settings" and "Select"
-            self.add_btn.place(x=50, y=22, anchor=E)
-            self.sel_btn.place(x=260, y=22, anchor=E)
-            self.settings_btn.place(x=210, y=22, anchor=E)
+        for value in args:
 
-        if forget_add == True:
-            #Remove the buttons in the main 
-            self.add_btn.place_forget()
-            self.sel_btn.place_forget()
-            self.settings_btn.place_forget()
+            if value == 'place_add':
+                #Add the buttons "Add", "Settings" and "Select"
+                self.add_btn.place(x=50, y=22, anchor=E)
+                self.sel_btn.place(x=260, y=22, anchor=E)
+                self.settings_btn.place(x=210, y=22, anchor=E)
 
-        if place_done == True:
-            #Add the buttons "Cancel" and "Done"
-            self.cancel_btn.place(x=100, y=22, anchor=E)
-            self.done_btn.place(x=480, y=22, anchor=E)
+            if value == 'forget_add':
+                #Remove the buttons in the main 
+                self.add_btn.place_forget()
+                self.sel_btn.place_forget()
+                self.settings_btn.place_forget()
 
-        if forget_done == True:
-            #Remove the buttons in the add stage or edit
-            self.cancel_btn.place_forget()
-            self.done_btn.place_forget()
+            if value == 'place_done':
+                #Add the buttons "Cancel" and "Done"
+                self.cancel_btn.place(x=100, y=22, anchor=E)
+                self.done_btn.place(x=480, y=22, anchor=E)
 
-        if reset_done == True:
-            self.done_btn.configure(state='disabled')
+            if value == 'forget_done':
+                #Remove the buttons in the add stage or edit
+                self.cancel_btn.place_forget()
+                self.done_btn.place_forget()
 
-        if done_add == True:
-            #Configure the button to call the function button done in add stage
-            self.done_btn.configure(command=self.done_addF)
+            if value == 'reset_done':
+                self.done_btn.configure(state='disabled')
 
-        if done_edit == True:
-            #Configure the button to call the function button edit in edit stage
-            self.done_btn.configure(command=self.done_editF)
+            if value == 'done_add':
+                #Configure the button to call the function button done in add stage
+                self.done_btn.configure(command=self.done_addF)
 
-        if disable_search == True:
-            #Disabled the search
-            self.searchbar_widget.configure(state='readonly')
-            self.listctc_widget.configure(state='disabled')
+            if value == 'done_edit':
+                #Configure the button to call the function button edit in edit stage
+                self.done_btn.configure(command=self.done_editF)
 
-        if active_search == True:
-            #Active the search
-            self.searchbar_widget.configure(state='normal')
-            self.listctc_widget.configure(state='normal')
+            if value == 'disable_search':
+                #Disabled the search
+                self.searchbar_widget.configure(state='readonly')
+                self.listctc_widget.configure(state='disabled')
 
-        if place_entrys == True:
-            #Add the entrys
-            self.CName.place(x=250, y=150, anchor=CENTER)
-            self.CEmail.place(x=250, y=270, anchor=CENTER)
-            self.CPhone.place(x=250, y=390, anchor=CENTER)
+            if value == 'active_search':
+                #Active the search
+                self.searchbar_widget.configure(state='normal')
+                self.listctc_widget.configure(state='normal')
 
-        if del_entry == True:
-            #Delete the entrys
-            self.CName.configure(state='normal')
-            self.CEmail.configure(state='normal')
-            self.CPhone.configure(state='normal')
-            self.CName.delete(0, END)
-            self.CEmail.delete(0, END)
-            self.CPhone.delete(0, END)
+            if value == 'place_entrys':
+                #Add the entrys
+                self.CName.place(x=250, y=150, anchor=CENTER)
+                self.CEmail.place(x=250, y=270, anchor=CENTER)
+                self.CPhone.place(x=250, y=390, anchor=CENTER)
+
+            if value == 'del_entry':
+                #Delete the entrys
+                self.CName.configure(state='normal')
+                self.CEmail.configure(state='normal')
+                self.CPhone.configure(state='normal')
+                self.CName.delete(0, END)
+                self.CEmail.delete(0, END)
+                self.CPhone.delete(0, END)
+                
+            if value == 'insert_placeholder':
+                #Delete the entrys
+                self.CName.delete(0, END)
+                self.CEmail.delete(0, END)
+                self.CPhone.delete(0, END)
+
+                #Insert in the entry
+                self.CName.insert(0, 'Full Name')
+                self.CEmail.insert(0, 'Email')
+                self.CPhone.insert(0, 'Number Phone')
+
+            if value == 'configure_entrys':
+                #Configure entrys
+                self.CName.configure(state='normal', width=25, font=('Arial', 15))
+                self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
+                self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
             
-        if insert_placeholder == True:
-            #Delete the entrys
-            self.CName.delete(0, END)
-            self.CEmail.delete(0, END)
-            self.CPhone.delete(0, END)
+            if value == 'disable_entrys':
+                #Disabled entrys
+                self.CName.configure(state='readonly')
+                self.CEmail.configure(state='readonly')
+                self.CPhone.configure(state='readonly')
 
-            #Insert in the entry
-            self.CName.insert(0, 'Full Name')
-            self.CEmail.insert(0, 'Email')
-            self.CPhone.insert(0, 'Number Phone')
+            if value == 'forget_entrys':
+                #Remove the entrys
+                self.CName.place_forget()
+                self.CEmail.place_forget()
+                self.CPhone.place_forget()
+    
+            if value == 'del_search':
+                #Delete search bar text
+                self.searchbar_widget.delete(0, END)
 
-        if configure_entrys == True:
-            #Configure entrys
-            self.CName.configure(state='normal', width=25, font=('Arial', 15))
-            self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
-            self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
-        
-        if disable_entrys == True:
-            #Disabled entrys
-            self.CName.configure(state='readonly')
-            self.CEmail.configure(state='readonly')
-            self.CPhone.configure(state='readonly')
+            if value == 'edit_active':
+                #Adding the button to edit
+                self.remove_btn.place(x=480, y=22, anchor=E)
+                self.edit_btn.place(x=100, y=22, anchor=E)
 
-        if forget_entrys == True:
-            #Remove the entrys
-            self.CName.place_forget()
-            self.CEmail.place_forget()
-            self.CPhone.place_forget()
- 
-        if del_search == True:
-            #Delete search bar text
-            self.searchbar_widget.delete(0, END)
+            if value == 'edit_disable':
+                #Removing the edit button
+                self.edit_btn.place_forget()
+                self.remove_btn.place_forget()
 
-        if edit_active == True:
-            #Adding the button to edit
-            self.remove_btn.place(x=480, y=22, anchor=E)
-            self.edit_btn.place(x=100, y=22, anchor=E)
+            if value == 'insert_data_entrys':
+                #Delete the entrys
+                self.CName.delete(0, END)
+                self.CEmail.delete(0, END)
+                self.CPhone.delete(0, END)
 
-        if edit_disable == True:
-            #Removing the edit button
-            self.edit_btn.place_forget()
-            self.remove_btn.place_forget()
-
-        if insert_data_entrys == True:
-            #Delete the entrys
-            self.CName.delete(0, END)
-            self.CEmail.delete(0, END)
-            self.CPhone.delete(0, END)
-
-            #Insert the data in the entry
-            self.CName.insert(0, na)
-            self.CEmail.insert(0, em)
-            self.CPhone.insert(0, ph)
-        
-        if placeholder == True:
-            #Deleting the placeholder
-            self.CName.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, name=True))
-            self.CEmail.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, email=True))
-            self.CPhone.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, phone=True))
-        
-        if validate_blank == True:
-            #Validating blank
-            self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, add=True))
-        
-        if validate_edit == True:
-            #Validating edit stage
-            self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
-            self.CEmail.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
-            self.CPhone.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+                #Insert the data in the entry
+                self.CName.insert(0, na)
+                self.CEmail.insert(0, em)
+                self.CPhone.insert(0, ph)
+            
+            if value == 'placeholder':
+                #Deleting the placeholder
+                self.CName.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, name=True))
+                self.CEmail.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, email=True))
+                self.CPhone.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, phone=True))
+            
+            if value == 'validate_blank':
+                #Validating blank
+                self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, add=True))
+            
+            if value == 'validate_edit':
+                #Validating edit stage
+                self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+                self.CEmail.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+                self.CPhone.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
             
     #SQLITE FUNCTIONS
 
@@ -584,7 +580,7 @@ class Product:
             self.getctc_list()
 
             #Control widget
-            self.control_widgets(forget_entrys=True, place_add=True, forget_done=True, edit_disable=True, reset_done=True)
+            self.control_widgets('forget_entrys', 'place_add', 'forget_done', 'edit_disable', 'reset_done')
 
             #Destroy confirm window
             self.confirm_wind.destroy()
