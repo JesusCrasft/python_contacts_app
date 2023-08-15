@@ -97,7 +97,7 @@ class Product:
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Delete Button
-        self.remove_btn = Button(self.label_btns, text='Delete', command=self.delete_contactF)
+        self.remove_btn = Button(self.label_btns, text='Delete', command=self.delete_buttonF)
         self.remove_btn.configure(height=1, width=5, font=('Arial',10))
 
 
@@ -177,6 +177,7 @@ class Product:
         self.control_widgets(active_search=True, del_entry=True, forget_done=True,
         forget_entrys=True, place_add=True, reset_done=True)
 
+
         #Change the focus
         self.windTwo.focus()
         self.windTwo.title('Local Contacts')
@@ -186,7 +187,8 @@ class Product:
     def edit_buttonF(self):
         #Control widgets
         self.control_widgets(disable_search=True, del_search=True, edit_disable=True,
-        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True, done_edit=True)
+        forget_add=True, place_done=True, configure_entrys=True, validate_edit=True,
+        done_edit=True, reset_done=True)
 
         #Between string
         self.between_stringF(self.CName.get())
@@ -194,6 +196,35 @@ class Product:
         #Change the focus
         self.windTwo.focus()
         self.windTwo.title('Editing a contact')
+
+
+    #Function to mount the delete stage to delete a contact
+    def delete_buttonF(self):
+        #Confirmation window
+        self.confirm_wind = Tk()
+        self.confirm_wind.title('Confirmation')
+        self.confirm_wind.geometry("400x200+700+700")
+        self.confirm_wind.resizable(False, False)
+        self.confirm_wind.configure(bg='#1F1F1F')
+
+        #Validation var
+        self.email = self.CEmail.get()
+        self.phone = self.CPhone.get()
+
+        #Widgets
+        confirm_lbl = Label(self.confirm_wind, text='Want to delete this contact?', width=30, height=2)
+        confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+        confirm_lbl.place(x=200, y=25, anchor=CENTER)
+
+        confirm_btnF = Button(self.confirm_wind, text='Yes', width=1, height=1)
+        confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
+        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+        confirm_btnF.place(x=100, y=120, anchor=CENTER)
+
+        confirm_btnS = Button(self.confirm_wind, text='No',width=1, height=1)
+        confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
+        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+        confirm_btnS.place(x=300, y=120, anchor=CENTER)
 
 
     #Function to Add Done Button
@@ -482,6 +513,7 @@ class Product:
         for rows in db_rows:
             self.my_ctclist_old = ''.join(rows)
             self.my_ctclist.insert(0, self.my_ctclist_old)
+            print(self.my_ctclist)
             self.update_listboxF(self.my_ctclist)
             
 
@@ -541,15 +573,32 @@ class Product:
 
 
     #Function to delete the contact in the database
-    def delete_contactF(self):
-        query = f'DELETE FROM contacts WHERE name = {self.between_stringF(name=self.CName.get())}'
-        self.run_query(query)
-        self.my_ctclist_old = []
-        self.my_ctclist = []
-        self.getctc_list()
+    def delete_contactF(self, Yes=None, No=None):
 
-        #Control widget
-        self.control_widgets(forget_entrys=True, place_add=True, forget_done=True, edit_disable=True)
+        if Yes == True:
+            query = f'DELETE FROM contacts WHERE name = {self.between_stringF(name=self.CName.get())}'
+            self.run_query(query)
+            self.my_ctclist_old = []
+            self.my_ctclist = []
+            print(self.my_ctclist)
+            self.getctc_list()
+
+            #Control widget
+            self.control_widgets(forget_entrys=True, place_add=True, forget_done=True, edit_disable=True, reset_done=True)
+
+            #Destroy confirm window
+            self.confirm_wind.destroy()
+        
+        if No == True:
+            self.my_ctclist_old = []
+            self.my_ctclist = []
+            self.getctc_list()
+
+            self.show_infoF(0, val_button=self.CName.get())
+            
+            #Destroy the confirm wind
+            self.confirm_wind.destroy()
+
 
 if __name__ == '__main__':
     PryWind = Tk()
