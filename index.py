@@ -386,7 +386,7 @@ class Product:
     def convert_thingsF(self, name=None):
 
         if name != None:
-            #Inserting the old name between 'name' with aitsuki help 
+            #Inserting the old name between 'name'a with aitsuki help 
             aitsuki = "'"
             nakuru = "'"
             self.request_name = aitsuki + name + nakuru
@@ -404,7 +404,7 @@ class Product:
             tuple_id = self.listctc_widget.curselection()
             id = tuple_id[0]
             self.select_id = self.list_id[id]
-            
+
             return self.request_name, self.select_id
         
 
