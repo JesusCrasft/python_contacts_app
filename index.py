@@ -235,6 +235,7 @@ class Product:
         #Disable all buttons
         self.control_widgets('disable_all_btn')
 
+
     #Function to Add Done Button
     def done_addF(self):
         #Control widgets
@@ -386,7 +387,7 @@ class Product:
     def convert_thingsF(self, name=None):
 
         if name != None:
-            #Inserting the old name between 'name'a with aitsuki help 
+            #Inserting the old name between 'name' with aitsuki help 
             aitsuki = "'"
             nakuru = "'"
             self.request_name = aitsuki + name + nakuru
@@ -562,7 +563,7 @@ class Product:
         return result
     
 
-    #Function to get the contactos from database
+    #Function to get the contacts from database
     def getctc_list(self):
         #Quering the data
         query = 'SELECT name, id FROM contacts ORDER BY name DESC'
@@ -576,6 +577,17 @@ class Product:
             self.my_ctclist.append(self.my_ctclist_old)
             self.update_listboxF(self.my_ctclist)
             
+    
+    #Function to get the last id from the database
+    def get_last_id(self):
+        #Quering the data
+        query = 'SELECT MAX(id) AS LastID FROM contacts'
+        db_rows = self.run_query(query)
+
+        #Save the id
+        for rows in db_rows:
+            self.select_id = ''.join(str(rows[0]))
+
 
     #Function to get the data from database with name
     def getctc_info(self, request = []):
@@ -596,6 +608,9 @@ class Product:
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
+        #Get the last id
+        self.get_last_id()
+
         #Update the contact list
         self.getctc_list()
     
@@ -613,7 +628,7 @@ class Product:
 
     #Function to delete the contact in the database
     def delete_contactF(self, Yes=None, No=None):
-
+        
         if Yes == True:
             #Quering the data
             query = f'DELETE FROM contacts WHERE name = {self.convert_thingsF(name=self.CName.get())} AND id = {self.select_id}'
