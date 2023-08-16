@@ -1,6 +1,8 @@
 from tkinter import ttk
 from tkinter import * 
 
+import phonenumbers
+
 import sqlite3
 
 class Product:
@@ -45,10 +47,14 @@ class Product:
         self.my_ctclist_old = []
         self.my_ctclist = []
         self.list_info = []
+        self.list_id = []
+        self.list_old_id = []
         self.name = ''
         self.email = ''
         self.phone = ''
+        self.id = ''
         self.request_name = ''
+        self.select_id = ''
 
         #Label Add Contact
         self.label_stage = Label(self.windTwo, height=23, width=50)
@@ -97,8 +103,8 @@ class Product:
         self.edit_btn.configure(height=1, width=5, font=('Arial',10))
 
         #Delete Button
-        self.remove_btn = Button(self.label_btns, text='Delete', command=self.delete_buttonF)
-        self.remove_btn.configure(height=1, width=5, font=('Arial',10))
+        self.delete_btn = Button(self.label_btns, text='Delete', command=self.delete_buttonF)
+        self.delete_btn.configure(height=1, width=5, font=('Arial',10))
 
 
         #Label Search Widgets
@@ -191,7 +197,7 @@ class Product:
         'done_edit', 'reset_done')
 
         #Between string
-        self.between_stringF(self.CName.get())
+        self.convert_thingsF(self.CName.get())
 
         #Change the focus
         self.windTwo.focus()
@@ -226,6 +232,8 @@ class Product:
         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
         confirm_btnS.place(x=300, y=120, anchor=CENTER)
 
+        #Disable all buttons
+        self.control_widgets('disable_all_btn')
 
     #Function to Add Done Button
     def done_addF(self):
@@ -237,6 +245,7 @@ class Product:
         self.name = self.CName.get()
         self.email = self.CEmail.get()
         self.phone = self.CPhone.get()
+        #self.validate_phoneF()
         
         #Inserting the name in the contact list
         self.my_ctclist_old = []
@@ -297,7 +306,7 @@ class Product:
         
         elif val_list == True:
             #Request the data
-            self.list_info = self.getctc_info(self.between_stringF())
+            self.list_info = self.getctc_info(self.convert_thingsF())
 
             #Control widget
             self.control_widgets('place_entrys', 'configure_entrys',
@@ -355,7 +364,51 @@ class Product:
                 self.done_btn.configure(state='disabled')
                 
 
-    #Function to remove widgets
+    #Function to validate the phone number entry
+    def validate_phoneF(self):
+        #Try because phonenumbers doesnt return false?
+        try:
+            phone_string = phonenumbers.parse(self.CPhone.get())
+            phone = phonenumbers.is_possible_number(phone_string)
+            
+            #Validation always true
+            if phone == True:
+                self.phone = self.CPhone.get()
+
+            else:
+                print('aitsuki nakuru')
+
+        except:
+            print('??')
+
+
+    #Function to get the ANCHOR from the listbox
+    def convert_thingsF(self, name=None):
+
+        if name != None:
+            #Inserting the old name between 'name' with aitsuki help 
+            aitsuki = "'"
+            nakuru = "'"
+            self.request_name = aitsuki + name + nakuru
+            return self.request_name
+           
+        else:
+            #Convert the lst into a string with aitsuki help
+            lst = self.listctc_widget.get(ANCHOR)
+            lst_join = "".join(lst)
+            nakuru = "'"
+            aitsuki = "'"
+            self.request_name = aitsuki + lst_join + nakuru
+            
+            #Select one id from que list
+            tuple_id = self.listctc_widget.curselection()
+            id = tuple_id[0]
+            self.select_id = self.list_id[id]
+            
+            return self.request_name, self.select_id
+        
+
+    #Function to control the widgets
     def control_widgets(self, *args, na=None, em=None, ph=None):
         
         for value in args:
@@ -453,14 +506,24 @@ class Product:
 
             if value == 'edit_active':
                 #Adding the button to edit
-                self.remove_btn.place(x=480, y=22, anchor=E)
+                self.delete_btn.place(x=480, y=22, anchor=E)
                 self.edit_btn.place(x=100, y=22, anchor=E)
 
             if value == 'edit_disable':
                 #Removing the edit button
                 self.edit_btn.place_forget()
-                self.remove_btn.place_forget()
+                self.delete_btn.place_forget()
 
+            if value == 'disable_all_btn':
+                self.delete_btn.configure(state='disabled')
+                self.edit_btn.configure(state='disabled')
+                self.add_btn.configure(state='disabled')
+
+            if value == 'active_all_btn':
+                self.delete_btn.configure(state='active')
+                self.edit_btn.configure(state='active')
+                self.add_btn.configure(state='active')
+            
             if value == 'insert_data_entrys':
                 #Delete the entrys
                 self.CName.delete(0, END)
@@ -502,48 +565,28 @@ class Product:
     #Function to get the contactos from database
     def getctc_list(self):
         #Quering the data
-        query = 'SELECT name FROM contacts ORDER BY name DESC'
+        query = 'SELECT name, id FROM contacts ORDER BY name DESC'
         db_rows = self.run_query(query)
         
         #Filling the list
         for rows in db_rows:
-            self.my_ctclist_old = ''.join(rows)
-            self.my_ctclist.insert(0, self.my_ctclist_old)
-            print(self.my_ctclist)
+            self.my_ctclist_old = ''.join(rows[0])
+            self.list_old_id = str(rows[1])
+            self.list_id.insert(0, self.list_old_id)
+            self.my_ctclist.append(self.my_ctclist_old)
             self.update_listboxF(self.my_ctclist)
             
 
     #Function to get the data from database with name
-    def getctc_info(self, request):
+    def getctc_info(self, request = []):
         #Quering the data
-        query = f"SELECT name, email, phone FROM contacts WHERE name LIKE {request}"
+        query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
         db_rows = self.run_query(query)
         for rows in db_rows:
             name = rows[0]
             email = rows[1]
             phone = rows[2]
         return name, email, phone
-
-    
-    #Function to get the ANCHOR from the listbox
-    def between_stringF(self, name=None):
-
-        if name != None:
-            #Inserting the old name between 'name' with aitsuki help 
-            aitsuki = "'"
-            nakuru = "'"
-            self.request_name = aitsuki + name + nakuru
-            return self.request_name
-           
-        else:
-            #Convert the lst into a string with aitsuki help
-            lst = self.listctc_widget.get(ANCHOR)
-            lst_join = "".join(lst)
-            nakuru = "'"
-            aitsuki = "'"
-            self.request_name = aitsuki + lst_join + nakuru
-            self.windTwo.focus()
-            return self.request_name
 
 
     #Function to insert contact in the database
@@ -560,7 +603,7 @@ class Product:
     #Function to edit the contact in database
     def edit_contactF(self):
         #Quering the data
-        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.request_name}'
+        query = f'UPDATE contacts SET name = ?, email = ?, phone = ? WHERE name = {self.request_name} and id = {self.select_id}'
         parameters = (self.name, self.email, self.phone)
         self.run_query(query, parameters)
 
@@ -572,15 +615,16 @@ class Product:
     def delete_contactF(self, Yes=None, No=None):
 
         if Yes == True:
-            query = f'DELETE FROM contacts WHERE name = {self.between_stringF(name=self.CName.get())}'
+            #Quering the data
+            query = f'DELETE FROM contacts WHERE name = {self.convert_thingsF(name=self.CName.get())} AND id = {self.select_id}'
             self.run_query(query)
             self.my_ctclist_old = []
             self.my_ctclist = []
-            print(self.my_ctclist)
             self.getctc_list()
 
             #Control widget
-            self.control_widgets('forget_entrys', 'place_add', 'forget_done', 'edit_disable', 'reset_done')
+            self.control_widgets('forget_entrys', 'place_add', 'forget_done',
+            'edit_disable', 'reset_done', 'active_all_btn')
 
             #Destroy confirm window
             self.confirm_wind.destroy()
@@ -592,8 +636,13 @@ class Product:
 
             self.show_infoF(0, val_button=self.CName.get())
             
+            #Control widget
+            self.control_widgets('active_all_btn')
+
             #Destroy the confirm wind
             self.confirm_wind.destroy()
+
+            
 
 
 if __name__ == '__main__':
