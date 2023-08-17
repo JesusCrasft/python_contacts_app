@@ -170,7 +170,7 @@ class Product:
         self.control_widgets('del_entry', 'forget_entrys', 'forget_add',
         'disable_search', 'edit_disable')
         self.control_widgets('place_done', 'place_entrys', 'configure_entrys',
-        'insert_placeholder', 'placeholder', 'validate_blank', 'done_add')
+        'insert_placeholder', 'placeholder', 'validate_blank', 'done_add', 'reset_done')
         
         #Change the focus
         self.windTwo.focus()
