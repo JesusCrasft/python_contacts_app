@@ -238,29 +238,31 @@ class Product:
 
     #Function to Add Done Button
     def done_addF(self):
-        #Control widgets
-        self.control_widgets('active_search', 'del_search', 'forget_done',
-        'place_add', 'edit_active')
-
-        #Extracting the data from the entrys
+        #Extract the data and validate the data
         self.name = self.CName.get()
-        self.email = self.CEmail.get()
-        self.phone = self.CPhone.get()
-        #self.validate_phoneF()
-        
-        #Inserting the name in the contact list
-        self.my_ctclist_old = []
-        self.my_ctclist = []
+        self.email = self.validate_entrysF(new_email=self.CEmail.get())
+        self.phone = self.validate_entrysF(new_phone=self.CPhone.get())
 
-        #Sending the data to show the contact
-        self.show_infoF(0, val_button=self.name)
-        
-        #Inserting the contact in the database
-        self.add_contactF()
+        #Validate the entrys
+        if self.phone != False:
+            #Control widgets
+            self.control_widgets('active_search', 'del_search', 'forget_done',
+            'place_add', 'edit_active')
 
-        #Change the focus
-        self.windTwo.focus()
-        
+            #Inserting the name in the contact list
+            self.my_ctclist_old = []
+            self.my_ctclist = []
+
+            #Sending the data to show the contact
+            self.show_infoF(0, val_button=self.name)
+            
+            #Inserting the contact in the database
+            self.add_contactF()
+
+            #Change the focus
+            self.windTwo.focus()
+        else:
+            print('incorrect number')
 
     #Function to Edit Done Button
     def done_editF(self):
@@ -366,24 +368,32 @@ class Product:
                 
 
     #Function to validate the phone number entry
-    def validate_phoneF(self):
-        #Try because phonenumbers doesnt return false?
-        try:
-            phone_string = phonenumbers.parse(self.CPhone.get())
-            phone = phonenumbers.is_possible_number(phone_string)
-            
-            #Validation always true
-            if phone == True:
-                self.phone = self.CPhone.get()
+    def validate_entrysF(self, new_phone='', new_email=None):
+        
+        if new_phone != '':
+            #Try because phonenumbers doesnt return false?
+            try:
+                phone_string = phonenumbers.parse(new_phone)
+                phone = phonenumbers.is_possible_number(phone_string)
+                
+                #Validation always true
+                if phone == True:
+                    return new_phone
 
-            else:
-                print('aitsuki nakuru')
+            except Exception as ex:
+                return False
 
-        except:
-            print('??')
+        else:
+            return ''
+
+        if new_email != '':
+            return new_email
+        
+        else:
+            return ''
 
 
-    #Function to get the ANCHOR from the listbox
+    #Function to add things between two '', get the anchor from lst and the id
     def convert_thingsF(self, name=None):
 
         if name != None:
