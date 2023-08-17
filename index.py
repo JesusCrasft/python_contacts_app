@@ -240,11 +240,11 @@ class Product:
     def done_addF(self):
         #Extract the data and validate the data
         self.name = self.CName.get()
-        self.email = self.validate_entrysF(new_email=self.CEmail.get())
-        self.phone = self.validate_entrysF(new_phone=self.CPhone.get())
+        self.email = self.validate_emailF(self.CEmail.get())
+        self.phone = self.validate_phoneF(self.CPhone.get())
 
         #Validate the entrys
-        if self.phone != False:
+        if self.phone != False and self.email != False:
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_done',
             'place_add', 'edit_active')
@@ -261,8 +261,11 @@ class Product:
 
             #Change the focus
             self.windTwo.focus()
-        else:
+        elif self.phone == False:
             print('incorrect number')
+
+        elif self.email == False:
+            print('incorrect email')
 
     #Function to Edit Done Button
     def done_editF(self):
@@ -368,7 +371,7 @@ class Product:
                 
 
     #Function to validate the phone number entry
-    def validate_entrysF(self, new_phone='', new_email=None):
+    def validate_phoneF(self, new_phone=''):
         
         if new_phone != '':
             #Try because phonenumbers doesnt return false?
@@ -380,17 +383,21 @@ class Product:
                 if phone == True:
                     return new_phone
 
+                else:
+                    return False
+                
             except Exception as ex:
                 return False
 
-        else:
-            return ''
+        return ''
 
+
+    #Function to validate the email entry
+    def validate_emailF(self, new_email=''):
         if new_email != '':
             return new_email
         
-        else:
-            return ''
+        return ''
 
 
     #Function to add things between two '', get the anchor from lst and the id
