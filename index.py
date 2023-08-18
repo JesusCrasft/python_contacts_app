@@ -268,27 +268,34 @@ class Product:
 
     #Function to Edit Done Button
     def done_editF(self):
-        #Control widgets
-        self.control_widgets('active_search', 'del_search', 'forget_done', 'place_add', 'edit_active')
-
-        #Extracting the data from the entrys
+        #Extract the data and validate the data
         self.name = self.CName.get()
-        self.email = self.CEmail.get()
-        self.phone = self.CPhone.get()
+        self.email = self.validate_emailF(self.CEmail.get())
+        self.phone = self.validate_phoneF(self.CPhone.get())
         
-        #Inserting the name in the contact list
-        self.my_ctclist_old = []
-        self.my_ctclist = []
+        #Validate the entrys
+        if self.phone != False and self.email != False:
+            #Control widgets
+            self.control_widgets('active_search', 'del_search', 'forget_done', 'place_add', 'edit_active')
 
-        #Sending the data to show the contact
-        self.show_infoF(0, val_button=self.name)
-        
-        #Inserting the contact in the database
-        self.edit_contactF()
+            #Inserting the name in the contact list
+            self.my_ctclist_old = []
+            self.my_ctclist = []
 
-        #Change the focus
-        self.windTwo.focus()
+            #Sending the data to show the contact
+            self.show_infoF(0, val_button=self.name)
+            
+            #Inserting the contact in the database
+            self.edit_contactF()
 
+            #Change the focus
+            self.windTwo.focus()
+
+        elif self.phone == False:
+            print('incorrect number')
+
+        elif self.email == False:
+            print('incorrect email')
 
     #Function to show the information of the selected contact
     def show_infoF(self, key, val_button=None, val_list=None):
