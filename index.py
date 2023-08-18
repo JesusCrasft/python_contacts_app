@@ -55,6 +55,9 @@ class Product:
         self.id = ''
         self.request_name = ''
         self.select_id = ''
+        self.text_wind = ''
+        self.confirm_wind = ''
+        self.invalid_wind = ''
 
         #Label Add Contact
         self.label_stage = Label(self.windTwo, height=23, width=50)
@@ -118,7 +121,7 @@ class Product:
         self.searchbar_widget.place(x=145, y=47, anchor=S)
 
         #List of Contacts
-        self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE, exportselection=False)
+        self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE , exportselection=False)
         self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.listctc_widget.place(x=145, y=50, anchor=N)
 
@@ -234,6 +237,37 @@ class Product:
         #Disable all buttons
         self.control_widgets('disable_all_btn')
 
+        #Check if the window is closed with the X button
+        self.confirm_wind.bind("<Destroy>", self.destroy_windowsF)
+
+
+    #Function to mount the wrong stage to warning
+    def invalid_entryF(self):
+        #Invalid entry window
+        self.invalid_wind = Tk()
+        self.invalid_wind.title('Invalid Data')
+        self.invalid_wind.geometry("500x200+700+700")
+        self.invalid_wind.resizable(False, False)
+        self.invalid_wind.configure(bg='#1F1F1F')
+
+        #Disable all buttons
+        self.control_widgets('disable_all_btn')
+
+        if self.phone == False and self.email == False:
+            self.text_wind = 'Invalid Phone Number and Email Address'
+            self.control_widgets('fill_invalid')
+
+        elif self.phone == False:
+            self.text_wind = 'Invalid Number Phone'
+            self.control_widgets('fill_invalid')
+
+        elif self.email == False:
+            self.text_wind = 'Invalid Email Address'
+            self.control_widgets('fill_invalid')
+
+        #Check if the window is closed with the X button
+        self.invalid_wind.bind("<Destroy>", self.destroy_windowsF)
+
 
     #Function to Add Done Button
     def done_addF(self):
@@ -261,12 +295,8 @@ class Product:
             #Change the focus
             self.windTwo.focus()
             
-        elif self.phone == False:
-            print('incorrect number')
-
-        elif self.email == False:
-            print('incorrect email')
-
+        else:
+            self.invalid_entryF()
 
 
     #Function to Edit Done Button
@@ -294,12 +324,10 @@ class Product:
             #Change the focus
             self.windTwo.focus()
 
-        elif self.phone == False:
-            print('incorrect number')
+        else:
+            self.invalid_wind()
 
-        elif self.email == False:
-            print('incorrect email')
-
+    
     #Function to show the information of the selected contact
     def show_infoF(self, key, val_button=None, val_list=None):
         #Verifiy method
@@ -440,6 +468,24 @@ class Product:
             return self.request_name, self.select_id
         
 
+    #Function to destroy windows
+    def destroy_windowsF(self, event):
+        if event.widget == self.confirm_wind:
+            self.my_ctclist_old = []
+            self.my_ctclist = []
+            self.getctc_list()
+
+            self.show_infoF(0, val_button=self.CName.get())
+            
+            #Control widget
+            self.control_widgets('active_all_btn')
+
+        if event.widget == self.invalid_wind:
+            self.control_widgets('active_all_btn')
+            
+        return
+
+
     #Function to control the widgets
     def control_widgets(self, *args, na=None, em=None, ph=None):
         
@@ -550,11 +596,15 @@ class Product:
                 self.delete_btn.configure(state='disabled')
                 self.edit_btn.configure(state='disabled')
                 self.add_btn.configure(state='disabled')
+                self.done_btn.configure(state='disabled')
+                self.cancel_btn.configure(state='disabled')
 
             if value == 'active_all_btn':
                 self.delete_btn.configure(state='active')
                 self.edit_btn.configure(state='active')
                 self.add_btn.configure(state='active')
+                self.done_btn.configure(state='active')
+                self.cancel_btn.configure(state='active')
             
             if value == 'insert_data_entrys':
                 #Delete the entrys
@@ -583,6 +633,19 @@ class Product:
                 self.CEmail.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
                 self.CPhone.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
             
+            if value == 'fill_invalid':
+                confirm_lbl = Label(self.invalid_wind, text=self.text_wind, width=40, height=2)
+                confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                confirm_lbl.place(x=250, y=25, anchor=CENTER)
+
+                confirm_btnF = Button(self.invalid_wind, text='Ok', width=1, height=1)
+                confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_invalid'))
+                #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                confirm_btnF.place(x=250, y=120, anchor=CENTER)
+
+            if value == 'destroy_invalid':
+                self.invalid_wind.destroy()
+
     #SQLITE FUNCTIONS
 
     #Function to connect the basedata
@@ -672,8 +735,9 @@ class Product:
             self.control_widgets('forget_entrys', 'place_add', 'forget_done',
             'edit_disable', 'reset_done', 'active_all_btn')
 
-            #Destroy confirm window
+            #Destroy confirm window 
             self.confirm_wind.destroy()
+            
         
         if No == True:
             self.my_ctclist_old = []
@@ -687,6 +751,8 @@ class Product:
 
             #Destroy the confirm wind
             self.confirm_wind.destroy()
+        
+        
 
             
 
