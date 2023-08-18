@@ -260,11 +260,14 @@ class Product:
 
             #Change the focus
             self.windTwo.focus()
+            
         elif self.phone == False:
             print('incorrect number')
 
         elif self.email == False:
             print('incorrect email')
+
+
 
     #Function to Edit Done Button
     def done_editF(self):
@@ -386,7 +389,7 @@ class Product:
                 phone = phonenumbers.is_possible_number(phone_string)
                 
                 #Validation always true
-                if phone == True:
+                if phone:
                     return new_phone
 
                 else:
@@ -401,8 +404,14 @@ class Product:
     #Function to validate the email entry
     def validate_emailF(self, new_email=''):
         if new_email != '':
-            return new_email
-        
+            valid_email = validate_email(new_email)
+
+            if valid_email:
+                return new_email
+
+            else:
+                return False
+            
         return ''
 
 
@@ -560,19 +569,19 @@ class Product:
             
             if value == 'placeholder':
                 #Deleting the placeholder
-                self.CName.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, name=True))
-                self.CEmail.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, email=True))
-                self.CPhone.bind("<FocusIn>", lambda m="I love aitsuki nakuru": self.placeholderF(0, phone=True))
+                self.CName.bind("<FocusIn>", lambda m="": self.placeholderF(0, name=True))
+                self.CEmail.bind("<FocusIn>", lambda m="": self.placeholderF(0, email=True))
+                self.CPhone.bind("<FocusIn>", lambda m="": self.placeholderF(0, phone=True))
             
             if value == 'validate_blank':
                 #Validating blank
-                self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, add=True))
+                self.CName.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, add=True))
             
             if value == 'validate_edit':
                 #Validating edit stage
-                self.CName.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
-                self.CEmail.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
-                self.CPhone.bind("<KeyRelease>", lambda m="I love aitsuki nakuru": self.validate_stageF(0, edit=True))
+                self.CName.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
+                self.CEmail.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
+                self.CPhone.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
             
     #SQLITE FUNCTIONS
 
@@ -617,11 +626,8 @@ class Product:
         query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
         db_rows = self.run_query(query)
         for rows in db_rows:
-            print(rows)
             name = rows[0]
-            print(name)
             email = rows[1]
-            print(email)
             phone = rows[2]
         return name, email, phone
 
