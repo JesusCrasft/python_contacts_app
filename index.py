@@ -1,8 +1,8 @@
 from tkinter import ttk
 from tkinter import * 
+from validate_email import *
 
 import phonenumbers
-
 import sqlite3
 
 class Product:
@@ -118,7 +118,7 @@ class Product:
         self.searchbar_widget.place(x=145, y=47, anchor=S)
 
         #List of Contacts
-        self.listctc_widget = Listbox(self.label_search)
+        self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE, exportselection=False)
         self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
         self.listctc_widget.place(x=145, y=50, anchor=N)
 
@@ -137,8 +137,7 @@ class Product:
         self.searchbar_widget.bind('<KeyRelease>', self.check_entryF)
 
         #Listbox event
-        self.listctc_widget.bind('<<ListboxSelect>>', lambda m="I love aitsuki nakuru": self.show_infoF(0, val_list=True))
-
+        self.listctc_widget.bind('<<ListboxSelect>>', lambda m="": self.show_infoF(0, val_list=True))
 
     #Function to update the listbox
     def update_listboxF(self, data):
@@ -327,7 +326,7 @@ class Product:
             self.control_widgets('disable_entrys')
 
             #Change the focus
-            self.windTwo.focus()
+            #self.windTwo.focus()
             self.windTwo.title('Contact Information 2')
             
             
@@ -422,7 +421,6 @@ class Product:
             tuple_id = self.listctc_widget.curselection()
             id = tuple_id[0]
             self.select_id = self.list_id[id]
-
             return self.request_name, self.select_id
         
 
@@ -612,8 +610,11 @@ class Product:
         query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
         db_rows = self.run_query(query)
         for rows in db_rows:
+            print(rows)
             name = rows[0]
+            print(name)
             email = rows[1]
+            print(email)
             phone = rows[2]
         return name, email, phone
 
