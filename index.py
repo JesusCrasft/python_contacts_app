@@ -285,9 +285,10 @@ class Product:
         self.phone = self.validate_phoneF(self.CPhone.get())
         
         #Validate the entrys
-        if self.name == '':
-            self.name == 'No Name Added'
         if self.phone != False and self.email != False:
+            if self.name == '':
+                self.name = 'Unnamed'
+
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_done', 'place_add', 'edit_active')
 
