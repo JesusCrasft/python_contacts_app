@@ -209,7 +209,7 @@ class Product:
     #Function to mount the delete stage to delete a contact
     def delete_buttonF(self):
         #Confirmation window
-        self.confirm_wind = Tk()
+        self.confirm_wind = Tk
         self.confirm_wind.title('Confirmation')
         self.confirm_wind.geometry("400x200+700+700")
         self.confirm_wind.resizable(False, False)
@@ -325,7 +325,7 @@ class Product:
             self.windTwo.focus()
 
         else:
-            self.invalid_wind()
+            self.invalid_entryF()
 
     
     #Function to show the information of the selected contact
