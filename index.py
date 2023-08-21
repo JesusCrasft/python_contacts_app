@@ -285,6 +285,8 @@ class Product:
         self.phone = self.validate_phoneF(self.CPhone.get())
         
         #Validate the entrys
+        if self.name == '':
+            self.name == 'No Name Added'
         if self.phone != False and self.email != False:
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_done', 'place_add', 'edit_active')
@@ -388,8 +390,8 @@ class Product:
     #Function to validate the phone number entry
     def validate_phoneF(self, new_phone=''):
         
-        if new_phone != '' and new_phone != 'Number Phone':
-            #Try because phonenumbers doesnt return false?
+        if new_phone != '' and new_phone != 'Number Phone' and new_phone != 'No Number Phone Added':
+            #Try because phonenumbers dont return false?
             try:
                 phone_string = phonenumbers.parse(new_phone)
                 phone = phonenumbers.is_possible_number(phone_string)
@@ -409,7 +411,7 @@ class Product:
 
     #Function to validate the email entry
     def validate_emailF(self, new_email=''):
-        if new_email != '' and new_email != 'Email':
+        if new_email != '' and new_email != 'Email' and new_email != 'No Email Added':
             valid_email = validate_email(new_email)
 
             if valid_email:
@@ -617,20 +619,23 @@ class Product:
                 self.wind.geometry("500x200+700+700")
                 self.wind.resizable(False, False)
                 self.wind.configure(bg='#1F1F1F')
-                
+
+            if value == 'fill':
+                #Label
                 confirm_lbl = Label(self.wind, text=self.label_wind, width=40, height=2)
                 confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                 confirm_lbl.place(x=250, y=25, anchor=CENTER)
 
-            if value == 'fill':
                 for value in args:
                     if value == 'fill_invalid':
+                        #Button
                         confirm_btnF = Button(self.wind, text='Ok', width=1, height=1)
                         confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_wind'))
                         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                         confirm_btnF.place(x=250, y=120, anchor=CENTER)
 
                     if value == 'fill_delete':
+                        #Buttons
                         confirm_btnF = Button(self.wind, text='Yes', width=1, height=1)
                         confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
                         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
@@ -744,10 +749,6 @@ class Product:
             self.control_widgets('destroy_wind', 'active_all_btn')
 
         
-        
-
-            
-
 
 if __name__ == '__main__':
     PryWind = Tk()
