@@ -55,9 +55,8 @@ class Product:
         self.id = ''
         self.request_name = ''
         self.select_id = ''
-        self.text_wind = ''
-        self.confirm_wind = Tk
-        self.invalid_wind = Tk
+        self.title_wind = ''
+        self.label_wind = ''
 
         #Label Add Contact
         self.label_stage = Label(self.windTwo, height=23, width=50)
@@ -208,65 +207,44 @@ class Product:
 
     #Function to mount the delete stage to delete a contact
     def delete_buttonF(self):
-        #Confirmation window
-        self.confirm_wind = Tk
-        self.confirm_wind.title('Confirmation')
-        self.confirm_wind.geometry("400x200+700+700")
-        self.confirm_wind.resizable(False, False)
-        self.confirm_wind.configure(bg='#1F1F1F')
+        #Title name and Label name
+        self.title_wind = 'Delete Contact'
+        self.label_wind = 'Want to delete this contact?'
+        
+        #Create the window and disable all buttons
+        self.control_widgets('disable_all_btn', 'create_wind', 'fill', 'fill_delete')
 
         #Validation var
         self.email = self.CEmail.get()
         self.phone = self.CPhone.get()
 
-        #Widgets
-        confirm_lbl = Label(self.confirm_wind, text='Want to delete this contact?', width=30, height=2)
-        confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-        confirm_lbl.place(x=200, y=25, anchor=CENTER)
-
-        confirm_btnF = Button(self.confirm_wind, text='Yes', width=1, height=1)
-        confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
-        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-        confirm_btnF.place(x=100, y=120, anchor=CENTER)
-
-        confirm_btnS = Button(self.confirm_wind, text='No',width=1, height=1)
-        confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
-        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-        confirm_btnS.place(x=300, y=120, anchor=CENTER)
-
-        #Disable all buttons
-        self.control_widgets('disable_all_btn')
-
         #Check if the window is closed with the X button
-        self.confirm_wind.bind("<Destroy>", self.destroy_windowsF)
+        self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event="delete_wind"))
 
 
     #Function to mount the wrong stage to warning
     def invalid_entryF(self):
-        #Invalid entry window
-        self.invalid_wind = Tk()
-        self.invalid_wind.title('Invalid Data')
-        self.invalid_wind.geometry("500x200+700+700")
-        self.invalid_wind.resizable(False, False)
-        self.invalid_wind.configure(bg='#1F1F1F')
+        #Title Name
+        self.title_wind = 'Invalid Data'
 
-        #Disable all buttons
-        self.control_widgets('disable_all_btn')
+        #Create the window and disable all buttons
+        self.control_widgets('disable_all_btn', 'create_wind')
 
+        #Validate to create the window warn
         if self.phone == False and self.email == False:
-            self.text_wind = 'Invalid Phone Number and Email Address'
-            self.control_widgets('fill_invalid')
+            self.label_wind = 'Invalid Phone Number and Email Address'
+            self.control_widgets('fill', 'fill_invalid')
 
         elif self.phone == False:
-            self.text_wind = 'Invalid Number Phone'
-            self.control_widgets('fill_invalid')
+            self.label_wind = 'Invalid Number Phone'
+            self.control_widgets('fill', 'fill_invalid')
 
         elif self.email == False:
-            self.text_wind = 'Invalid Email Address'
-            self.control_widgets('fill_invalid')
+            self.label_wind = 'Invalid Email Address'
+            self.control_widgets('fill', 'fill_invalid')
 
         #Check if the window is closed with the X button
-        self.invalid_wind.bind("<Destroy>", self.destroy_windowsF)
+        self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event='invalid_wind'))
 
 
     #Function to Add Done Button
@@ -470,8 +448,8 @@ class Product:
             
 
     #Function to destroy windows
-    def destroy_windowsF(self, event):
-        if event.widget == self.confirm_wind:
+    def destroy_windowsF(self, event=None):
+        if event == 'delete_wind':
             self.my_ctclist_old = []
             self.my_ctclist = []
             self.getctc_list()
@@ -481,15 +459,14 @@ class Product:
             #Control widget
             self.control_widgets('active_all_btn')
 
-        if event.widget == self.invalid_wind:
+        if event == 'invalid_wind':
             self.control_widgets('active_all_btn')
             
         return
 
 
     #Function to control the widgets
-    def control_widgets(self, *args, na=None, em=None, ph=None):
-        
+    def control_widgets(self, *args, na=None, em=None, ph=None, text_wind=None):
         for value in args:
 
             if value == 'place_add':
@@ -634,18 +611,38 @@ class Product:
                 self.CEmail.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
                 self.CPhone.bind("<KeyRelease>", lambda m="": self.validate_stageF(0, edit=True))
             
-            if value == 'fill_invalid':
-                confirm_lbl = Label(self.invalid_wind, text=self.text_wind, width=40, height=2)
+            if value == 'create_wind':
+                self.wind = Tk()
+                self.wind.title(self.title_wind)
+                self.wind.geometry("500x200+700+700")
+                self.wind.resizable(False, False)
+                self.wind.configure(bg='#1F1F1F')
+                
+                confirm_lbl = Label(self.wind, text=self.label_wind, width=40, height=2)
                 confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                 confirm_lbl.place(x=250, y=25, anchor=CENTER)
 
-                confirm_btnF = Button(self.invalid_wind, text='Ok', width=1, height=1)
-                confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_invalid'))
-                #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-                confirm_btnF.place(x=250, y=120, anchor=CENTER)
+            if value == 'fill':
+                for value in args:
+                    if value == 'fill_invalid':
+                        confirm_btnF = Button(self.wind, text='Ok', width=1, height=1)
+                        confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_wind'))
+                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                        confirm_btnF.place(x=250, y=120, anchor=CENTER)
 
-            if value == 'destroy_invalid':
-                self.invalid_wind.destroy()
+                    if value == 'fill_delete':
+                        confirm_btnF = Button(self.wind, text='Yes', width=1, height=1)
+                        confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
+                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                        confirm_btnF.place(x=150, y=120, anchor=CENTER)
+
+                        confirm_btnS = Button(self.wind, text='No',width=1, height=1)
+                        confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
+                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                        confirm_btnS.place(x=350, y=120, anchor=CENTER)
+                    
+            if value == 'destroy_wind':
+                self.wind.destroy()
 
     #SQLITE FUNCTIONS
 
@@ -733,12 +730,8 @@ class Product:
             self.getctc_list()
 
             #Control widget
-            self.control_widgets('forget_entrys', 'place_add', 'forget_done',
+            self.control_widgets('destroy_wind', 'forget_entrys', 'place_add', 'forget_done',
             'edit_disable', 'reset_done', 'active_all_btn')
-
-            #Destroy confirm window 
-            self.confirm_wind.destroy()
-            
         
         if No == True:
             self.my_ctclist_old = []
@@ -748,10 +741,8 @@ class Product:
             self.show_infoF(0, val_button=self.CName.get())
             
             #Control widget
-            self.control_widgets('active_all_btn')
+            self.control_widgets('destroy_wind', 'active_all_btn')
 
-            #Destroy the confirm wind
-            self.confirm_wind.destroy()
         
         
 
