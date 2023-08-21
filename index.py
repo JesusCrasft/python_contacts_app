@@ -56,8 +56,8 @@ class Product:
         self.request_name = ''
         self.select_id = ''
         self.text_wind = ''
-        self.confirm_wind = ''
-        self.invalid_wind = ''
+        self.confirm_wind = Tk
+        self.invalid_wind = Tk
 
         #Label Add Contact
         self.label_stage = Label(self.windTwo, height=23, width=50)
@@ -410,7 +410,7 @@ class Product:
     #Function to validate the phone number entry
     def validate_phoneF(self, new_phone=''):
         
-        if new_phone != '':
+        if new_phone != '' and new_phone != 'Number Phone':
             #Try because phonenumbers doesnt return false?
             try:
                 phone_string = phonenumbers.parse(new_phone)
@@ -426,12 +426,12 @@ class Product:
             except Exception as ex:
                 return False
 
-        return ''
+        return 'No Number Phone Added'
 
 
     #Function to validate the email entry
     def validate_emailF(self, new_email=''):
-        if new_email != '':
+        if new_email != '' and new_email != 'Email':
             valid_email = validate_email(new_email)
 
             if valid_email:
@@ -440,7 +440,7 @@ class Product:
             else:
                 return False
             
-        return ''
+        return 'No Email Added'
 
 
     #Function to add things between two '', get the anchor from lst and the id
@@ -463,10 +463,11 @@ class Product:
             
             #Select one id from que list
             tuple_id = self.listctc_widget.curselection()
-            id = tuple_id[0]
-            self.select_id = self.list_id[id]
+            if tuple_id != ():
+                id = tuple_id[0]
+                self.select_id = self.list_id[id]
             return self.request_name, self.select_id
-        
+            
 
     #Function to destroy windows
     def destroy_windowsF(self, event):
