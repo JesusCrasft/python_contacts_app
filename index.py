@@ -98,7 +98,7 @@ class Product:
 
         #Done Button
         self.done_btn = Button(self.label_btns, text='Done', state='disabled', command=self.done_addF)
-        self.done_btn.configure(height=1, width=5, font=('Arial',10))
+        self.done_btn.configure(height=1, width=5, font=('Arial', 10, 'bold'), bg='gray', disabledforeground='black', activeforeground='white')
 
         #Edit Button
         self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_buttonF)
@@ -140,6 +140,7 @@ class Product:
 
         #Listbox event
         self.listctc_widget.bind('<<ListboxSelect>>', lambda m="": self.show_infoF(0, val_list=True))
+
 
     #Function to update the listbox
     def update_listboxF(self, data):
@@ -256,6 +257,9 @@ class Product:
 
         #Validate the entrys
         if self.phone != False and self.email != False:
+            if self.name.isspace():
+                self.name = 'Unnamed'
+
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_done',
             'place_add', 'edit_active')
@@ -266,7 +270,7 @@ class Product:
 
             #Sending the data to show the contact
             self.show_infoF(0, val_button=self.name)
-            
+                
             #Inserting the contact in the database
             self.add_contactF()
 
@@ -286,7 +290,7 @@ class Product:
         
         #Validate the entrys
         if self.phone != False and self.email != False:
-            if self.name == '':
+            if self.name.isspace() or self.name == '':
                 self.name = 'Unnamed'
 
             #Control widgets
@@ -368,24 +372,26 @@ class Product:
     
     #Function to validate the state of the button and the entry "Name"
     def validate_stageF(self, key, add=None, edit=None):
+        #Get the information
+        name = self.CName.get()
+        email = self.CEmail.get()
+        phone = self.CPhone.get()
+    
         #Validate the blank in add stage
         if add == True:            
-            name = self.CName.get()
             while name != '':
                 self.done_btn.configure(state='active')
                 break
             else:
-                self.done_btn.configure(state='disabled')
-
+                self.done_btn.configure(state='disabled', bg='gray', disabledforeground='black')
+        
+        #Validate the blank in edit stage
         if edit == True:
-            name = self.CName.get()
-            email = self.CEmail.get()
-            phone = self.CPhone.get()
             while name or phone or email != '':
-                self.done_btn.configure(state='active')
+                self.done_btn.configure(state='active', bg='blue', activebackground='blue', activeforeground='white', disabledforeground='black')
                 break
             else:
-                self.done_btn.configure(state='disabled')
+                self.done_btn.configure(state='disabled', bg='gray', disabledforeground='black', fg='black')
                 
 
     #Function to validate the phone number entry
@@ -495,7 +501,7 @@ class Product:
                 self.done_btn.place_forget()
 
             if value == 'reset_done':
-                self.done_btn.configure(state='disabled')
+                self.done_btn.configure(state='disabled', bg='gray', disabledforeground='black', fg='black')
 
             if value == 'done_add':
                 #Configure the button to call the function button done in add stage
