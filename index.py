@@ -78,19 +78,22 @@ class Product:
         self.label_btns.place(x=550, y=52, anchor=S)
 
         #Add Contacts
-        self.add_btn = Button(self.label_btnf, text='+', command=self.add_buttonF)
-        self.add_btn.configure(height=1, width=1, font=('Arial bold',10))
-        self.add_btn.place(x=50, y=22, anchor=E)
+        self.img_add_btn = PhotoImage(file='img/img_add_btn.png')
+        self.add_btn = Button(self.label_btnf, image=self.img_add_btn, command=self.add_buttonF)
+        self.add_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.add_btn.place(x=50, y=22, anchor=E )
 
         #Select Contacts
-        self.sel_btn = Button(self.label_btnf, text='+')
-        self.sel_btn.configure(height=1, width=1, font=('Arial',5))
-        self.sel_btn.place(x=260, y=22, anchor=E)
+        self.img_sel_btn = PhotoImage(file='img/img_sel_btn.png')
+        self.sel_btn = Button(self.label_btnf, image=self.img_sel_btn)
+        self.sel_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.sel_btn.place(x=210, y=22, anchor=E)
 
         #Settings
-        self.settings_btn = Button(self.label_btnf, text='+')
-        self.settings_btn.configure(height=1, width=1, font=('Arial',5))
-        self.settings_btn.place(x=210, y=22, anchor=E)
+        self.img_settings_btn = PhotoImage(file='img/img_settings_btn.png')
+        self.settings_btn = Button(self.label_btnf, image=self.img_settings_btn)
+        self.settings_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.settings_btn.place(x=260, y=22, anchor=E)
 
         #Cancel Button
         self.cancel_btn = Button(self.label_btns, text='Cancel', command=self.cancel_buttonF)
@@ -102,13 +105,14 @@ class Product:
         self.done_btn.configure(height=1, width=5, font=('Arial', 10, 'bold'), highlightbackground='#1F1F1F')
 
         #Edit Button
-        self.edit_btn = Button(self.label_btns, text='Edit', command=self.edit_buttonF)
-        self.edit_btn.configure(height=1, width=5, font=('Arial',10), highlightbackground='#1F1F1F')
+        self.img_edit_btn = PhotoImage(file='img/img_edit_btn.png')
+        self.edit_btn = Button(self.label_btns, image=self.img_edit_btn, command=self.edit_buttonF)
+        self.edit_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
         #Delete Button
-        self.delete_btn = Button(self.label_btns, text='Delete', command=self.delete_buttonF)
-        self.delete_btn.configure(height=1, width=5, font=('Arial',10, 'bold'),
-        bg='#FF0000', activebackground='#FF3232', activeforeground='white', fg='black', highlightbackground='#1F1F1F')
+        self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
+        self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
+        self.delete_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
         #Label Search Widgets
         self.label_search = Label(self.windTwo, height=23, width=29)
@@ -117,12 +121,14 @@ class Product:
 
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
-        self.searchbar_widget.configure(width=15, font=('Arial',20), bg='#323232', fg='white')
+        self.searchbar_widget.configure(width=15, font=('Arial',20), bg='#323232', fg='white',
+        highlightbackground='#1F1F1F')
         self.searchbar_widget.place(x=145, y=47, anchor=S)
 
         #List of Contacts
         self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE , exportselection=False)
-        self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white')
+        self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white',
+        highlightbackground='#1F1F1F', borderwidth=0)
         self.listctc_widget.place(x=145, y=50, anchor=N)
 
         #Calling the functions
