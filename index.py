@@ -63,9 +63,12 @@ class Product:
         self.label_stage.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_stage.place(x=550, y=52, anchor=N)
 
-        self.CName = Entry(self.label_stage, exportselection=False)
-        self.CEmail = Entry(self.label_stage, exportselection=False)        
-        self.CPhone = Entry(self.label_stage, exportselection=False)
+        self.CName = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='#1F1F1F')
+        self.CEmail = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='#1F1F1F')        
+        self.CPhone = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='#1F1F1F')
 
 
         #Labels Buttons Navigation
@@ -109,7 +112,8 @@ class Product:
         self.edit_btn = Button(self.label_btns, image=self.img_edit_btn, command=self.edit_buttonF)
         self.edit_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
-        #Delete Button
+        #Delete Button, bg='#323232', fg='white',
+        highlightbackground='#1F1F1F'
         self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
         self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
         self.delete_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
@@ -176,9 +180,9 @@ class Product:
     #Function to mount the Add Stage
     def add_buttonF(self):
         #Control widgets
-        self.control_widgets('del_entry', 'forget_entrys', 'forget_select_stage',
+        self.control_widgets('del_search', 'del_entry', 'forget_entrys', 'forget_select_stage',
         'disable_search', 'forget_edit_stage')
-        self.control_widgets('place_add_stage', 'place_entrys', 'configure_entrys',
+        self.control_widgets('place_add_stage', 'place_entrys', 'reset_entrys',
         'insert_placeholder', 'placeholder','validate_add_stage', 'done_add_btn', 'reset_done_btn')
         
         #Change the focus
@@ -189,7 +193,7 @@ class Product:
     #Function to mount the Select Stage
     def cancel_buttonF(self):
         #Control widgets
-        self.control_widgets('active_search', 'del_entry', 'forget_add_stage',
+        self.control_widgets('del_search', 'active_search', 'del_entry', 'forget_add_stage',
         'forget_entrys', 'place_select_stage', 'reset_done_btn')
 
 
@@ -343,21 +347,26 @@ class Product:
             #Request the data
             self.list_info = self.getctc_info(self.convert_thingsF())
 
-            #Control widget
-            self.control_widgets('place_entrys', 'configure_entrys',
-            'place_edit_stage', 'del_entry')
+            #Validation blank tuple
+            if self.list_info != False:
+                #Control widget
+                self.control_widgets('place_entrys', 'configure_entrys',
+                'place_edit_stage', 'del_entry')
 
-            #Adding the data
-            self.control_widgets('insert_data_entrys',
-            na=self.list_info[0],
-            em=self.list_info[1],
-            ph=self.list_info[2])
-            
-            self.control_widgets('disable_entrys')
+                #Adding the data
+                self.control_widgets('insert_data_entrys',
+                na=self.list_info[0],
+                em=self.list_info[1],
+                ph=self.list_info[2])
+                
+                self.control_widgets('disable_entrys')
 
-            #Change the focus
-            #self.windTwo.focus()
-            self.windTwo.title('Contact Information 2')
+                #Change the focus
+                #self.windTwo.focus()
+                self.windTwo.title('Contact Information 2')
+
+            else:
+                pass
             
             
     #Function to clear the placerholder when click
@@ -460,8 +469,10 @@ class Product:
             if tuple_id != ():
                 id = tuple_id[0]
                 self.select_id = self.list_id[id]
-            return self.request_name, self.select_id
-            
+                return self.request_name, self.select_id
+            else:
+                return False
+
 
     #Function to destroy windows
     def destroy_windowsF(self, event=None):
@@ -482,7 +493,7 @@ class Product:
 
 
     #Function to control the widgets
-    def control_widgets(self, *args, na=None, em=None, ph=None, text_wind=None):
+    def control_widgets(self, *args, na=None, em=None, ph=None):
         for value in args:
             
             """Places Stages"""
@@ -571,13 +582,6 @@ class Product:
 
 
             """Search"""
-
-            #Disable Search
-            if value == 'disable_search':
-                #Disable the search
-                self.searchbar_widget.configure(state='readonly')
-                self.listctc_widget.configure(state='disabled')
-
             #Active Search
             if value == 'active_search':
                 #Active the search
@@ -587,7 +591,14 @@ class Product:
             #Del Search
             if value == 'del_search':
                 #Delete search bar text
+                self.searchbar_widget.configure(state='normal')
                 self.searchbar_widget.delete(0, END)
+
+            #Disable Search
+            if value == 'disable_search':
+                #Disable the search
+                self.searchbar_widget.configure(state='disabled', readonlybackground='#1F1F1F')
+                self.listctc_widget.configure(state='disabled')
 
 
             """Entrys"""
@@ -602,10 +613,17 @@ class Product:
             #Configure Entrys
             if value == 'configure_entrys':
                 #Configure entrys
-                self.CName.configure(state='normal', width=25, font=('Arial', 15))
-                self.CEmail.configure(state='normal', width=25, font=('Arial', 15))
-                self.CPhone.configure(state='normal', width=25, font=('Arial', 15))
+                self.CName.configure(state='normal', width=25, font=('Arial', 15), fg='black')
+                self.CEmail.configure(state='normal', width=25, font=('Arial', 15), fg='black')
+                self.CPhone.configure(state='normal', width=25, font=('Arial', 15), fg='black')
             
+            #Reset Entrys
+            if value == 'reset_entrys':
+                #Reset entrys
+                self.CName.configure(state='normal', width=25, font=('Arial', 15), fg='white')
+                self.CEmail.configure(state='normal', width=25, font=('Arial', 15), fg='white')
+                self.CPhone.configure(state='normal', width=25, font=('Arial', 15), fg='white')
+
             #Disable Entrys
             if value == 'disable_entrys':
                 #Disabled entrys
@@ -759,14 +777,18 @@ class Product:
 
     #Function to get the data from database with name
     def getctc_info(self, request = []):
-        #Quering the data
-        query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
-        db_rows = self.run_query(query)
-        for rows in db_rows:
-            name = rows[0]
-            email = rows[1]
-            phone = rows[2]
-        return name, email, phone
+        #Validation blank tuple
+        if request != False:
+            #Quering the data
+            query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
+            db_rows = self.run_query(query)
+            for rows in db_rows:
+                name = rows[0]
+                email = rows[1]
+                phone = rows[2]
+            return name, email, phone
+        else:
+            return False
 
 
     #Function to insert contact in the database
