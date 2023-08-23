@@ -57,6 +57,7 @@ class Product:
         self.select_id = ''
         self.title_wind = ''
         self.label_wind = ''
+        self.label_btns_text = 'Select a Contact'
 
         #Label Add Contact
         self.label_stage = Label(self.windTwo, height=23, width=50)
@@ -76,8 +77,8 @@ class Product:
         self.label_btnf.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_btnf.place(x=149, y=52, anchor=S)
 
-        self.label_btns = Label(self.windTwo, height=2, width=50)
-        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_btns = Label(self.windTwo, height=2, width=50, text=self.label_btns_text)
+        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
         self.label_btns.place(x=550, y=52, anchor=S)
 
         #Add Contacts
@@ -112,8 +113,7 @@ class Product:
         self.edit_btn = Button(self.label_btns, image=self.img_edit_btn, command=self.edit_buttonF)
         self.edit_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
-        #Delete Button, bg='#323232', fg='white',
-        highlightbackground='#1F1F1F'
+        #Delete Button
         self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
         self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
         self.delete_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
@@ -185,9 +185,12 @@ class Product:
         self.control_widgets('place_add_stage', 'place_entrys', 'reset_entrys',
         'insert_placeholder', 'placeholder','validate_add_stage', 'done_add_btn', 'reset_done_btn')
         
+        #Label name
+        self.label_btns_text = 'Adding a new Contact'
+        self.control_widgets('refresh_label')
+
         #Change the focus
         self.windTwo.focus()
-        self.windTwo.title('Adding a new contact')
 
 
     #Function to mount the Select Stage
@@ -196,25 +199,30 @@ class Product:
         self.control_widgets('del_search', 'active_search', 'del_entry', 'forget_add_stage',
         'forget_entrys', 'place_select_stage', 'reset_done_btn')
 
+        #Label name
+        self.label_btns_text = 'Select a Contact'
+        self.control_widgets('refresh_label')
 
         #Change the focus
         self.windTwo.focus()
-        self.windTwo.title('Local Contacts')
 
 
     #Function to mount the Edit Stage
     def edit_buttonF(self):
         #Control widgets
         self.control_widgets('disable_search', 'del_search', 'forget_edit_stage',
-        'forget_select_stage', 'place_add_stage', 'configure_entrys', 'validate_edit_stage',
+        'forget_select_stage', 'place_add_stage', 'reset_entrys', 'validate_edit_stage',
         'done_edit_btn', 'reset_done_btn')
 
         #Between string
         self.convert_thingsF(self.CName.get())
+        
+        #Label name
+        self.label_btns_text = 'Editing a Contact'
+        self.control_widgets('refresh_label')
 
         #Change the focus
         self.windTwo.focus()
-        self.windTwo.title('Editing a contact')
 
 
     #Function to mount the Delete Stage
@@ -341,7 +349,10 @@ class Product:
 
             #Change the focus and the name
             self.windTwo.focus()
-            self.windTwo.title('Contact Information 1')
+            
+            #Label name
+            self.label_btns_text = 'Contact Information'
+            self.control_widgets('refresh_label')
         
         elif val_list == True:
             #Request the data
@@ -363,7 +374,10 @@ class Product:
 
                 #Change the focus
                 #self.windTwo.focus()
-                self.windTwo.title('Contact Information 2')
+
+                #Label name
+                self.label_btns_text = 'Contact Information'
+                self.control_widgets('refresh_label')
 
             else:
                 pass
@@ -599,7 +613,9 @@ class Product:
                 #Disable the search
                 self.searchbar_widget.configure(state='disabled', readonlybackground='#1F1F1F')
                 self.listctc_widget.configure(state='disabled')
-
+            
+            if value == 'refresh_label':
+                self.label_btns.configure(text=self.label_btns_text)
 
             """Entrys"""
 
