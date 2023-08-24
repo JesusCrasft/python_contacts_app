@@ -33,28 +33,64 @@ class Product:
         self.title_wind = ''
         self.label_wind = ''
         self.label_btns_text = 'Select a Contact'
+        self.label_email_text = 'Select a Contact'
 
-        #Label Add Contact
+
+        """Labels"""
+
+        #Label Stage
         self.label_stage = Label(self.windTwo, height=23, width=50)
         self.label_stage.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_stage.place(x=550, y=52, anchor=N)
 
-        self.CName = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
-        highlightbackground='#1F1F1F')
-        self.CEmail = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
-        highlightbackground='#1F1F1F')        
-        self.CPhone = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
-        highlightbackground='#1F1F1F')
+        #Name Label
+        self.label_name = Label(self.label_stage, text='Full Name')
+        self.label_name.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
+        
+        #Email Label
+        self.label_email = Label(self.label_stage, text=self.label_email_text)
+        self.label_email.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
+        self.label_email.place(x=250, y=240, anchor=CENTER)
 
+        #Phone Label
+        self.label_phone = Label(self.label_stage, text='Number Phone')
+        self.label_phone.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
 
-        #Labels Buttons Navigation
+        #Labels Btns One
         self.label_btnf = Label(self.windTwo, height=2, width=29)
         self.label_btnf.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_btnf.place(x=149, y=52, anchor=S)
 
+        #Label Btns Two
         self.label_btns = Label(self.windTwo, height=2, width=50, text=self.label_btns_text)
         self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
         self.label_btns.place(x=550, y=52, anchor=S)
+
+        #Label Search Widgets
+        self.label_search = Label(self.windTwo, height=23, width=29)
+        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_search.place(x=149, y=52, anchor=N)
+
+        #Label list of contacts
+        self.label_between = Label(self.label_search, height=1, width=15, text='List of Contacts')
+        self.label_between.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
+        self.label_between.place(x=146, y=36, anchor=N)
+
+        """Entrys"""
+
+        #Name Entry
+        self.CName = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='gray', border=1, borderwidth=0)
+
+        #Email Entry
+        self.CEmail = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='gray')        
+
+        #Phone Entry
+        self.CPhone = Entry(self.label_stage, exportselection=False, bg='#323232', fg='white',
+        highlightbackground='gray')
+
+        """Buttons"""
 
         #Add Contacts
         self.img_add_btn = PhotoImage(file='img/img_add_btn.png')
@@ -92,16 +128,6 @@ class Product:
         self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
         self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
         self.delete_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-
-        #Label Search Widgets
-        self.label_search = Label(self.windTwo, height=23, width=29)
-        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.label_search.place(x=149, y=52, anchor=N)
-
-        #Label list of contacts
-        self.label_between = Label(self.label_search, height=1, width=15, text='List of Contacts')
-        self.label_between.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
-        self.label_between.place(x=146, y=36, anchor=N)
 
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
@@ -161,7 +187,7 @@ class Product:
     def add_buttonF(self):
         #Control widgets
         self.control_widgets('del_search', 'del_entry', 'forget_entrys', 'forget_select_stage',
-        'disable_search', 'forget_edit_stage')
+        'disable_search', 'forget_edit_stage', 'place_label_names')
         self.control_widgets('place_add_stage', 'place_entrys', 'reset_entrys',
         'insert_placeholder', 'placeholder','validate_add_stage', 'done_add_btn', 'reset_done_btn')
         
@@ -177,7 +203,7 @@ class Product:
     def cancel_buttonF(self):
         #Control widgets
         self.control_widgets('del_search', 'active_search', 'del_entry', 'forget_add_stage',
-        'forget_entrys', 'place_select_stage', 'reset_done_btn')
+        'forget_entrys', 'place_select_stage', 'reset_done_btn', 'forget_label_names')
 
         #Label name
         self.label_btns_text = 'Select a Contact'
@@ -192,7 +218,7 @@ class Product:
         #Control widgets
         self.control_widgets('disable_search', 'del_search', 'forget_edit_stage',
         'forget_select_stage', 'place_add_stage', 'reset_entrys', 'validate_edit_stage',
-        'done_edit_btn', 'reset_done_btn')
+        'done_edit_btn', 'reset_done_btn', 'place_label_names')
 
         #Between string
         self.convert_thingsF(self.CName.get())
@@ -317,7 +343,7 @@ class Product:
         #Verifiy method
         if val_button != None:
             #Control widgets
-            self.control_widgets('forget_add_stage', 'del_entry', 'place_edit_stage') 
+            self.control_widgets('forget_add_stage', 'del_entry', 'place_edit_stage', 'place_label_names') 
 
             #Adding the information
             self.control_widgets('insert_data_entrys',
@@ -342,7 +368,7 @@ class Product:
             if self.list_info != False:
                 #Control widget
                 self.control_widgets('place_entrys', 'configure_entrys',
-                'place_edit_stage', 'del_entry')
+                'place_edit_stage', 'del_entry', 'place_label_names')
 
                 #Adding the data
                 self.control_widgets('insert_data_entrys',
@@ -594,8 +620,26 @@ class Product:
                 self.searchbar_widget.configure(state='disabled', readonlybackground='#1F1F1F')
                 self.listctc_widget.configure(state='disabled')
             
+
+            """Labels"""
+
+            #Refresh label stage name
             if value == 'refresh_label':
                 self.label_btns.configure(text=self.label_btns_text)
+
+            #Place label names entrys
+            if value == 'place_label_names':
+                self.label_email_text = 'Email'
+                self.label_email.configure(text=self.label_email_text)
+                self.label_name.place(x=250, y=120, anchor=CENTER)
+                self.label_email.place(x=250, y=240, anchor=CENTER)
+                self.label_phone.place(x=250, y=360, anchor=CENTER)
+
+            if value == 'forget_label_names':
+                self.label_email_text = 'Select a Contact'
+                self.label_email.configure(text=self.label_email_text)
+                self.label_name.place_forget()
+                self.label_phone.place_forget()
 
             """Entrys"""
 
@@ -705,7 +749,7 @@ class Product:
             if value == 'fill_wind':
                 #Label
                 confirm_lbl = Label(self.wind, text=self.label_wind, width=40, height=2)
-                confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=0, fg='white')
                 confirm_lbl.place(x=250, y=25, anchor=CENTER)
 
                 for value in args:
@@ -720,12 +764,12 @@ class Product:
                     #Fill Delete Window
                     if value == 'fill_delete':
                         #Buttons
-                        confirm_btnF = Button(self.wind, text='Yes', width=1, height=1)
+                        confirm_btnF = Button(self.wind, text='Yes', width=1, height=1, bg='red', fg='black')
                         confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
                         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                         confirm_btnF.place(x=150, y=120, anchor=CENTER)
 
-                        confirm_btnS = Button(self.wind, text='No',width=1, height=1)
+                        confirm_btnS = Button(self.wind, text='No',width=1, height=1, bg='blue', fg='black')
                         confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
                         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                         confirm_btnS.place(x=350, y=120, anchor=CENTER)
