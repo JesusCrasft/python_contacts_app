@@ -9,35 +9,10 @@ class Product:
 
     db_name = 'database.db'
 
-    def __init__(self, PryWind):
+    def __init__(self, WindowT):
     
-        # Primary Window Attributes
-        self.windOne = PryWind
-        self.windOne.title('Contacts')
-        self.windOne.geometry('800x600')
-        self.windOne.resizable(False, False)
-        self.windOne.configure(bg='#1F1F1F')
-
-        #Canvas
-        self.SelTxt = Canvas(self.windOne, width=780, height=75, bg='#1F1F1F', relief='groove',highlightthickness='0')
-        self.SelTxt.create_text(390, 25, text='Select one method to save the contacts', fill='white', font=('Arial 15 bold'))
-        self.SelTxt.place(relx=0.5, rely=0.1, anchor=CENTER)
-
-        #Buttons
-        self.LocalCtc = Button(self.windOne, text='Save Contacts Locally', command=self.secondary_window)
-        self.LocalCtc.configure(width=25, height=2, bg='#1F1F1F', fg='white', highlightthickness='0', font=('Arial 15 bold'))
-        self.LocalCtc.place(relx=0.5, rely=0.5, anchor=CENTER)
-    
-    #Secondary Window
-
-    #Function: Secondary window creation
-    def secondary_window(self):
-        self.windOne.destroy()
-
         #Secondary Window Attributes
-        
-        SryWind = Tk()
-        self.windTwo = SryWind
+        self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
         self.windTwo.geometry("804x588+300+300")
         self.windTwo.resizable(False, False)
@@ -78,7 +53,7 @@ class Product:
         self.label_btnf.place(x=149, y=52, anchor=S)
 
         self.label_btns = Label(self.windTwo, height=2, width=50, text=self.label_btns_text)
-        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
         self.label_btns.place(x=550, y=52, anchor=S)
 
         #Add Contacts
@@ -123,17 +98,22 @@ class Product:
         self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
         self.label_search.place(x=149, y=52, anchor=N)
 
+        #Label list of contacts
+        self.label_between = Label(self.label_search, height=1, width=15, text='List of Contacts')
+        self.label_between.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
+        self.label_between.place(x=146, y=36, anchor=N)
+
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
-        self.searchbar_widget.configure(width=15, font=('Arial',20), bg='#323232', fg='white',
-        highlightbackground='#1F1F1F')
-        self.searchbar_widget.place(x=145, y=47, anchor=S)
+        self.searchbar_widget.configure(width=18, font=('Arial',17), bg='#323232', fg='white',
+        highlightbackground='gray', border=1, borderwidth=0)
+        self.searchbar_widget.place(x=146, y=38, anchor=S)
 
         #List of Contacts
         self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE , exportselection=False)
-        self.listctc_widget.configure(height=18, width=15, bg='#1F1F1F', font=('Arial', 20), fg='white',
-        highlightbackground='#1F1F1F', borderwidth=0)
-        self.listctc_widget.place(x=145, y=50, anchor=N)
+        self.listctc_widget.configure(height=14, width=18, bg='#1F1F1F', font=('Arial', 17), fg='white',
+        highlightbackground='gray', borderwidth=0)
+        self.listctc_widget.place(x=146, y=67, anchor=N)
 
         #Calling the functions
         self.EvnTk()
@@ -860,6 +840,6 @@ class Product:
         
 
 if __name__ == '__main__':
-    PryWind = Tk()
-    application = Product(PryWind)
-    PryWind.mainloop()
+    WindowT = Tk()
+    application = Product(WindowT)
+    WindowT.mainloop()
