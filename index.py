@@ -238,7 +238,7 @@ class Product:
         self.label_wind = 'Want to delete this contact?'
         
         #Create the window and disable all buttons
-        self.control_widgets('disable_all_btn', 'create_wind', 'fill_wind', 'fill_delete')
+        self.control_widgets('disable_all_btn', 'disable_search', 'create_wind', 'fill_wind', 'fill_delete')
 
         #Validation var
         self.email = self.CEmail.get()
@@ -343,7 +343,7 @@ class Product:
         #Verifiy method
         if val_button != None:
             #Control widgets
-            self.control_widgets('forget_add_stage', 'del_entry', 'place_edit_stage', 'place_label_names') 
+            self.control_widgets('forget_add_stage', 'del_entry', 'place_edit_stage', 'place_label_names', 'configure_entrys') 
 
             #Adding the information
             self.control_widgets('insert_data_entrys',
@@ -399,10 +399,10 @@ class Product:
         if name == True and name_second == 'Full Name':
             self.CName.delete(0, END)
 
-        if email == True and email_second == 'Email':
+        if email == True and email_second == 'E.g. aitsuki@hotmail.com':
             self.CEmail.delete(0, END)
 
-        if phone == True and phone_second == 'Number Phone':
+        if phone == True and phone_second == 'E.g. +571234567890':
             self.CPhone.delete(0, END)
 
     
@@ -433,7 +433,7 @@ class Product:
     #Function to validate the phone number entry
     def validate_phoneF(self, new_phone=''):
         
-        if new_phone != '' and new_phone != 'Number Phone' and new_phone != 'No Number Phone Added':
+        if new_phone != '' and new_phone != 'E.g. +571234567890' and new_phone != 'No Number Phone Added':
             #Try because phonenumbers dont return false?
             try:
                 phone_string = phonenumbers.parse(new_phone)
@@ -454,7 +454,7 @@ class Product:
 
     #Function to validate the email entry
     def validate_emailF(self, new_email=''):
-        if new_email != '' and new_email != 'Email' and new_email != 'No Email Added':
+        if new_email != '' and new_email != 'E.g. aitsuki@hotmail.com' and new_email != 'No Email Added':
             valid_email = validate_email(new_email)
 
             if valid_email:
@@ -504,10 +504,10 @@ class Product:
             self.show_infoF(0, val_button=self.CName.get())
             
             #Control widget
-            self.control_widgets('active_all_btn')
+            self.control_widgets('active_all_btn', 'active_search')
 
         if event == 'invalid_wind':
-            self.control_widgets('active_all_btn')
+            self.control_widgets('active_all_btn', 'active_search')
             
         return
 
@@ -702,8 +702,8 @@ class Product:
 
                 #Insert in the entry
                 self.CName.insert(0, 'Full Name')
-                self.CEmail.insert(0, 'Email')
-                self.CPhone.insert(0, 'Number Phone')
+                self.CEmail.insert(0, 'E.g. aitsuki@hotmail.com')
+                self.CPhone.insert(0, 'E.g. +571234567890')
 
             #Forget Entrys
             if value == 'forget_entrys':
@@ -756,7 +756,7 @@ class Product:
                     #Fill Invalid Window
                     if value == 'fill_invalid':
                         #Button
-                        confirm_btnF = Button(self.wind, text='Ok', width=1, height=1)
+                        confirm_btnF = Button(self.wind, text='Ok', width=1, height=1, bg='blue', fg='black')
                         confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_wind'))
                         #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
                         confirm_btnF.place(x=250, y=120, anchor=CENTER)
@@ -869,7 +869,7 @@ class Product:
 
             #Control widget
             self.control_widgets('destroy_wind', 'forget_entrys', 'place_select_stage', 'forget_add_stage',
-            'forget_edit_stage', 'reset_done_btn', 'active_all_btn')
+            'forget_edit_stage', 'reset_done_btn', 'active_all_btn', 'forget_label_names', 'active_search')
         
         if No == True:
             self.my_ctclist_old = []
@@ -879,7 +879,7 @@ class Product:
             self.show_infoF(0, val_button=self.CName.get())
             
             #Control widget
-            self.control_widgets('destroy_wind', 'active_all_btn')
+            self.control_widgets('destroy_wind', 'active_all_btn', 'active_search')
 
         
 
