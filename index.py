@@ -218,7 +218,7 @@ class Product:
         #Control widgets
         self.control_widgets('disable_search', 'del_search', 'forget_edit_stage',
         'forget_select_stage', 'place_add_stage', 'reset_entrys', 'validate_edit_stage',
-        'done_edit_btn', 'reset_done_btn', 'place_label_names')
+        'done_edit_btn', 'reset_done_btn', 'place_label_names', 'placeholder')
 
         #Between string
         self.convert_thingsF(self.CName.get())
@@ -396,14 +396,17 @@ class Product:
         phone_second = self.CPhone.get()
 
         #Validating
-        if name == True and name_second == 'Full Name':
-            self.CName.delete(0, END)
+        if name == True:
+            if name_second == 'Unnamed' or name_second == 'Full Name':
+                self.CName.delete(0, END)
 
-        if email == True and email_second == 'E.g. aitsuki@hotmail.com':
-            self.CEmail.delete(0, END)
+        if email == True:
+            if email_second == 'E.g. aitsuki@hotmail.com' or email_second == 'No Email Added':
+                self.CEmail.delete(0, END)
 
-        if phone == True and phone_second == 'E.g. +571234567890':
-            self.CPhone.delete(0, END)
+        if phone == True:
+            if phone_second == 'E.g. +571234567890' or phone_second == 'No Number Phone Added': 
+                self.CPhone.delete(0, END)
 
     
     #Function to validate the state of the button and the entry "Name"
@@ -423,9 +426,12 @@ class Product:
         
         #Validate the blank in edit stage
         if edit == True:
-            while name or phone or email != '':
-                self.control_widgets('color_done_btn')
-                break
+            while name and phone and email != '':
+                while name or phone or email != '':
+                    self.control_widgets('color_done_btn')
+                    break
+                else:
+                    self.control_widgets('reset_done_btn')
             else:
                 self.control_widgets('reset_done_btn')
                 
