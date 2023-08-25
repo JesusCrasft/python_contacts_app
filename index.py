@@ -8,11 +8,9 @@ import sqlite3
 
 class Product:
     
-    db_name = r'database.db'
+    db_name = 'database.db'
 
     def __init__(self, WindowT):
-        
-
         #Secondary Window Attributes
         self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
@@ -29,7 +27,6 @@ class Product:
         self.name = ''
         self.email = ''
         self.phone = ''
-        self.id = ''
         self.request_name = ''
         self.select_id = ''
         self.title_wind = ''
