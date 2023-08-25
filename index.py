@@ -426,12 +426,9 @@ class Product:
         
         #Validate the blank in edit stage
         if edit == True:
-            while name and phone and email != '':
-                while name or phone or email != '':
-                    self.control_widgets('color_done_btn')
-                    break
-                else:
-                    self.control_widgets('reset_done_btn')
+            while name or phone or email != '':
+                self.control_widgets('color_done_btn')
+                break
             else:
                 self.control_widgets('reset_done_btn')
                 
@@ -755,30 +752,34 @@ class Product:
             if value == 'fill_wind':
                 #Label
                 confirm_lbl = Label(self.wind, text=self.label_wind, width=40, height=2)
-                confirm_lbl.configure( background='#1F1F1F', relief=SOLID, borderwidth=0, fg='white')
+                confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, fg='white', font=('Arial bold', 13))
                 confirm_lbl.place(x=250, y=25, anchor=CENTER)
 
                 for value in args:
                     #Fill Invalid Window
                     if value == 'fill_invalid':
-                        #Button
-                        confirm_btnF = Button(self.wind, text='Ok', width=1, height=1, bg='blue', fg='black')
+                        #Ok Button
+                        confirm_btnF = Button(self.wind, text='Ok', width=3, height=1, bg='blue', fg='black')
                         confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_wind'))
-                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
+                        confirm_btnF.configure(bg='gray', activebackground='#676767',
+                        activeforeground='white', fg='black', highlightbackground='#1F1F1F')
                         confirm_btnF.place(x=250, y=120, anchor=CENTER)
 
                     #Fill Delete Window
                     if value == 'fill_delete':
-                        #Buttons
-                        confirm_btnF = Button(self.wind, text='Yes', width=1, height=1, bg='red', fg='black')
+                        #Yes Button
+                        confirm_btnF = Button(self.wind, text='Yes', width=3, height=1)
                         confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
-                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-                        confirm_btnF.place(x=150, y=120, anchor=CENTER)
+                        confirm_btnF.configure(state='normal', bg='#FF1D2D', fg='black',
+                        activebackground='#FF303F', activeforeground='white', highlightbackground='#1F1F1F')
+                        confirm_btnF.place(x=150, y=110, anchor=CENTER)
 
-                        confirm_btnS = Button(self.wind, text='No',width=1, height=1, bg='blue', fg='black')
+                        #No Button
+                        confirm_btnS = Button(self.wind, text='No', width=3, height=1)
                         confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
-                        #confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='white')
-                        confirm_btnS.place(x=350, y=120, anchor=CENTER)
+                        confirm_btnS.configure(state='normal', bg='#1924FF', fg='black',
+                        activebackground='#363FFF', activeforeground='white', highlightbackground='#1F1F1F')
+                        confirm_btnS.place(x=350, y=110, anchor=CENTER)
 
             #Destroy Window   
             if value == 'destroy_wind':
