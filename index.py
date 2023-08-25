@@ -5,12 +5,14 @@ from validate_email import *
 import phonenumbers
 import sqlite3
 
-class Product:
 
-    db_name = 'database.db'
+class Product:
+    
+    db_name = r'database.db'
 
     def __init__(self, WindowT):
-    
+        
+
         #Secondary Window Attributes
         self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
@@ -143,6 +145,7 @@ class Product:
 
         #Calling the functions
         self.EvnTk()
+        self.db_exist()
         self.getctc_list()
 
     #Functions 
@@ -786,7 +789,7 @@ class Product:
                 self.wind.destroy()
 
     #SQLITE FUNCTIONS
-
+ 
     #Function to connect the basedata
     def run_query(self, query, parameters = ()):
         with sqlite3.connect(self.db_name) as conn:
@@ -794,7 +797,19 @@ class Product:
             result = cursor.execute(query, parameters)
             conn.commit()
         return result
-    
+
+
+    #Function to create a new database if no exist
+    def db_exist(self):
+        query = """CREATE TABLE IF NOT EXISTS "contacts" (
+        "id"	INTEGER NOT NULL,
+        "name"	TEXT NOT NULL,
+        "email"	TEXT NOT NULL,
+        "phone"	TEXT NOT NULL,
+        PRIMARY KEY("id" AUTOINCREMENT)
+        );"""
+        self.run_query(query)
+
 
     #Function to get the contacts from database
     def getctc_list(self):
