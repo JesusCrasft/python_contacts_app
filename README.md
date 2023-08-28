@@ -6,8 +6,10 @@
 ## Screenshots / Capturas de Pantalla
 
 ## Tech-framework used / Tecnologías Usadas
-- Todavia en desarrollo
+Todavia en desarrollo
+
 -Las librerias que se estan usando por ahora son las siguientes:
+
 -Tkinter
 -Validate Email
 -Phone Numbers
