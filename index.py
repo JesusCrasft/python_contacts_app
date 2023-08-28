@@ -263,11 +263,13 @@ class Product:
         elif self.phone == False:
             self.label_wind = 'Invalid Number Phone'
             self.control_widgets('fill_wind', 'fill_invalid')
+            self.CPhone.focus()
 
         elif self.email == False:
             self.label_wind = 'Invalid Email Address'
             self.control_widgets('fill_wind', 'fill_invalid')
-
+            self.CEmail.focus()
+            
         #Check if the window is closed with the X button
         self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event='invalid_wind'))
 
