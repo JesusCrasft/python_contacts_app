@@ -34,7 +34,6 @@ class Product:
         self.label_btns_text = 'Select a Contact'
         self.label_email_text = 'Select a Contact'
 
-
         """Labels"""
 
         #Label Stage
@@ -742,7 +741,7 @@ class Product:
 
             #Create Window
             if value == 'create_wind':
-                self.wind = Tk()
+                self.wind = Toplevel()
                 self.wind.title(self.title_wind)
                 self.wind.geometry("500x200+700+700")
                 self.wind.resizable(False, False)
@@ -755,30 +754,31 @@ class Product:
                 confirm_lbl.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, fg='white', font=('Arial bold', 13))
                 confirm_lbl.place(x=250, y=25, anchor=CENTER)
 
+                #Yes Button
+                self.img_yes_btn = PhotoImage(file='img/img_yes_btn.png')
+
                 for value in args:
                     #Fill Invalid Window
                     if value == 'fill_invalid':
                         #Ok Button
-                        confirm_btnF = Button(self.wind, text='Ok', width=3, height=1, bg='blue', fg='black')
+                        confirm_btnF = Button(self.wind, image=self.img_yes_btn)
                         confirm_btnF.configure(command=lambda m="": self.control_widgets('active_all_btn', 'destroy_wind'))
-                        confirm_btnF.configure(bg='gray', activebackground='#676767',
-                        activeforeground='white', fg='black', highlightbackground='#1F1F1F')
+                        confirm_btnF.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
                         confirm_btnF.place(x=250, y=120, anchor=CENTER)
 
                     #Fill Delete Window
                     if value == 'fill_delete':
                         #Yes Button
-                        confirm_btnF = Button(self.wind, text='Yes', width=3, height=1)
+                        confirm_btnF = Button(self.wind, image=self.img_yes_btn)
                         confirm_btnF.configure(command=lambda m="": self.delete_contactF(Yes=True))
-                        confirm_btnF.configure(state='normal', bg='#FF1D2D', fg='black',
-                        activebackground='#FF303F', activeforeground='white', highlightbackground='#1F1F1F')
+                        confirm_btnF.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
                         confirm_btnF.place(x=150, y=110, anchor=CENTER)
 
                         #No Button
-                        confirm_btnS = Button(self.wind, text='No', width=3, height=1)
+                        self.img_no_btn = PhotoImage(file='img/img_no_btn.png')
+                        confirm_btnS = Button(self.wind, image=self.img_no_btn)
                         confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
-                        confirm_btnS.configure(state='normal', bg='#1924FF', fg='black',
-                        activebackground='#363FFF', activeforeground='white', highlightbackground='#1F1F1F')
+                        confirm_btnS.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
                         confirm_btnS.place(x=350, y=110, anchor=CENTER)
 
             #Destroy Window   
