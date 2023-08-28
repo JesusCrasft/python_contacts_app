@@ -6,17 +6,18 @@
 ## Screenshots / Capturas de Pantalla
 
 ## Tech-framework used / Tecnologías Usadas
-- Python
-- Python Library Tkinter
+- Todavia en desarrollo
+-Las librerias que se estan usando por ahora son las siguientes:
+-Tkinter
+-Validate Email
+-Phone Numbers
+-SQLite3
+
 
 ## Install / Instalación
 #### OS X, Linux y Windows
 
-Los unicos requisitos son tener instalado Python3 y la libreria Tkinter.
-
-*Descargar el archivo, descomprimirlo y situarse en la carpeta*
-
-Ejecutar el archivo index.py con Python3 en una terminal.
+-Todavia en desarrollo
 
 ## Tasks / Lista de Tareas
 - [x] Inicializar repositorio
