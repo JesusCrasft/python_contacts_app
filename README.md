@@ -11,8 +11,11 @@ Todavia en desarrollo
 -Las librerias que se estan usando por ahora son las siguientes:
 
 -Tkinter
+
 -Validate Email
+
 -Phone Numbers
+
 -SQLite3
 
 
