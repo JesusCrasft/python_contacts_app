@@ -269,7 +269,7 @@ class Product:
             self.label_wind = 'Invalid Email Address'
             self.control_widgets('fill_wind', 'fill_invalid')
             self.CEmail.focus()
-            
+
         #Check if the window is closed with the X button
         self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event='invalid_wind'))
 
@@ -427,8 +427,11 @@ class Product:
         
         #Validate the blank in edit stage
         if edit == True:
-            while name or phone or email != '':
-                self.control_widgets('color_done_btn')
+            while phone or email != '':
+                if name != '':
+                    self.control_widgets('color_done_btn')
+                else:
+                    self.control_widgets('reset_done_btn')
                 break
             else:
                 self.control_widgets('reset_done_btn')
