@@ -283,9 +283,6 @@ class Product:
 
         #Validate the entrys
         if self.phone != False and self.email != False:
-            if self.name.isspace():
-                self.name = 'Unnamed'
-
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_add_stage',
             'place_select_stage', 'place_edit_stage')
@@ -316,9 +313,6 @@ class Product:
         
         #Validate the entrys
         if self.phone != False and self.email != False:
-            if self.name.isspace() or self.name == '':
-                self.name = 'Unnamed'
-
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_add_stage', 'place_select_stage', 'edit_active')
 
@@ -398,7 +392,7 @@ class Product:
 
         #Validating
         if name == True:
-            if name_second == 'Unnamed' or name_second == 'Full Name':
+            if name_second == 'Full Name':
                 self.CName.delete(0, END)
 
         if email == True:
@@ -419,7 +413,7 @@ class Product:
     
         #Validate the blank in add stage
         if add == True:            
-            while name != '':
+            while name != '' and name.isspace() == False:
                 self.control_widgets('color_done_btn')
                 break
             else:
@@ -428,7 +422,7 @@ class Product:
         #Validate the blank in edit stage
         if edit == True:
             while phone or email != '':
-                if name != '':
+                if name != '' and name.isspace() == False:
                     self.control_widgets('color_done_btn')
                 else:
                     self.control_widgets('reset_done_btn')
