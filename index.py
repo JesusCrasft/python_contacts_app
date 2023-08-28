@@ -139,6 +139,12 @@ class Product:
         highlightbackground='gray', borderwidth=0)
         self.listctc_widget.place(x=146, y=67, anchor=N)
 
+        #Scrollbar Contacts
+        self.listctc_scrollbar = Scrollbar(self.listctc_widget, orient='vertical', width=20)
+        self.listctc_scrollbar.place(x=280, y=460, anchor=S, height=460)
+        self.listctc_widget.configure(yscrollcommand=self.listctc_scrollbar.set)
+        self.listctc_scrollbar.configure(command=self.listctc_widget.yview, background='#444444', activebackground='gray')
+        
         #Calling the functions
         self.db_exist()
         self.EvnTk()
@@ -390,7 +396,7 @@ class Product:
             if search_second == 'Search Contact':
                 self.searchbar_widget.delete(0, END)
                 self.searchbar_widget.configure(fg='white')
-                
+
         if name == True:
             if name_second == 'Full Name':
                 self.CName.delete(0, END)
