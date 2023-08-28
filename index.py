@@ -66,7 +66,7 @@ class Product:
 
         #Label Search Widgets
         self.label_search = Label(self.windTwo, height=23, width=29)
-        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
         self.label_search.place(x=149, y=52, anchor=N)
 
         #Label list of contacts
@@ -129,7 +129,7 @@ class Product:
 
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
-        self.searchbar_widget.configure(width=18, font=('Arial',17), bg='#323232', fg='white',
+        self.searchbar_widget.configure(width=18, font=('Arial',17), bg='#323232', fg='gray',
         highlightbackground='gray', border=1, borderwidth=0)
         self.searchbar_widget.place(x=146, y=38, anchor=S)
 
@@ -140,8 +140,8 @@ class Product:
         self.listctc_widget.place(x=146, y=67, anchor=N)
 
         #Calling the functions
-        self.EvnTk()
         self.db_exist()
+        self.EvnTk()
         self.getctc_list()
 
     #Functions 
@@ -152,6 +152,7 @@ class Product:
         self.windTwo.unbind_all("<<NextWindow>>")
 
         #Entry event
+        self.control_widgets('insert_search_placeholder', 'search_placeholder')
         self.searchbar_widget.bind('<KeyRelease>', self.check_entryF)
 
         #Listbox event
@@ -188,7 +189,7 @@ class Product:
         self.control_widgets('del_search', 'del_entry', 'forget_entrys', 'forget_select_stage',
         'disable_search', 'forget_edit_stage', 'place_label_names')
         self.control_widgets('place_add_stage', 'place_entrys', 'reset_entrys',
-        'insert_placeholder', 'placeholder','validate_add_stage', 'done_add_btn', 'reset_done_btn')
+        'insert_placeholder_entrys', 'entrys_placeholder','validate_add_stage', 'done_add_btn', 'reset_done_btn')
         
         #Label name
         self.label_btns_text = 'Adding a new Contact'
@@ -202,7 +203,7 @@ class Product:
     def cancel_buttonF(self):
         #Control widgets
         self.control_widgets('del_search', 'active_search', 'del_entry', 'forget_add_stage',
-        'forget_entrys', 'place_select_stage', 'reset_done_btn', 'forget_label_names')
+        'forget_entrys', 'place_select_stage', 'reset_done_btn', 'forget_label_names', 'insert_search_placeholder')
 
         #Label name
         self.label_btns_text = 'Select a Contact'
@@ -215,9 +216,9 @@ class Product:
     #Function to mount the Edit Stage
     def edit_buttonF(self):
         #Control widgets
-        self.control_widgets('disable_search', 'del_search', 'forget_edit_stage',
+        self.control_widgets('del_search', 'disable_search', 'forget_edit_stage',
         'forget_select_stage', 'place_add_stage', 'reset_entrys', 'validate_edit_stage',
-        'done_edit_btn', 'reset_done_btn', 'place_label_names', 'placeholder')
+        'done_edit_btn', 'reset_done_btn', 'place_label_names', 'entrys_placeholder')
 
         #Between string
         self.convert_thingsF(self.CName.get())
@@ -237,7 +238,7 @@ class Product:
         self.label_wind = 'Want to delete this contact?'
         
         #Create the window and disable all buttons
-        self.control_widgets('disable_all_btn', 'disable_search', 'create_wind', 'fill_wind', 'fill_delete')
+        self.control_widgets('disable_all_btn', 'disable_search', 'del_search', 'create_wind', 'fill_wind', 'fill_delete')
 
         #Validation var
         self.email = self.CEmail.get()
@@ -287,10 +288,6 @@ class Product:
             self.control_widgets('active_search', 'del_search', 'forget_add_stage',
             'place_select_stage', 'place_edit_stage')
 
-            #Inserting the name in the contact list
-            self.my_ctclist_old = []
-            self.my_ctclist = []
-
             #Sending the data to show the contact
             self.show_infoF(0, val_button=self.name)
                 
@@ -316,10 +313,6 @@ class Product:
             #Control widgets
             self.control_widgets('active_search', 'del_search', 'forget_add_stage', 'place_select_stage', 'edit_active')
 
-            #Inserting the name in the contact list
-            self.my_ctclist_old = []
-            self.my_ctclist = []
-
             #Sending the data to show the contact
             self.show_infoF(0, val_button=self.name)
             
@@ -338,7 +331,8 @@ class Product:
         #Verifiy method
         if val_button != None:
             #Control widgets
-            self.control_widgets('forget_add_stage', 'del_entry', 'place_edit_stage', 'place_label_names', 'configure_entrys') 
+            self.control_widgets('active_search', 'forget_add_stage', 'del_entry', 'place_edit_stage',
+            'place_label_names', 'configure_entrys', 'insert_search_placeholder') 
 
             #Adding the information
             self.control_widgets('insert_data_entrys',
@@ -363,7 +357,7 @@ class Product:
             if self.list_info != False:
                 #Control widget
                 self.control_widgets('place_entrys', 'configure_entrys',
-                'place_edit_stage', 'del_entry', 'place_label_names')
+                'place_edit_stage', 'del_entry', 'place_label_names',)
 
                 #Adding the data
                 self.control_widgets('insert_data_entrys',
@@ -385,12 +379,18 @@ class Product:
             
             
     #Function to clear the placerholder when click
-    def placeholderF(self, key, name=None, email=None, phone=None):
+    def placeholderF(self, key, name=None, email=None, phone=None, search=None):
         name_second = self.CName.get()
         email_second = self.CEmail.get()
         phone_second = self.CPhone.get()
-
+        search_second = self.searchbar_widget.get()
+        
         #Validating
+        if search == True:
+            if search_second == 'Search Contact':
+                self.searchbar_widget.delete(0, END)
+                self.searchbar_widget.configure(fg='white')
+                
         if name == True:
             if name_second == 'Full Name':
                 self.CName.delete(0, END)
@@ -498,8 +498,7 @@ class Product:
     #Function to destroy windows
     def destroy_windowsF(self, event=None):
         if event == 'delete_wind':
-            self.my_ctclist_old = []
-            self.my_ctclist = []
+            #List contact reload
             self.getctc_list()
 
             self.show_infoF(0, val_button=self.CName.get())
@@ -614,13 +613,26 @@ class Product:
                 #Delete search bar text
                 self.searchbar_widget.configure(state='normal')
                 self.searchbar_widget.delete(0, END)
+                self.searchbar_widget.configure(state='readonly')
 
             #Disable Search
             if value == 'disable_search':
                 #Disable the search
-                self.searchbar_widget.configure(state='disabled', readonlybackground='#1F1F1F')
+                self.searchbar_widget.configure(state='readonly', readonlybackground='#1F1F1F')
                 self.listctc_widget.configure(state='disabled')
             
+            #Search Placeholder
+            if value == 'insert_search_placeholder':
+                #Delete search bar text
+                self.searchbar_widget.delete(0, END)
+
+                self.searchbar_widget.configure(fg='gray')
+
+                #Insert placeholder
+                self.searchbar_widget.insert(0, 'Search Contact')
+
+                #List contact reload
+                self.getctc_list()
 
             """Labels"""
 
@@ -695,7 +707,7 @@ class Product:
                 self.CPhone.delete(0, END)
             
             #Insert placeholder
-            if value == 'insert_placeholder':
+            if value == 'insert_placeholder_entrys':
                 #Delete the entrys
                 self.CName.delete(0, END)
                 self.CEmail.delete(0, END)
@@ -715,14 +727,17 @@ class Product:
             
 
             """Validations"""
-            
+            #Placeholder Search Validation
+            if value == 'search_placeholder':
+                self.searchbar_widget.bind("<FocusIn>", lambda m="": self.placeholderF(0, search=True))
+
             #Placeholder Validation
-            if value == 'placeholder':
+            if value == 'entrys_placeholder':
                 #Deleting the placeholder
                 self.CName.bind("<FocusIn>", lambda m="": self.placeholderF(0, name=True))
                 self.CEmail.bind("<FocusIn>", lambda m="": self.placeholderF(0, email=True))
                 self.CPhone.bind("<FocusIn>", lambda m="": self.placeholderF(0, phone=True))
-            
+
             #Done Button Add Stage Validation
             if value == 'validate_add_stage':
                 #Validating blank
@@ -813,6 +828,10 @@ class Product:
         query = 'SELECT name, id FROM contacts ORDER BY name DESC'
         db_rows = self.run_query(query)
         
+        #Reset the list
+        self.my_ctclist = []
+        self.my_ctclist_old = []
+
         #Filling the list
         for rows in db_rows:
             self.my_ctclist_old = ''.join(rows[0])
@@ -881,23 +900,22 @@ class Product:
             #Quering the data
             query = f'DELETE FROM contacts WHERE name = {self.convert_thingsF(name=self.CName.get())} AND id = {self.select_id}'
             self.run_query(query)
-            self.my_ctclist_old = []
-            self.my_ctclist = []
+            
+            #List contact reload
             self.getctc_list()
 
             #Control widget
             self.control_widgets('destroy_wind', 'forget_entrys', 'place_select_stage', 'forget_add_stage',
-            'forget_edit_stage', 'reset_done_btn', 'active_all_btn', 'forget_label_names', 'active_search')
+            'forget_edit_stage', 'reset_done_btn', 'active_all_btn', 'forget_label_names', 'active_search', 'insert_search_placeholder')
         
         if No == True:
-            self.my_ctclist_old = []
-            self.my_ctclist = []
+            #List contact reload
             self.getctc_list()
 
             self.show_infoF(0, val_button=self.CName.get())
             
             #Control widget
-            self.control_widgets('destroy_wind', 'active_all_btn', 'active_search')
+            self.control_widgets('destroy_wind', 'active_all_btn', 'active_search', 'insert_search_placeholder')
 
         
 
