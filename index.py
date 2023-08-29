@@ -844,7 +844,7 @@ class Product:
             self.list_old_id = str(rows[1])
             self.list_id.insert(0, self.list_old_id)
             self.my_ctclist.append(self.my_ctclist_old)
-            self.update_listboxF(self.my_ctclist)
+        self.update_listboxF(self.my_ctclist)
             
     
     #Function to get the last id from the database
