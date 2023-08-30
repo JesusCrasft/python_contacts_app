@@ -58,7 +58,7 @@ class Product:
 
         #Name Label
         self.label_name = Label(self.label_stage, text='Full Name')
-        self.label_name.configure(background='#1F1F1F', relief=SOLID, borderwidth=1, font=('Arial bold', 13), fg='gray')
+        self.label_name.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
         
         #Email Label
         self.label_email = Label(self.label_stage, text=self.label_email_text)
@@ -70,7 +70,7 @@ class Product:
         self.label_phone.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
 
         #Label list of contacts
-        self.label_between = Label(self.label_search, height=1, width=15, text='List of Contacts')
+        self.label_between = Label(self.label_search, text='List of Contacts')
         self.label_between.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
         self.label_between.place(relwidth = 0.99, relheight = 0.05, relx = 0, rely = 0.07)
 
@@ -93,43 +93,43 @@ class Product:
         #Add Contacts
         self.img_add_btn = PhotoImage(file='img/img_add_btn.png')
         self.add_btn = Button(self.label_btnf, image=self.img_add_btn, command=self.add_buttonF)
-        self.add_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.add_btn.place(relwidth = 0.15, relheight = 0.05, relx = 0, rely = 0)
+        self.add_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
 
         #Select Contacts
         self.img_sel_btn = PhotoImage(file='img/img_sel_btn.png')
         self.sel_btn = Button(self.label_btnf, image=self.img_sel_btn)
-        self.sel_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.sel_btn.place(x=210, y=22, anchor=E)
+        self.sel_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.sel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.72, rely = 0.15)
 
         #Settings
         self.img_settings_btn = PhotoImage(file='img/img_settings_btn.png')
         self.settings_btn = Button(self.label_btnf, image=self.img_settings_btn)
-        self.settings_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.settings_btn.place(x=260, y=22, anchor=E)
+        self.settings_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.settings_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
 
         #Cancel Button
         self.cancel_btn = Button(self.label_btns, text='Cancel', command=self.cancel_buttonF)
-        self.cancel_btn.configure(height=1, width=5, font=('Arial', 10, 'bold'),
+        self.cancel_btn.configure(font=('Arial', 10, 'bold'),
         bg='gray', activebackground='#676767', activeforeground='white', fg='black', highlightbackground='#1F1F1F')
 
         #Done Button
         self.done_btn = Button(self.label_btns, text='Done', state='disabled')
-        self.done_btn.configure(height=1, width=5, font=('Arial', 10, 'bold'), highlightbackground='#1F1F1F')
+        self.done_btn.configure(font=('Arial', 10, 'bold'), highlightbackground='#1F1F1F')
 
         #Edit Button
         self.img_edit_btn = PhotoImage(file='img/img_edit_btn.png')
         self.edit_btn = Button(self.label_btns, image=self.img_edit_btn, command=self.edit_buttonF)
-        self.edit_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.edit_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
         #Delete Button
         self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
         self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
-        self.delete_btn.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.delete_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
 
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
-        self.searchbar_widget.configure(width=18, font=('Arial',17), bg='#323232', fg='gray',
+        self.searchbar_widget.configure(font=('Arial',17), bg='#323232', fg='gray',
         highlightbackground='gray', border=1, borderwidth=0)
         self.searchbar_widget.place(relwidth = 0.999, relheight = 0.07, relx = 0, rely = 0.0)
 
@@ -140,7 +140,7 @@ class Product:
         self.listctc_widget.place(relwidth = 0.997, relheight = 0.88, relx = 0, rely = 0.12)
 
         #Scrollbar Contacts
-        self.listctc_scrollbar = Scrollbar(self.listctc_widget, orient='vertical', width=20)
+        self.listctc_scrollbar = Scrollbar(self.listctc_widget, orient='vertical')
         self.listctc_scrollbar.place(relwidth = 0.08, relheight = 0.996, relx = 0.92, rely = 0)
         self.listctc_widget.configure(yscrollcommand=self.listctc_scrollbar.set)
         self.listctc_scrollbar.configure(command=self.listctc_widget.yview, background='#444444', activebackground='gray')
@@ -149,6 +149,7 @@ class Product:
         self.db_exist()
         self.EvnTk()
         self.getctc_list()
+        self.add_buttonF()
 
     #Functions 
 
@@ -527,21 +528,21 @@ class Product:
             #Select Stage
             if value == 'place_select_stage':
                 #Add the buttons "Add", "Settings" and "Select"
-                self.add_btn.place(x=50, y=22, anchor=E)
-                self.sel_btn.place(x=260, y=22, anchor=E)
-                self.settings_btn.place(x=210, y=22, anchor=E)
+                self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
+                self.sel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.72, rely = 0.15)
+                self.settings_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
 
             #Add Stage
             if value == 'place_add_stage':
                 #Add the buttons "Cancel" and "Done"
-                self.cancel_btn.place(x=100, y=22, anchor=E)
-                self.done_btn.place(x=480, y=22, anchor=E)
+                self.cancel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
+                self.done_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
 
             #Edit Stage
             if value == 'place_edit_stage':
                 #Adding the button to edit
-                self.delete_btn.place(x=480, y=22, anchor=E)
-                self.edit_btn.place(x=100, y=22, anchor=E)
+                self.delete_btn.place(relwidth = 0.07, relheight = 0.68, relx = 0.87, rely = 0.15)
+                self.edit_btn.place(relwidth = 0.07, relheight = 0.68, relx = 0.05, rely = 0.15)
 
 
             """Forget Stages"""
@@ -665,23 +666,23 @@ class Product:
             #Place Entrys
             if value == 'place_entrys':
                 #Add the entrys
-                self.CName.place(x=250, y=150, anchor=CENTER)
-                self.CEmail.place(x=250, y=270, anchor=CENTER)
-                self.CPhone.place(x=250, y=390, anchor=CENTER)
+                self.CName.place(relwidth = 0.70, relheight = 0.07, relx = 0.16, rely = 0.24)
+                self.CEmail.place(relwidth = 0.70, relheight = 0.07, relx = 0.16, rely = 0.46)
+                self.CPhone.place(relwidth = 0.70, relheight = 0.07, relx = 0.16, rely = 0.68)
 
             #Configure Entrys
             if value == 'configure_entrys':
                 #Configure entrys
-                self.CName.configure(state='normal', width=25, font=('Arial', 15), fg='black')
-                self.CEmail.configure(state='normal', width=25, font=('Arial', 15), fg='black')
-                self.CPhone.configure(state='normal', width=25, font=('Arial', 15), fg='black')
+                self.CName.configure(state='normal', font=('Arial', 15), fg='black')
+                self.CEmail.configure(state='normal', font=('Arial', 15), fg='black')
+                self.CPhone.configure(state='normal', font=('Arial', 15), fg='black')
             
             #Reset Entrys
             if value == 'reset_entrys':
                 #Reset entrys
-                self.CName.configure(state='normal', width=25, font=('Arial', 15), fg='white')
-                self.CEmail.configure(state='normal', width=25, font=('Arial', 15), fg='white')
-                self.CPhone.configure(state='normal', width=25, font=('Arial', 15), fg='white')
+                self.CName.configure(state='normal', font=('Arial', 15), fg='white')
+                self.CEmail.configure(state='normal', font=('Arial', 15), fg='white')
+                self.CPhone.configure(state='normal', font=('Arial', 15), fg='white')
 
             #Disable Entrys
             if value == 'disable_entrys':
