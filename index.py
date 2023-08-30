@@ -14,8 +14,8 @@ class Product:
         #Secondary Window Attributes
         self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry("804x588+300+300")
-        self.windTwo.resizable(False, False)
+        self.windTwo.geometry("800x600")
+        #self.windTwo.resizable(False, False)
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
@@ -36,10 +36,29 @@ class Product:
 
         """Labels"""
 
+        #Labels Btns One
+        self.label_btnf = Label(self.windTwo)
+        self.label_btnf.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
+        self.label_btnf.place(relwidth = 0.37, relheight = 0.09, relx = 0.0, rely = 0.0)
+        #self.label_btnf.place(x=149, y=52, anchor=S)
+
+        #Label Btns Two
+        self.label_btns = Label(self.windTwo, text=self.label_btns_text)
+        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
+        self.label_btns.place(relwidth = 0.63, relheight = 0.09, relx = 0.37, rely = 0.0)
+        #self.label_btns.place(x=550, y=52, anchor=S)
+
         #Label Stage
         self.label_stage = Label(self.windTwo, height=23, width=50)
         self.label_stage.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.label_stage.place(x=550, y=52, anchor=N)
+        self.label_stage.place(relwidth = 0.63, relheight = 0.91, relx = 0.37, rely = 0.09)
+        #self.label_stage.place(x=550, y=52, anchor=N)
+
+        #Label Search Widgets
+        self.label_search = Label(self.windTwo, height=23, width=29)
+        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
+        self.label_search.place(relwidth = 0.37, relheight = 0.91, relx = 0.0, rely = 0.09)
+        #self.label_search.place(x=149, y=52, anchor=N)
 
         #Name Label
         self.label_name = Label(self.label_stage, text='Full Name')
@@ -48,26 +67,11 @@ class Product:
         #Email Label
         self.label_email = Label(self.label_stage, text=self.label_email_text)
         self.label_email.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
-        self.label_email.place(x=250, y=240, anchor=CENTER)
+        self.label_email.place(relwidth = 0.40, relheight = 0.06, relx = 0.33, rely = 0.43)
 
         #Phone Label
         self.label_phone = Label(self.label_stage, text='Number Phone')
         self.label_phone.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
-
-        #Labels Btns One
-        self.label_btnf = Label(self.windTwo, height=2, width=29)
-        self.label_btnf.configure(background='#1F1F1F', relief=SOLID, borderwidth=2)
-        self.label_btnf.place(x=149, y=52, anchor=S)
-
-        #Label Btns Two
-        self.label_btns = Label(self.windTwo, height=2, width=50, text=self.label_btns_text)
-        self.label_btns.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
-        self.label_btns.place(x=550, y=52, anchor=S)
-
-        #Label Search Widgets
-        self.label_search = Label(self.windTwo, height=23, width=29)
-        self.label_search.configure(background='#1F1F1F', relief=SOLID, borderwidth=2, fg='gray')
-        self.label_search.place(x=149, y=52, anchor=N)
 
         #Label list of contacts
         self.label_between = Label(self.label_search, height=1, width=15, text='List of Contacts')
@@ -650,9 +654,9 @@ class Product:
             if value == 'place_label_names':
                 self.label_email_text = 'Email'
                 self.label_email.configure(text=self.label_email_text)
-                self.label_name.place(x=250, y=120, anchor=CENTER)
-                self.label_email.place(x=250, y=240, anchor=CENTER)
-                self.label_phone.place(x=250, y=360, anchor=CENTER)
+                self.label_name.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.19)
+                self.label_email.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.41)
+                self.label_phone.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.63)
 
             if value == 'forget_label_names':
                 self.label_email_text = 'Select a Contact'
@@ -733,6 +737,7 @@ class Product:
             
 
             """Validations"""
+
             #Placeholder Search Validation
             if value == 'search_placeholder':
                 self.searchbar_widget.bind("<FocusIn>", lambda m="": self.placeholderF(0, search=True))
@@ -844,6 +849,7 @@ class Product:
             self.list_old_id = str(rows[1])
             self.list_id.insert(0, self.list_old_id)
             self.my_ctclist.append(self.my_ctclist_old)
+            print(self.my_ctclist)
         self.update_listboxF(self.my_ctclist)
             
     
@@ -923,7 +929,7 @@ class Product:
             #Control widget
             self.control_widgets('destroy_wind', 'active_all_btn', 'active_search', 'insert_search_placeholder')
 
-        
+
 
 if __name__ == '__main__':
     WindowT = Tk()
