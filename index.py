@@ -1,6 +1,8 @@
 from tkinter import ttk
 from tkinter import * 
+from tktooltip import ToolTip
 from validate_email import *
+
 
 import os
 import phonenumbers
@@ -15,6 +17,7 @@ class Product:
         #Secondary Window Attributes
         self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
+        self.windTwo.geometry('800x600')
         self.windTwo.minsize(800, 600)
         self.windTwo.maxsize(1200, 800)
         self.windTwo.configure(bg='#1F1F1F')
@@ -25,6 +28,7 @@ class Product:
         self.list_info = []
         self.list_id = []
         self.list_old_id = []
+        self.resize_list = [0.12, 0.07, 0.68, 0.15, 15, 17]
         self.name = ''
         self.email = ''
         self.phone = ''
@@ -34,6 +38,8 @@ class Product:
         self.label_wind = ''
         self.label_btns_text = 'Create a new Contact'
         self.label_email_text = 'Create a new Contact'
+        self.resize_val = [True, False]
+        self.list_check = False
 
         """Labels"""
 
@@ -64,7 +70,7 @@ class Product:
         #Email Label
         self.label_email = Label(self.label_stage, text=self.label_email_text)
         self.label_email.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
-        self.label_email.place(relwidth = 0.45, relheight = 0.06, relx = 0.33, rely = 0.43)
+        self.label_email.place(relwidth = 0.45, relheight = 0.06, relx = 0.30, rely = 0.43)
 
         #Phone Label
         self.label_phone = Label(self.label_stage, text='Number Phone')
@@ -95,13 +101,19 @@ class Product:
         self.img_add_btn = PhotoImage(file='img/img_add_btn.png')
         self.add_btn = Button(self.label_btnf, image=self.img_add_btn, command=self.add_buttonF)
         self.add_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
+        self.add_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.05, rely = self.resize_list[3])
+        ToolTip(self.add_btn, 'Add Contact', delay=0.2,
+        parent_kwargs={"bg": "#1F1F1F", "padx": 5, "pady": 5},
+        fg="#ffffff", bg="#1F1F1F", padx=2, pady=2)
         
         #Delete All Contacts
         self.img_del_all_btn = PhotoImage(file='img/img_del_all_btn.png')
         self.del_all_btn = Button(self.label_btnf, image=self.img_del_all_btn, command=self.del_all_btnF)
         self.del_all_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.del_all_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
+        self.del_all_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.87, rely = self.resize_list[3])
+        ToolTip(self.del_all_btn, 'Delete All Contacts', delay=0.2,
+        parent_kwargs={"bg": "#1F1F1F", "padx": 5, "pady": 5},
+        fg="#ffffff", bg="#1F1F1F", padx=2, pady=2)
 
         #Cancel Button
         self.cancel_btn = Button(self.label_btns, text='Cancel', command=self.cancel_buttonF)
@@ -116,21 +128,27 @@ class Product:
         self.img_edit_btn = PhotoImage(file='img/img_edit_btn.png')
         self.edit_btn = Button(self.label_btns, image=self.img_edit_btn, command=self.edit_buttonF)
         self.edit_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-
+        ToolTip(self.edit_btn, 'Edit Contact', delay=0.2,
+        parent_kwargs={"bg": "#1F1F1F", "padx": 5, "pady": 5},
+        fg="#ffffff", bg="#1F1F1F", padx=2, pady=2)
+        
         #Delete Button
         self.img_delete_btn = PhotoImage(file='img/img_delete_btn.png')
         self.delete_btn = Button(self.label_btns, image=self.img_delete_btn, command=self.delete_buttonF)
         self.delete_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        ToolTip(self.delete_btn, 'Delete Contact', delay=0.2,
+        parent_kwargs={"bg": "#1F1F1F", "padx": 5, "pady": 5},
+        fg="#ffffff", bg="#1F1F1F", padx=2, pady=2)
 
         #Search Bar
         self.searchbar_widget = Entry(self.label_search)
-        self.searchbar_widget.configure(font=('Arial',17), bg='#323232', fg='gray',
+        self.searchbar_widget.configure(font=('Arial', self.resize_list[5]), bg='#323232', fg='gray',
         highlightbackground='gray', border=1, borderwidth=0)
         self.searchbar_widget.place(relwidth = 0.999, relheight = 0.07, relx = 0, rely = 0.0)
 
         #List of Contacts
         self.listctc_widget = Listbox(self.label_search, selectmode=EXTENDED , exportselection=False)
-        self.listctc_widget.configure(bg='#1F1F1F', font=('Arial', 17), fg='white',
+        self.listctc_widget.configure(bg='#1F1F1F', font=('Arial', self.resize_list[5]), fg='white',
         highlightbackground='gray', borderwidth=1)
         self.listctc_widget.place(relwidth = 0.997, relheight = 0.88, relx = 0, rely = 0.12)
 
@@ -160,7 +178,7 @@ class Product:
         self.listctc_widget.bind('<<ListboxSelect>>', lambda m="": self.show_infoF(0, val_list=True))
 
         #Check zoomed
-        self.windTwo.bind('<Enter>', self.WindowMaxF)
+        self.windTwo.bind('<Enter>', self.ConfigSizeF)
 
                         
     #Function to update the listbox
@@ -188,12 +206,86 @@ class Product:
 
 
     #Function to check if the window is zoomed
-    def WindowMaxF(self, key):
+    def ConfigSizeF(self, key):
         win_height = self.windTwo.winfo_height()
         win_width = self.windTwo.winfo_width()
+
+        #Resize buttons if 800 width
+        if win_width >= 800 and win_width <= 899:
+            self.resize_list[0] = 0.12
+            self.resize_list[1] = 0.07
+            
+            #update buttons
+            self.control_widgets('update_buttons')
+
+        #Resize buttons if 900 width
+        if win_width >= 900 and win_width <= 999:
+            self.resize_list[0] = 0.105
+            self.resize_list[1] = 0.06
+
+            #Update buttons
+            self.control_widgets('update_buttons')
+            
+        #Resize buttons if 1000 width
+        if win_width >= 1000 and win_width <= 1099:
+            self.resize_list[0] = 0.097
+            self.resize_list[1] = 0.055
+
+            #Update buttons
+            self.control_widgets('update_buttons')
+
+        #Resize buttons if 1100 width
+        if win_width >= 1100 and win_width <= 1199:
+            self.resize_list[0] = 0.09
+            self.resize_list[1] = 0.049
+
+            #Update buttons
+            self.control_widgets('update_buttons')
+
+        #Resize buttons if 1200 width
+        if win_width > 1199 and win_width == 1200:
+            self.resize_list[0] = 0.08
+            self.resize_list[1] = 0.046
+
+            #Update buttons
+            self.control_widgets('update_buttons')
+
+
+        #Resize buttons if 600 height
+        if win_height >= 600 and win_height <= 699:
+            self.resize_list[2] = 0.68
+            self.resize_list[3] = 0.15
+            self.resize_list[4] = 15
+            self.resize_list[5] = 17
+
+            #Update buttons
+            self.control_widgets('update_buttons', 'update_search', 'update_entrys')
         
+        #Resize buttons if 700 height
+        if win_height >= 700 and win_height <= 799:
+            self.resize_list[2] = 0.58
+            self.resize_list[3] = 0.16
+            self.resize_list[4] = 17
+            self.resize_list[5] = 19
+
+            #Update buttons
+            self.control_widgets('update_buttons', 'update_search', 'update_entrys')
+        
+        #Resize buttons if 800 height
+        if win_height > 799 and win_height == 800:
+            self.resize_list[2] = 0.51
+            self.resize_list[3] = 0.18
+            self.resize_list[4] = 19
+            self.resize_list[5] = 21
+
+            #Update buttons
+            self.control_widgets('update_buttons', 'update_search', 'update_entrys')
+
+
+        #Check if the window is zoomed
         if win_height > 800 or win_width > 1200:
             self.windTwo.attributes('-zoomed', False)
+            self.windTwo.geometry('1200x800')
             
 
     #Function to mount the Add Stage
@@ -219,9 +311,16 @@ class Product:
         'forget_entrys', 'place_select_stage', 'reset_done_btn', 'forget_label_names', 'insert_search_placeholder')
 
         #Label name
-        self.label_btns_text = 'Select a Contact'
-        self.label_email_text = 'Select a Contact'
-        self.control_widgets('refresh_label')
+
+        if self.list_check != False:
+            self.label_btns_text = 'Select a Contact'
+            self.label_email_text = 'Select a Contact'
+            self.control_widgets('refresh_label')
+
+        else:
+            self.label_btns_text = 'Create a new Contact'
+            self.label_email_text = 'Create a new Contact'
+            self.control_widgets('refresh_label')
 
         #Change the focus
         self.windTwo.focus()
@@ -331,6 +430,9 @@ class Product:
 
             #Change the focus
             self.windTwo.focus()
+
+            #Set True list check
+            self.list_check = True
             
         else:
             self.invalid_entryF()
@@ -559,21 +661,23 @@ class Product:
             #Select Stage
             if value == 'place_select_stage':
                 #Add the buttons "Add", "Settings" and "Select"
-                self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
-                self.del_all_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
+                self.add_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.05, rely = self.resize_list[3])
+                self.del_all_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.87, rely = self.resize_list[3])
+                self.resize_val = [True, False]
 
             #Add Stage
             if value == 'place_add_stage':
                 #Add the buttons "Cancel" and "Done"
                 self.cancel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
                 self.done_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
+                self.resize_val = [False, False]
 
             #Edit Stage
             if value == 'place_edit_stage':
                 #Adding the button to edit
-                self.delete_btn.place(relwidth = 0.07, relheight = 0.68, relx = 0.87, rely = 0.15)
-                self.edit_btn.place(relwidth = 0.07, relheight = 0.68, relx = 0.05, rely = 0.15)
-
+                self.delete_btn.place(relwidth = self.resize_list[1], relheight = self.resize_list[2], relx = 0.87, rely = self.resize_list[3])
+                self.edit_btn.place(relwidth = self.resize_list[1], relheight = self.resize_list[2], relx = 0.05, rely = self.resize_list[3])
+                self.resize_val = [True, True]
 
             """Forget Stages"""
 
@@ -638,6 +742,17 @@ class Product:
                 self.done_btn.configure(state='normal')
                 self.cancel_btn.configure(state='normal')
 
+            #Update buttons
+            if value == 'update_buttons' and self.resize_val[0] == True:
+                #Update Add and Del All butons
+                self.add_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.05, rely = self.resize_list[3])
+                self.del_all_btn.place(relwidth = self.resize_list[0], relheight = self.resize_list[2], relx = 0.87, rely = self.resize_list[3])
+                
+                #Update Edit and Delete buttons
+                if self.resize_val[1] == True:
+                    self.delete_btn.place(relwidth = self.resize_list[1], relheight = self.resize_list[2], relx = 0.87, rely = self.resize_list[3])
+                    self.edit_btn.place(relwidth = self.resize_list[1], relheight = self.resize_list[2], relx = 0.05, rely = self.resize_list[3])
+
 
             """Search"""
 
@@ -673,6 +788,12 @@ class Product:
                 #List contact reload
                 self.getctc_list()
 
+            #Update Search Entry and Listbox
+            if value == 'update_search':
+                self.searchbar_widget.configure(font=('Arial', self.resize_list[5]))
+                self.listctc_widget.configure(font=('Arial', self.resize_list[5]))
+
+
             """Labels"""
 
             #Refresh label stage name
@@ -685,7 +806,7 @@ class Product:
                 self.label_email_text = 'Email'
                 self.label_email.configure(text=self.label_email_text)
                 self.label_name.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.19)
-                self.label_email.place(relwidth = 0.45, relheight = 0.05, relx = 0.30, rely = 0.41)
+                self.label_email.place(relwidth = 0.45, relheight = 0.05, relx = 0.27, rely = 0.41)
                 self.label_phone.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.63)
 
             if value == 'forget_label_names':
@@ -706,16 +827,16 @@ class Product:
             #Configure Entrys
             if value == 'configure_entrys':
                 #Configure entrys
-                self.CName.configure(state='normal', font=('Arial', 15), fg='black')
-                self.CEmail.configure(state='normal', font=('Arial', 15), fg='black')
-                self.CPhone.configure(state='normal', font=('Arial', 15), fg='black')
+                self.CName.configure(state='normal', font=('Arial', self.resize_list[4]), fg='black')
+                self.CEmail.configure(state='normal', font=('Arial', self.resize_list[4]), fg='black')
+                self.CPhone.configure(state='normal', font=('Arial', self.resize_list[4]), fg='black')
             
             #Reset Entrys
             if value == 'reset_entrys':
                 #Reset entrys
-                self.CName.configure(state='normal', font=('Arial', 15), fg='white')
-                self.CEmail.configure(state='normal', font=('Arial', 15), fg='white')
-                self.CPhone.configure(state='normal', font=('Arial', 15), fg='white')
+                self.CName.configure(state='normal', font=('Arial', self.resize_list[4]), fg='white')
+                self.CEmail.configure(state='normal', font=('Arial', self.resize_list[4]), fg='white')
+                self.CPhone.configure(state='normal', font=('Arial', self.resize_list[4]), fg='white')
 
             #Disable Entrys
             if value == 'disable_entrys':
@@ -765,6 +886,12 @@ class Product:
                 self.CEmail.place_forget()
                 self.CPhone.place_forget()
             
+            #Update Entrys
+            if value == 'update_entrys':
+                self.CName.configure(font=('Arial', self.resize_list[4]))
+                self.CEmail.configure(font=('Arial', self.resize_list[4]))
+                self.CPhone.configure(font=('Arial', self.resize_list[4]))
+
 
             """Validations"""
 
@@ -969,7 +1096,10 @@ class Product:
             self.label_btns_text = 'Create a new Contact'
             self.label_email_text = 'Create a new Contact'
             self.control_widgets('refresh_label')
-        
+
+            #Set false list check
+            self.list_check = False
+            
         if No == True:
             #List contact reload
             self.getctc_list()
@@ -1001,6 +1131,9 @@ class Product:
             self.label_btns_text = 'Create a new Contact'
             self.label_email_text = 'Create a new Contact'
             self.control_widgets('refresh_label')
+
+            #Set False list check
+            self.list_check = False
 
         if No == True:
             #List contact reload
