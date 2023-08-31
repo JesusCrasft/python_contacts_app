@@ -2,6 +2,7 @@ from tkinter import ttk
 from tkinter import * 
 from validate_email import *
 
+import os
 import phonenumbers
 import sqlite3
 
@@ -14,8 +15,8 @@ class Product:
         #Secondary Window Attributes
         self.windTwo = WindowT
         self.windTwo.title('Local Contacts')
-        self.windTwo.geometry("800x600")
-        #self.windTwo.resizable(False, False)
+        self.windTwo.minsize(800, 600)
+        self.windTwo.maxsize(1200, 800)
         self.windTwo.configure(bg='#1F1F1F')
 
         #Variables
@@ -31,8 +32,8 @@ class Product:
         self.select_id = ''
         self.title_wind = ''
         self.label_wind = ''
-        self.label_btns_text = 'Select a Contact'
-        self.label_email_text = 'Select a Contact'
+        self.label_btns_text = 'Create a new Contact'
+        self.label_email_text = 'Create a new Contact'
 
         """Labels"""
 
@@ -63,7 +64,7 @@ class Product:
         #Email Label
         self.label_email = Label(self.label_stage, text=self.label_email_text)
         self.label_email.configure(background='#1F1F1F', relief=SOLID, borderwidth=0, font=('Arial bold', 13), fg='gray')
-        self.label_email.place(relwidth = 0.40, relheight = 0.06, relx = 0.33, rely = 0.43)
+        self.label_email.place(relwidth = 0.45, relheight = 0.06, relx = 0.33, rely = 0.43)
 
         #Phone Label
         self.label_phone = Label(self.label_stage, text='Number Phone')
@@ -95,18 +96,12 @@ class Product:
         self.add_btn = Button(self.label_btnf, image=self.img_add_btn, command=self.add_buttonF)
         self.add_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
         self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
-
-        #Select Contacts
-        self.img_sel_btn = PhotoImage(file='img/img_sel_btn.png')
-        self.sel_btn = Button(self.label_btnf, image=self.img_sel_btn)
-        self.sel_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.sel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.72, rely = 0.15)
-
-        #Settings
-        self.img_settings_btn = PhotoImage(file='img/img_settings_btn.png')
-        self.settings_btn = Button(self.label_btnf, image=self.img_settings_btn)
-        self.settings_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
-        self.settings_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
+        
+        #Delete All Contacts
+        self.img_del_all_btn = PhotoImage(file='img/img_del_all_btn.png')
+        self.del_all_btn = Button(self.label_btnf, image=self.img_del_all_btn, command=self.del_all_btnF)
+        self.del_all_btn.configure(borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+        self.del_all_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
 
         #Cancel Button
         self.cancel_btn = Button(self.label_btns, text='Cancel', command=self.cancel_buttonF)
@@ -134,7 +129,7 @@ class Product:
         self.searchbar_widget.place(relwidth = 0.999, relheight = 0.07, relx = 0, rely = 0.0)
 
         #List of Contacts
-        self.listctc_widget = Listbox(self.label_search, selectmode=SINGLE , exportselection=False)
+        self.listctc_widget = Listbox(self.label_search, selectmode=EXTENDED , exportselection=False)
         self.listctc_widget.configure(bg='#1F1F1F', font=('Arial', 17), fg='white',
         highlightbackground='gray', borderwidth=1)
         self.listctc_widget.place(relwidth = 0.997, relheight = 0.88, relx = 0, rely = 0.12)
@@ -149,7 +144,6 @@ class Product:
         self.db_exist()
         self.EvnTk()
         self.getctc_list()
-        self.add_buttonF()
 
     #Functions 
 
@@ -165,7 +159,10 @@ class Product:
         #Listbox event
         self.listctc_widget.bind('<<ListboxSelect>>', lambda m="": self.show_infoF(0, val_list=True))
 
+        #Check zoomed
+        self.windTwo.bind('<Enter>', self.WindowMaxF)
 
+                        
     #Function to update the listbox
     def update_listboxF(self, data):
         self.listctc_widget.delete(0, END)
@@ -189,6 +186,15 @@ class Product:
 
         self.update_listboxF(data)
 
+
+    #Function to check if the window is zoomed
+    def WindowMaxF(self, key):
+        win_height = self.windTwo.winfo_height()
+        win_width = self.windTwo.winfo_width()
+        
+        if win_height > 800 or win_width > 1200:
+            self.windTwo.attributes('-zoomed', False)
+            
 
     #Function to mount the Add Stage
     def add_buttonF(self):
@@ -214,6 +220,7 @@ class Product:
 
         #Label name
         self.label_btns_text = 'Select a Contact'
+        self.label_email_text = 'Select a Contact'
         self.control_widgets('refresh_label')
 
         #Change the focus
@@ -252,7 +259,28 @@ class Product:
         self.phone = self.CPhone.get()
 
         #Check if the window is closed with the X button
-        self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event="delete_wind"))
+        self.wind.bind("<Destroy>", lambda m="": self.manage_windowsF(event="delete_wind"))
+
+    
+    #Function to mount the Delete All Stage
+    def del_all_btnF(self):
+        if self.my_ctclist != []:
+            #Title name and Label name
+            self.title_wind = 'Delete All Contacts'
+            self.label_wind = 'Want to delete all the Contacts?'
+            
+            #Create the window and disable all buttons
+            self.control_widgets('disable_all_btn', 'disable_search', 'del_search', 'create_wind', 'fill_wind', 'fill_delete_all')
+
+            #Validation var
+            self.email = self.CEmail.get()
+            self.phone = self.CPhone.get()
+
+            #Check if the window is closed with the X button
+            self.wind.bind("<Destroy>", lambda m="": self.manage_windowsF(event="delete_all"))
+
+        else:
+            pass
 
 
     #Function to mount the Wrong stage
@@ -279,7 +307,7 @@ class Product:
             self.CEmail.focus()
 
         #Check if the window is closed with the X button
-        self.wind.bind("<Destroy>", lambda m="": self.destroy_windowsF(event='invalid_wind'))
+        self.wind.bind("<Destroy>", lambda m="": self.manage_windowsF(event='invalid_wind'))
 
 
     #Function to Add Done Button
@@ -491,7 +519,6 @@ class Product:
             nakuru = "'"
             aitsuki = "'"
             self.request_name = aitsuki + lst_join + nakuru
-            
             #Select one id from que list
             tuple_id = self.listctc_widget.curselection()
             if tuple_id != ():
@@ -503,7 +530,7 @@ class Product:
 
 
     #Function to destroy windows
-    def destroy_windowsF(self, event=None):
+    def manage_windowsF(self, event=None):
         if event == 'delete_wind':
             #List contact reload
             self.getctc_list()
@@ -515,8 +542,12 @@ class Product:
 
         if event == 'invalid_wind':
             self.control_widgets('active_all_btn', 'active_search')
-            
-        return
+
+        if event == 'delete_all':
+            self.control_widgets('active_all_btn', 'active_search')
+
+        if event == 'zoomed':
+            print('hola')
 
 
     #Function to control the widgets
@@ -529,8 +560,7 @@ class Product:
             if value == 'place_select_stage':
                 #Add the buttons "Add", "Settings" and "Select"
                 self.add_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.05, rely = 0.15)
-                self.sel_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.72, rely = 0.15)
-                self.settings_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
+                self.del_all_btn.place(relwidth = 0.12, relheight = 0.68, relx = 0.87, rely = 0.15)
 
             #Add Stage
             if value == 'place_add_stage':
@@ -551,8 +581,7 @@ class Product:
             if value == 'forget_select_stage':
                 #Remove the buttons in the main 
                 self.add_btn.place_forget()
-                self.sel_btn.place_forget()
-                self.settings_btn.place_forget()
+                self.del_all_btn.place_forget()
 
             #Add Stage
             if value == 'forget_add_stage':
@@ -596,6 +625,7 @@ class Product:
                 self.delete_btn.configure(state='disabled')
                 self.edit_btn.configure(state='disabled')
                 self.add_btn.configure(state='disabled')
+                self.del_all_btn.configure(state='disabled')
                 self.done_btn.configure(state='disabled')
                 self.cancel_btn.configure(state='disabled')
 
@@ -604,11 +634,13 @@ class Product:
                 self.delete_btn.configure(state='normal')
                 self.edit_btn.configure(state='normal')
                 self.add_btn.configure(state='normal')
+                self.del_all_btn.configure(state='normal')
                 self.done_btn.configure(state='normal')
                 self.cancel_btn.configure(state='normal')
 
 
             """Search"""
+
             #Active Search
             if value == 'active_search':
                 #Active the search
@@ -646,13 +678,14 @@ class Product:
             #Refresh label stage name
             if value == 'refresh_label':
                 self.label_btns.configure(text=self.label_btns_text)
+                self.label_email.configure(text=self.label_email_text)
 
             #Place label names entrys
             if value == 'place_label_names':
                 self.label_email_text = 'Email'
                 self.label_email.configure(text=self.label_email_text)
                 self.label_name.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.19)
-                self.label_email.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.41)
+                self.label_email.place(relwidth = 0.45, relheight = 0.05, relx = 0.30, rely = 0.41)
                 self.label_phone.place(relwidth = 0.40, relheight = 0.05, relx = 0.30, rely = 0.63)
 
             if value == 'forget_label_names':
@@ -802,10 +835,26 @@ class Product:
                         confirm_btnS.configure(command=lambda m="": self.delete_contactF(No=True))
                         confirm_btnS.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
                         confirm_btnS.place(x=350, y=110, anchor=CENTER)
+                    
+                    #Fill Delete All Contacts Window
+                    if value == 'fill_delete_all':
+                        #Yes Button
+                        confirm_btnF = Button(self.wind, image=self.img_yes_btn)
+                        confirm_btnF.configure(command=lambda m="": self.del_all_contactF(Yes=True))
+                        confirm_btnF.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+                        confirm_btnF.place(x=150, y=110, anchor=CENTER)
+
+                        #No Button
+                        self.img_no_btn = PhotoImage(file='img/img_no_btn.png')
+                        confirm_btnS = Button(self.wind, image=self.img_no_btn)
+                        confirm_btnS.configure(command=lambda m="": self.del_all_contactF(No=True))
+                        confirm_btnS.configure(height=30, width=30, borderwidth=0, bg='#1F1F1F', highlightbackground='#1F1F1F')
+                        confirm_btnS.place(x=350, y=110, anchor=CENTER)
 
             #Destroy Window   
             if value == 'destroy_wind':
                 self.wind.destroy()
+
 
     #SQLITE FUNCTIONS
  
@@ -846,7 +895,6 @@ class Product:
             self.list_old_id = str(rows[1])
             self.list_id.insert(0, self.list_old_id)
             self.my_ctclist.append(self.my_ctclist_old)
-            print(self.my_ctclist)
         self.update_listboxF(self.my_ctclist)
             
     
@@ -916,6 +964,11 @@ class Product:
             #Control widget
             self.control_widgets('destroy_wind', 'forget_entrys', 'place_select_stage', 'forget_add_stage',
             'forget_edit_stage', 'reset_done_btn', 'active_all_btn', 'forget_label_names', 'active_search', 'insert_search_placeholder')
+
+            #Label name
+            self.label_btns_text = 'Create a new Contact'
+            self.label_email_text = 'Create a new Contact'
+            self.control_widgets('refresh_label')
         
         if No == True:
             #List contact reload
@@ -927,6 +980,37 @@ class Product:
             self.control_widgets('destroy_wind', 'active_all_btn', 'active_search', 'insert_search_placeholder')
 
 
+    #Function to delete all the contacts, delete the archive database.db
+    def del_all_contactF(self, No=None, Yes=None):
+        if Yes == True:
+            #Delete the database
+            path = os.path.join(self.db_name)  
+            os.remove(path)
+            
+            #Create a new database
+            self.db_exist()
+
+            #List contact reload
+            self.getctc_list()
+
+            #Control widget
+            self.control_widgets('destroy_wind', 'forget_entrys', 'place_select_stage', 'forget_add_stage',
+            'forget_edit_stage', 'reset_done_btn', 'active_all_btn', 'forget_label_names', 'active_search', 'insert_search_placeholder')
+
+            #Label name
+            self.label_btns_text = 'Create a new Contact'
+            self.label_email_text = 'Create a new Contact'
+            self.control_widgets('refresh_label')
+
+        if No == True:
+            #List contact reload
+            self.getctc_list()
+
+            self.show_infoF(0, val_button=self.CName.get())
+            
+            #Control widget
+            self.control_widgets('destroy_wind', 'active_all_btn', 'active_search', 'insert_search_placeholder')
+        
 
 if __name__ == '__main__':
     WindowT = Tk()
