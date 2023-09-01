@@ -4,17 +4,22 @@
 > Aun no esta terminado, lo actualizare cuando se me ocurra algun cambio o quiera probar algo de nuevo.
 
 ## Screenshots / Capturas de Pantalla
-![Captura desde 2023-09-01 11-22-56](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/182419f0-0ff8-4ec1-bfa6-838fd3400d83)
-![Captura desde 2023-09-01 11-23-06](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/3c4ae24c-51fe-434d-9f84-53236e139a44)
-![Captura desde 2023-09-01 11-23-29](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/ccc65251-c8a5-4dc8-b848-ce06fdedc8e1)
-![Captura desde 2023-09-01 11-23-34](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/4c4cefc5-6ded-4300-918a-28f2de00bb8a)
-![Captura desde 2023-09-01 11-23-39](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/d5bf4b6b-2028-4e1e-9c1f-29cc89b9c0c4)
-![Captura desde 2023-09-01 11-23-45](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/5e2e0129-3825-4eaa-8aff-19d23607b419)
-![Captura desde 2023-09-01 11-24-02](https://github.com/JesusCrasft/python_contacts_app/assets/44268269/a389f36c-ee3b-4f91-ba31-dcad422ebf09)
+<img alt="Welcome to Contacts App" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/182419f0-0ff8-4ec1-bfa6-838fd3400d83" width=60% height=60% />
+<img alt="Add Contact" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/3c4ae24c-51fe-434d-9f84-53236e139a44" width=60% height=60% />
+<img alt="Contact Added" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/ccc65251-c8a5-4dc8-b848-ce06fdedc8e1" width=60% height=60% />
+<img alt="Contact Information" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/4c4cefc5-6ded-4300-918a-28f2de00bb8a" width=60% height=60% />
+<img alt="Edit Contact" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/d5bf4b6b-2028-4e1e-9c1f-29cc89b9c0c4" width=60% height=60% />
+<img alt="Edit Contact" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/5e2e0129-3825-4eaa-8aff-19d23607b419" width=60% height=60% />
+<img alt="Contact App" src="https://github.com/JesusCrasft/python_contacts_app/assets/44268269/a389f36c-ee3b-4f91-ba31-dcad422ebf09" width=60% height=60% />
                                                                
 ## Tech-framework used   / Tecnologías Usadas
-- Las librerias usadas en e  ste   pro  yecto son las siguientes:
-- Python, Tkinter, Tkinter-tooltip, P  hone  Numb  ers, ValidateEmail, SQLite3 y OS 
+- Python
+  - Tkinter
+  - tkinter-tooltip
+  - PhoneNumbers
+  - ValidateEmail
+  - OS
+- SQLite3
   
 ## Install / Instalación  
 #### OS X, Linux y Windows  
