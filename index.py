@@ -179,7 +179,7 @@ class Product:
 
         #Check zoomed
         self.windTwo.bind('<Enter>', self.ConfigSizeF)
-
+        
                         
     #Function to update the listbox
     def update_listboxF(self, data):
@@ -621,6 +621,7 @@ class Product:
             nakuru = "'"
             aitsuki = "'"
             self.request_name = aitsuki + lst_join + nakuru
+
             #Select one id from que list
             tuple_id = self.listctc_widget.curselection()
             if tuple_id != ():
@@ -647,9 +648,6 @@ class Product:
 
         if event == 'delete_all':
             self.control_widgets('active_all_btn', 'active_search')
-
-        if event == 'zoomed':
-            print('hola')
 
 
     #Function to control the widgets
@@ -1038,16 +1036,21 @@ class Product:
 
     #Function to get the data from database with name
     def getctc_info(self, request = []):
+        print(request)
         #Validation blank tuple
         if request != False:
-            #Quering the data
-            query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
-            db_rows = self.run_query(query)
-            for rows in db_rows:
-                name = rows[0]
-                email = rows[1]
-                phone = rows[2]
-            return name, email, phone
+            try:
+                #Quering the data
+                query = f"SELECT name, email, phone FROM contacts WHERE id LIKE {request[1]} AND name LIKE {request[0]}"
+                db_rows = self.run_query(query)
+                for rows in db_rows:
+                    name = rows[0]
+                    email = rows[1]
+                    phone = rows[2]
+                return name, email, phone
+            
+            except UnboundLocalError as ex:
+                return False
         else:
             return False
 
